@@ -19,7 +19,7 @@ import com.example.vivochat.presentation.ui.component.ConversationMessagesCompon
 
 @Preview(showSystemUi = true)
 @Composable
-fun ChatScreen(modifier: Modifier = Modifier) {
+fun ChatScreen() {
     var message by remember { mutableStateOf("") }
     Scaffold(
         containerColor = Color.White,
