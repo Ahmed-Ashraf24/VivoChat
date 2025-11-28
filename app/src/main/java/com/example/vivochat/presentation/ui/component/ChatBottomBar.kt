@@ -21,15 +21,15 @@ import com.example.vivochat.presentation.ui.theme.onlineColor
 
 
 @Composable
-fun ChatBottomBar(modifier: Modifier = Modifier, message: String) {
+fun ChatBottomBar(modifier: Modifier = Modifier, message: String,onMessageChange:(String)->Unit) {
     Row(modifier = modifier
         .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
 
         Surface(modifier = Modifier.weight(1f),color = onlineColor.copy(alpha = .1f), shape = RoundedCornerShape(15.dp)) {
             BasicTextField(
-                modifier=Modifier.padding(vertical = 8.dp),
+                modifier=Modifier.padding(vertical = 15.dp),
                 value = message,
-                onValueChange = {},
+                onValueChange = {onMessageChange(it)},
                 decorationBox = { innerTextField ->
                     Row(modifier=Modifier.padding(horizontal = 10.dp)) {
                     if (message.isEmpty()) {
@@ -60,5 +60,5 @@ fun ChatBottomBar(modifier: Modifier = Modifier, message: String) {
 @Preview(showSystemUi = true)
 @Composable
 private fun ChatBottomBarPrev() {
-    ChatBottomBar(modifier = Modifier.padding(vertical = 30.dp, horizontal = 10.dp),message = "")
+    ChatBottomBar(modifier = Modifier.padding(vertical = 30.dp, horizontal = 10.dp),message = "",{})
 }

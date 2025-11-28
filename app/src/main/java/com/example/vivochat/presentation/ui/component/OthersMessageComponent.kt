@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
@@ -18,9 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.vivochat.domain.entity.Message
 import com.example.vivochat.presentation.ui.theme.Poppins
 
 
@@ -35,7 +32,7 @@ fun OthersMessageComponent(modifier: Modifier = Modifier,message: String) {
             isVisible=!isVisible
         },shape = RoundedCornerShape(topStart = 15.dp, bottomEnd = 15.dp, topEnd = 15.dp), color = Color.Gray.copy(.2f)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-                Text(message, fontFamily = Poppins, color = Color.Black, modifier = Modifier.padding(20.dp))
+                Text(message, fontFamily = Poppins, color = Color.Black, modifier = Modifier.padding(10.dp))
             }
         }
 

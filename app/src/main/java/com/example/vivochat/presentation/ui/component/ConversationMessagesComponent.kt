@@ -11,7 +11,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,13 +40,13 @@ fun ConversationMessagesComponent(modifier: Modifier = Modifier) {
             }
             MessageType.OthersMessage-> {
                 Row(modifier=Modifier.align(Alignment.Start)) {
-                    Surface(Modifier.padding(top = 35.dp), shape = RoundedCornerShape(50.dp)) {
+                    Surface(Modifier.padding(top = 15.dp), shape = RoundedCornerShape(50.dp)) {
                     Image(painter = painterResource(R.drawable.image), contentDescription = "profile", modifier = Modifier
-                        .size(50.dp),
+                        .size(35.dp),
                         contentScale = ContentScale.FillBounds
                     )
                     }
-                    OthersMessageComponent(modifier = Modifier.padding(horizontal = 10.dp),message = message.message)
+                    OthersMessageComponent(modifier = Modifier.padding(horizontal = 5.dp),message = message.message)
                 }
 
             }
