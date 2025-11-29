@@ -32,7 +32,7 @@ import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 
 import com.example.vivochat.presentation.view.home.components.HomeHeader
-
+@Preview()
 @Composable
 fun Home(modifier: Modifier = Modifier,navController: NavController) {
     val scrollState = rememberScrollState()
