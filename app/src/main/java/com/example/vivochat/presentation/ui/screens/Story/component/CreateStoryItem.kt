@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vivochat.R
 import com.example.vivochat.presentation.ui.theme.Poppins
+import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.ui.theme.onlineColor
 
 @Preview
@@ -43,7 +44,7 @@ fun CreateStoryItem(modifier: Modifier = Modifier) {
                     .size(18.dp)
                     .align(Alignment.BottomEnd),
                 shape = RoundedCornerShape(50.dp),
-                color = onlineColor
+                color = Primary
             ) {
                 Icon(
                     painter = painterResource(R.drawable.outline_add_24),
