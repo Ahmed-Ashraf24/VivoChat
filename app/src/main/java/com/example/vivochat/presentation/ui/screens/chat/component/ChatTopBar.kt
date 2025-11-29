@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.ui.component
+package com.example.vivochat.presentation.ui.screens.chat.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

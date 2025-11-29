@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.view.login.components
+package com.example.vivochat.presentation.ui.screens.login.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Text
