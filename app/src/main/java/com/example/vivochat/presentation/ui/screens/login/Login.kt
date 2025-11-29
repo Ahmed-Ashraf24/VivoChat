@@ -13,12 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vivochat.presentation.ui.screens.login.components.CreateAccRow
 import com.example.vivochat.presentation.ui.screens.login.components.LoginForm
 import com.example.vivochat.presentation.ui.screens.login.components.LoginHeader
 import com.example.vivochat.presentation.ui.screens.login.components.OrDivider
-
+@Preview()
 @Composable
 fun Login() {
     val scrollState = rememberScrollState()
