@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.ui.component
+package com.example.vivochat.presentation.ui.screens.Story.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.example.vivochat.R
 import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.ui.theme.Primary
-import com.example.vivochat.presentation.ui.theme.onlineColor
 
 
 @Composable

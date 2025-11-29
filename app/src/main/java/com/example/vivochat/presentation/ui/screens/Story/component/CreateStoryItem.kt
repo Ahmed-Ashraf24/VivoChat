@@ -1,7 +1,6 @@
-package com.example.vivochat.presentation.ui.component
+package com.example.vivochat.presentation.ui.screens.Story.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
