@@ -7,7 +7,9 @@ plugins {
 
 android {
     namespace = "com.example.vivochat"
-    compileSdk = 36
+    compileSdk {
+        version = release(36)
+    }
 
     defaultConfig {
         applicationId = "com.example.vivochat"
