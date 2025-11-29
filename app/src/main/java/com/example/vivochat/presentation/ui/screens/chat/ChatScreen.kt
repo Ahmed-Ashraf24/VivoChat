@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.ui.screens
+package com.example.vivochat.presentation.ui.screens.chat
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.vivochat.presentation.ui.component.ChatBottomBar
-import com.example.vivochat.presentation.ui.component.ChatTopBar
-import com.example.vivochat.presentation.ui.component.ConversationMessagesComponent
+import com.example.vivochat.presentation.ui.screens.chat.component.ChatBottomBar
+import com.example.vivochat.presentation.ui.screens.chat.component.ChatTopBar
+import com.example.vivochat.presentation.ui.screens.chat.component.ConversationMessagesComponent
 
 @Preview(showSystemUi = true)
 @Composable
