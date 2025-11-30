@@ -13,13 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatBottomBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatTopBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ConversationMessagesComponent
 
-@Preview(showSystemUi = true)
+
 @Composable
-fun ChatScreen() {
+fun ChatScreen(navController: NavController) {
     var message by remember { mutableStateOf("") }
     Scaffold(
         containerColor = Color.White,
@@ -27,7 +28,8 @@ fun ChatScreen() {
             ChatTopBar(
                 Modifier
                     .padding(top = 30.dp)
-                    .padding(horizontal = 10.dp)
+                    .padding(horizontal = 10.dp),
+                onBackClicked = {navController.navigate("navscreen")}
             )
         },
         bottomBar = {

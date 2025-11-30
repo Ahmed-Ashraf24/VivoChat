@@ -23,8 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.vivochat.R
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
@@ -32,7 +34,7 @@ import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 import com.example.vivochat.presentation.view.home.components.HomeHeader
 
 @Composable
-fun Home(modifier: Modifier = Modifier) {
+fun Home(modifier: Modifier = Modifier,navController: NavController) {
     val scrollState = rememberScrollState()
     LazyColumn(
         modifier = Modifier
@@ -49,7 +51,7 @@ fun Home(modifier: Modifier = Modifier) {
 
         item { Spacer(Modifier.height(10.dp)) }
         items(12) {
-            ChatItem()
+            ChatItem({navController.navigate("chat")})
             Spacer(Modifier.height(10.dp))
         }
     }

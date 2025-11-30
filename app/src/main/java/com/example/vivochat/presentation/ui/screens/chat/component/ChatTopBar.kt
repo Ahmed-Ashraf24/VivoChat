@@ -1,6 +1,7 @@
 package com.example.vivochat.presentation.ui.screens.chat.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -24,14 +25,13 @@ import com.example.vivochat.R
 import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.ui.theme.onlineColor
 
-@Preview(showSystemUi = true)
 @Composable
-fun ChatTopBar(modifier: Modifier = Modifier) {
+fun ChatTopBar(modifier: Modifier = Modifier,onBackClicked:()->Unit) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Icon(
             painter = painterResource(R.drawable.outline_arrow_back_ios_24),
             contentDescription = "back",
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(24.dp).clickable{onBackClicked()},
             tint = Color.Gray
         )
         Image(

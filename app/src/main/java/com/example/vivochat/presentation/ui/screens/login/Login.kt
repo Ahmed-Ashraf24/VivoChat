@@ -13,14 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.vivochat.presentation.ui.screens.login.components.CreateAccRow
 import com.example.vivochat.presentation.ui.screens.login.components.LoginForm
 import com.example.vivochat.presentation.ui.screens.login.components.LoginHeader
 import com.example.vivochat.presentation.ui.screens.login.components.OrDivider
 
 @Composable
-fun Login() {
+fun Login(navControler: NavController) {
     val scrollState = rememberScrollState()
 
     Column(
@@ -33,11 +35,12 @@ fun Login() {
     ) {
         LoginHeader(Modifier.align(Alignment.CenterHorizontally))
         Spacer(Modifier.height(30.dp))
-        LoginForm(Modifier.align(Alignment.End))
+        LoginForm(Modifier.align(Alignment.End), onLoginClicked = {navControler.navigate("navscreen")})
         Spacer(Modifier.height(30.dp))
         OrDivider()
         Spacer(Modifier.height(30.dp))
         CreateAccRow(Modifier.align(Alignment.CenterHorizontally), {
+            navControler.navigate("signup")
         })
     }
 }
