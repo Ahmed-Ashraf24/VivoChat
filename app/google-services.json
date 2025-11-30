@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "484895565332",
+    "firebase_url": "https://vivochat-21fca-default-rtdb.firebaseio.com",
+    "project_id": "vivochat-21fca",
+    "storage_bucket": "vivochat-21fca.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484895565332:android:9ed5726fb67480f16b6901",
+        "android_client_info": {
+          "package_name": "com.example.vivochat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAE29r4LSPO5D6PP4O2XfQBwKWpeUb-y1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
