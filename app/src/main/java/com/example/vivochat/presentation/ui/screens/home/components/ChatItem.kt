@@ -1,6 +1,7 @@
 package com.example.vivochat.presentation.ui.screens.home.components
 
 import CircleAvatar
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,11 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ChatItem() {
+fun ChatItem(onChatClicked:()->Unit) {
 
     Row(
 
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp).clickable{
+            onChatClicked()
+        },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
         ) {

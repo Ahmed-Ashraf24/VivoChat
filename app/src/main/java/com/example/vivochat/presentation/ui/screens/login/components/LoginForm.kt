@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.example.vivochat.presentation.ui.theme.Primary
 
 @Composable
-fun LoginForm(modifier: Modifier = Modifier) {
+fun LoginForm(modifier: Modifier = Modifier,onLoginClicked:()->Unit) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     EmailTextField(email.value, {
@@ -27,5 +27,5 @@ fun LoginForm(modifier: Modifier = Modifier) {
         Text("Forgot Password?", color = Primary)
     }
 
-    LoginButton({})
+    LoginButton(onClick = onLoginClicked)
 }
