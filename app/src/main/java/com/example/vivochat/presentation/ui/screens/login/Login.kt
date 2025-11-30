@@ -49,7 +49,7 @@ fun Login(navControler: NavController,
 
         })
         when (authState) {
-            AuthState.Loading -> {
+            AuthState.Loading, AuthState.Idle -> {
                 Spacer(Modifier.height(16.dp))
                 CircularProgressIndicator(color = Primary)
             }
@@ -67,7 +67,7 @@ fun Login(navControler: NavController,
                 Text("Login Successful! ")
                 navControler.navigate("navscreen")
             }
-            else -> Unit
+
         }
         Spacer(Modifier.height(30.dp))
         OrDivider()
