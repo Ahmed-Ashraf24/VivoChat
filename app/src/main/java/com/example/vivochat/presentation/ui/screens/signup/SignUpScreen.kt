@@ -13,11 +13,14 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,12 +35,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.vivochat.domain.entity.AuthState
 import com.example.vivochat.presentation.ui.theme.interFont
 import com.example.vivochat.presentation.ui.theme.sansFont
+import com.example.vivochat.presentation.viewModel.AuthViewModel
 
 @Composable
 fun SignUpScreen(
-    onSignUpClick: () -> Unit
+    viewModel: AuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    onSignUpSuccess: () -> Unit
 ) {
 
     // *************** States ****************
@@ -50,7 +56,20 @@ fun SignUpScreen(
     var passVisible by remember { mutableStateOf(false) }
     var confirmVisible by remember { mutableStateOf(false) }
 
-    // *************** UI ****************
+    val state by viewModel.authState.collectAsState()
+
+    LaunchedEffect(state) {
+        when (state) {
+            is AuthState.Success -> {
+                onSignUpSuccess()  // ← هنا مش هيدي error
+            }
+            is AuthState.Error -> {
+                println("Error: ${(state as AuthState.Error).message}")
+            }
+            else -> Unit
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -169,7 +188,15 @@ fun SignUpScreen(
 
         // ****** Signup ******
         Button(
-            onClick = onSignUpClick,
+            onClick = {
+                if (password != confirmPassword) {
+                    viewModel.showError("Passwords do not match")
+                } else if (email.isBlank() || password.isBlank()) {
+                    viewModel.showError("Please fill all fields")
+                } else {
+                    viewModel.signUp(email, password)
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp),
@@ -180,10 +207,35 @@ fun SignUpScreen(
         ) {
             Text(text = "Signup", fontSize = 14.sp, color = Color.White , fontFamily = interFont)
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // state handling xxx
+        when (state) {
+
+            is AuthState.Loading -> {
+                CircularProgressIndicator()
+            }
+
+            is AuthState.Error -> {
+                Text(
+                    text = (state as AuthState.Error).message,
+                    color = Color.Red,
+                    fontSize = 14.sp
+                )
+            }
+
+            is AuthState.Success -> {
+                Text(
+                    text = "Account created successfully!",
+                    color = Color(0xFF0A4D9F),
+                    fontWeight = Bold
+                )
+
+                onSignUpSuccess()
+            }
+
+            else -> {}
+        }
     }
-}
-@Preview(showBackground = true)
-@Composable
-fun prev() {
-    SignUpScreen(onSignUpClick = {})
 }

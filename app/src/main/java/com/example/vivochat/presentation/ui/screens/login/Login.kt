@@ -9,21 +9,30 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.vivochat.domain.entity.AuthState
+import com.example.vivochat.presentation.viewModel.AuthViewModel
 import com.example.vivochat.presentation.ui.screens.login.components.CreateAccRow
 import com.example.vivochat.presentation.ui.screens.login.components.LoginForm
 import com.example.vivochat.presentation.ui.screens.login.components.LoginHeader
 import com.example.vivochat.presentation.ui.screens.login.components.OrDivider
+import com.example.vivochat.presentation.ui.theme.Primary
 
 @Composable
-fun Login(navControler: NavController) {
+fun Login(navControler: NavController,
+          authViewModel: AuthViewModel = viewModel()) {
     val scrollState = rememberScrollState()
+    val authState = authViewModel.authState.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -35,7 +44,31 @@ fun Login(navControler: NavController) {
     ) {
         LoginHeader(Modifier.align(Alignment.CenterHorizontally))
         Spacer(Modifier.height(30.dp))
-        LoginForm(Modifier.align(Alignment.End), onLoginClicked = {navControler.navigate("navscreen")})
+        LoginForm(Modifier.align(Alignment.End), onLoginClicked = {email,password->
+            authViewModel.login(email,password)
+
+        })
+        when (authState) {
+            AuthState.Loading -> {
+                Spacer(Modifier.height(16.dp))
+                CircularProgressIndicator(color = Primary)
+            }
+            is AuthState.Error -> {
+                Spacer(Modifier.height(16.dp))
+
+                Text(
+                    text = "Error: ${authState.message}",
+                    color = Color.Red
+                )
+            }
+            is AuthState.Success -> {
+
+                Spacer(Modifier.height(16.dp))
+                Text("Login Successful! ")
+                navControler.navigate("navscreen")
+            }
+            else -> Unit
+        }
         Spacer(Modifier.height(30.dp))
         OrDivider()
         Spacer(Modifier.height(30.dp))
