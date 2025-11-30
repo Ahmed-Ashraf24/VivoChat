@@ -1,27 +1,13 @@
 package com.example.vivochat.presentation
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,15 +18,18 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.vivochat.authentication.AuthState
+import com.example.vivochat.authentication.AuthViewModel
 import com.example.vivochat.presentation.ui.theme.interFont
 import com.example.vivochat.presentation.ui.theme.sansFont
 
 @Composable
+
 fun SignUpScreen(
-    onSignUpClick: () -> Unit
+    viewModel: AuthViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    onSignUpSuccess: () -> Unit
 ) {
 
-    // *************** States ****************
     var fullName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
@@ -50,7 +39,20 @@ fun SignUpScreen(
     var passVisible by remember { mutableStateOf(false) }
     var confirmVisible by remember { mutableStateOf(false) }
 
-    // *************** UI ****************
+    val state by viewModel.authState.collectAsState()
+
+    LaunchedEffect(state) {
+        when (state) {
+            is AuthState.Success -> {
+                onSignUpSuccess()  // ← هنا مش هيدي error
+            }
+            is AuthState.Error -> {
+                println("Error: ${(state as AuthState.Error).message}")
+            }
+            else -> Unit
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -60,7 +62,6 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // ******  Sign up ******
         Text(
             text = "Sign up",
             fontSize = 32.sp,
@@ -79,10 +80,8 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(26.dp))
 
-        // ****** Full Name ******
         Text("Full Name", fontSize = 12.sp ,color=Color.Gray, fontFamily = sansFont)
         Spacer(modifier = Modifier.height(6.dp))
-
         OutlinedTextField(
             value = fullName,
             onValueChange = { fullName = it },
@@ -92,10 +91,8 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        // ****** Email ******
         Text("Email", fontSize = 12.sp,color=Color.Gray)
         Spacer(modifier = Modifier.height(6.dp))
-
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -106,14 +103,11 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        // ****** Phone Number ******
         Text("Phone Number", fontSize = 12.sp,color=Color.Gray)
         Spacer(modifier = Modifier.height(6.dp))
-
         OutlinedTextField(
             value = phone,
             onValueChange = { phone = it },
-
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp)
@@ -121,10 +115,8 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        // ****** Password ******
         Text("Password", fontSize = 12.sp,color=Color.Gray)
         Spacer(modifier = Modifier.height(6.dp))
-
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -144,10 +136,8 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        // ****** Confirm Password ******
         Text("Confirm Password", fontSize = 12.sp,color=Color.Gray)
         Spacer(modifier = Modifier.height(6.dp))
-
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
@@ -167,23 +157,56 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        // ****** Signup ******
+        // ---------------- SIGNUP BUTTON ----------------
         Button(
-            onClick = onSignUpClick,
+            onClick = {
+                if (password != confirmPassword) {
+                    viewModel.showError("Passwords do not match")
+                } else if (email.isBlank() || password.isBlank()) {
+                    viewModel.showError("Please fill all fields")
+                } else {
+                    viewModel.signUp(email, password)
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp),
             shape = RoundedCornerShape(14.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF0A4D9F) //
+                containerColor = Color(0xFF0A4D9F)
             )
         ) {
             Text(text = "Signup", fontSize = 14.sp, color = Color.White , fontFamily = interFont)
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // state handling xxx
+        when (state) {
+
+            is AuthState.Loading -> {
+                CircularProgressIndicator()
+            }
+
+            is AuthState.Error -> {
+                Text(
+                    text = (state as AuthState.Error).message,
+                    color = Color.Red,
+                    fontSize = 14.sp
+                )
+            }
+
+            is AuthState.Success -> {
+                Text(
+                    text = "Account created successfully!",
+                    color = Color(0xFF0A4D9F),
+                    fontWeight = Bold
+                )
+
+                onSignUpSuccess()
+            }
+
+            else -> {}
+        }
     }
-}
-@Preview(showBackground = true)
-@Composable
-fun prev() {
-    SignUpScreen(onSignUpClick = {})
 }
