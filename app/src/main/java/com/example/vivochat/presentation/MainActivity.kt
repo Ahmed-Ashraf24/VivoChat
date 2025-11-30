@@ -8,8 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.vivochat.presentation.ui.screens.Nav.NavScreen
-import com.example.vivochat.presentation.ui.screens.Story.StoryScreen
+import com.example.vivochat.presentation.ui.screens.Splash.SplashScreen
+
 import com.example.vivochat.presentation.ui.screens.chat.ChatScreen
+import com.example.vivochat.presentation.ui.screens.login.Login
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,10 +19,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            NavHost(navController,"navScreen"){
-                composable("navscreen") { NavScreen() }
-                composable("chat") { ChatScreen() }
+            NavHost(navController,"splash"){
+                composable("splash") { SplashScreen(navController) }
+                composable("login") { Login(navController) }
+                composable("signup") { SignUpScreen(){} }
+                composable("navscreen") { NavScreen(navController = navController) }
+                composable("chat") { ChatScreen(navController) }
             }
+
 
         }
     }
