@@ -28,7 +28,7 @@ import com.example.vivochat.presentation.view.home.Home
 import kotlinx.coroutines.launch
 
 @Composable
-fun NavScreen(modifier: Modifier = Modifier) {
+fun NavScreen(modifier: Modifier = Modifier,navController: NavController) {
     val state = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
@@ -45,7 +45,7 @@ fun NavScreen(modifier: Modifier = Modifier) {
         HorizontalPager(state = state, Modifier.padding(innerPadding)) { pageIndex ->
 
             when (pageIndex) {
-                0 -> Home()
+                0 -> Home(navController = navController)
                 1 -> StoryScreen()
                 2 -> SettingsScreen()
             }
