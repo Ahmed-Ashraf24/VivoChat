@@ -1,5 +1,6 @@
 package com.example.vivochat.presentation.ui.screens.nav
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -16,6 +17,7 @@ import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.Story.StoryScreen
 import com.example.vivochat.presentation.ui.screens.nav.component.BottomNavBar
 import com.example.vivochat.presentation.ui.screens.setting.SettingsScreen
+import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.view.home.Home
 import kotlinx.coroutines.launch
 
@@ -29,21 +31,27 @@ fun NavScreen(
     val state = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
-        Modifier.fillMaxSize(),
+        Modifier
+            .fillMaxSize()
+            .background(color = Primary),
         bottomBar = {
             BottomNavBar(
-                modifier = Modifier.padding(bottom = 30.dp),
                 onTabSelected = { tabIndex ->
                     coroutineScope.launch {
                         state.animateScrollToPage(tabIndex)
                     }
                 })
         }
-    ) { innerPadding ->
-        HorizontalPager(state = state, Modifier.padding(innerPadding)) { pageIndex ->
+    ) {
+        HorizontalPager(state = state) { pageIndex ->
 
             when (pageIndex) {
-                0 -> Home(navController = navController, viewModelStoreOwner, userRepository,localDataSource)
+                0 -> Home(
+                    navController = navController,
+                    viewModelStoreOwner,
+                    userRepository,
+                    localDataSource
+                )
                 1 -> StoryScreen()
                 2 -> SettingsScreen()
             }

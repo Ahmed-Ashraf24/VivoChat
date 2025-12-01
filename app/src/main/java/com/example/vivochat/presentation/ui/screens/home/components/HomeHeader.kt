@@ -1,6 +1,5 @@
 package com.example.vivochat.presentation.view.home.components
 
-import CircleAvatar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,10 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,9 +24,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vivochat.R
+import com.example.vivochat.presentation.viewModel.home_view_model.HomeState
+import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.material.shimmer
 
 @Composable
-fun HomeHeader() {
+fun HomeHeader(
+    viewModel: HomeViewModel
+) {
+    val userDataState = viewModel.userData.collectAsState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,8 +43,21 @@ fun HomeHeader() {
     ) {
         Column(
         ) {
-            Text("Hi Omar Osama", fontSize = 24.sp, fontWeight = FontWeight.Medium)
-            Text("6 unread messages", color = Color(0xFFBDBDBD))
+            if(userDataState.value is HomeState.UserDataSuccess){
+                Text(viewModel.user.fullName, fontSize = 24.sp, fontWeight = FontWeight.Medium)
+            }else{
+                Box(
+                    modifier = Modifier
+                        .height(28.dp)
+                        .width(120.dp)
+                        .placeholder(
+                            visible = true,
+                            highlight = PlaceholderHighlight.shimmer(),
+                            color = Color.LightGray,
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                )
+            }
         }
         Box(
             modifier = Modifier

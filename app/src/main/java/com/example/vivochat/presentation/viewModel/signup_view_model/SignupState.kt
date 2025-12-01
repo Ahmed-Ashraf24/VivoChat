@@ -8,5 +8,4 @@ sealed class SignupState{
     object Loading : SignupState()
     data class Success(val userId: String) : SignupState()
     data class Error(val message: String) : SignupState()
-
 }

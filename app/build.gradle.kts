@@ -73,4 +73,5 @@ dependencies {
 
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.datastore:datastore-core:1.1.1")
+    implementation("com.google.accompanist:accompanist-placeholder-material:0.32.0")
 }

@@ -41,7 +41,7 @@ fun Home(
             .padding(top = 50.dp),
 
         ) {
-        item { HomeHeader() }
+        item { HomeHeader(viewModel) }
         item { Spacer(Modifier.height(10.dp)) }
 
         item { ChatHeader() }

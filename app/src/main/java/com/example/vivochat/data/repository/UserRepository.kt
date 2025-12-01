@@ -19,8 +19,7 @@ class UserRepository(
     ): Result<Any> {
 
         try {
-            val user = UserDto(userId, fullName, email, phoneNumber)
-
+            val user = UserDto(userId, fullName, email,phoneNumber,null)
             firestore.collection("users")
                 .document(userId)
                 .set(user)
@@ -34,18 +33,29 @@ class UserRepository(
 
     override suspend fun getUserData(userId: String): Result<User> {
 
-        val response = firestore.collection("users")
-            .document(userId)
-            .get()
-            .await()
 
-           if(response.exists()){
-               val dto = response.data
-               Log.d("Dataaaaaaaaaaaaaaaaaaaaaaaa",dto.toString())
-               return Result.failure(Exception("User not foundd"))
-           }else{
-               return Result.failure(Exception("User not found"))
-           }
+            val response = firestore.collection("users")
+                .document(userId)
+                .get()
+                .await()
+
+            if (response.exists()) {
+
+                val userDto = response.toObject(UserDto::class.java)
+
+
+
+                val user = User(
+                    userId  = userDto!!.userId,
+                    fullName = userDto.fullName,
+                    email = userDto.email,
+                    phoneNum = userDto.phoneNum
+                )
+                return Result.success(user)
+            } else {
+                return Result.failure(Exception("User not found"))
+            }
+
     }
 
 }
