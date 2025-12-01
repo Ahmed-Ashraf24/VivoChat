@@ -18,12 +18,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val viewModelStoreOwner = this
             val navController = rememberNavController()
-            NavHost(navController,"splash"){
-
+            NavHost(navController,"login"){
                 composable("splash") { SplashScreen(navController) }
-                composable("login") { Login(navController) }
-                composable("signup") { SignUpScreen(){} }
+                composable("login") { Login(viewModelStoreOwner,navController) }
+                composable("signup") { SignupScreen(viewModelStoreOwner, navController) }
                 composable("navscreen") { NavScreen(navController = navController) }
                 composable("chat") { ChatScreen(navController) }
             }

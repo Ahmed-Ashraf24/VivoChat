@@ -17,6 +17,7 @@
     import androidx.lifecycle.ViewModelProvider
     import androidx.lifecycle.ViewModelStoreOwner
     import androidx.navigation.NavController
+    import com.example.vivochat.presentation.ui.ViewModelProviderHolder
     import com.example.vivochat.presentation.ui.screens.login.components.CreateAccRow
     import com.example.vivochat.presentation.ui.screens.login.components.LoginForm
     import com.example.vivochat.presentation.ui.screens.login.components.LoginHeader
@@ -31,7 +32,7 @@
         val scrollState = rememberScrollState()
 
         val viewModel =
-            ViewModelProvider(viewModelStoreOwner).get(LoginViewModel::class.java)
+            ViewModelProviderHolder.getLoginViewModel(viewModelStoreOwner)
 
         Column(
             modifier = Modifier

@@ -1,30 +1,50 @@
 package com.example.vivochat.presentation.viewModel.signup_view_model
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.vivochat.domain.repository.IUserRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class SignupViewModel : ViewModel(){
+class SignupViewModel(
+    private val userRepository: IUserRepository
+) : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
 
     private val _signupState = MutableStateFlow<SignupState>(SignupState.Idle)
-    val signupState : StateFlow<SignupState>
+    val signupState: StateFlow<SignupState>
         get() = _signupState
 
 
+    fun signUp(fullName: String, email: String, password: String, phoneNum: String) {
 
-    fun signUp(email: String, password: String){
         _signupState.value = SignupState.Loading
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val uid = auth.currentUser?.uid ?: ""
-                    _signupState.value = SignupState.Success(uid)
+                    uploadUserData(uid, fullName, email, phoneNum)
                 } else {
-                    _signupState.value = SignupState.Error("Unknown Error")
+                    _signupState.value = SignupState.Error("Authentication failed")
                 }
             }
+
+    }
+
+    fun uploadUserData(userId: String, fullName: String, email: String, phoneNum: String) {
+        viewModelScope.launch {
+
+            val res = userRepository.uploadUserData(userId, fullName, email, phoneNum)
+            if (res.isSuccess) {
+                _signupState.value = SignupState.Success(userId)
+            } else {
+                _signupState.value = SignupState.Error("Failed to upload user data")
+            }
+
+        }
     }
 }

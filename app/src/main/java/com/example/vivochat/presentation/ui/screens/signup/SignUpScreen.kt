@@ -41,12 +41,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
+import com.example.vivochat.presentation.ui.ViewModelProviderHolder
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.ui.theme.interFont
 import com.example.vivochat.presentation.ui.theme.sansFont
 import com.example.vivochat.presentation.viewModel.login_view_model.LoginState
 import com.example.vivochat.presentation.viewModel.signup_view_model.SignupState
 import com.example.vivochat.presentation.viewModel.signup_view_model.SignupViewModel
+import com.example.vivochat.presentation.viewModel.signup_view_model.SignupViewModelFac
 
 @Composable
 fun SignupScreen(
@@ -64,7 +66,8 @@ fun SignupScreen(
     var confirmVisible by remember { mutableStateOf(false) }
 
 
-    val viewModel = ViewModelProvider(viewModelStoreOwner).get(SignupViewModel::class.java)
+    val viewModel = ViewModelProviderHolder.getSignupViewModel(viewModelStoreOwner)
+
     val signupState = viewModel.signupState.collectAsState()
 
 
@@ -216,7 +219,7 @@ fun SignupScreen(
                     }else if(phone.isEmpty()){
                         Toast.makeText(ctx,"phone is required",Toast.LENGTH_SHORT).show()
                     }else{
-                        viewModel.signUp(email,password)
+                        viewModel.signUp(fullName,email,password,phone)
                     }
                 },
                 modifier = Modifier
