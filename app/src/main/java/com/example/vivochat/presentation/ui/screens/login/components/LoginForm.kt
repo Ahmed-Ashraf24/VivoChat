@@ -1,6 +1,5 @@
 package com.example.vivochat.presentation.ui.screens.login.components
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -21,10 +20,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.vivochat.presentation.ui.theme.Primary
-import com.example.vivochat.presentation.viewModel.AuthViewModel
 import com.example.vivochat.presentation.viewModel.login_view_model.LoginState
 import com.example.vivochat.presentation.viewModel.login_view_model.LoginViewModel
-import kotlin.math.log
 
 @Composable
 fun LoginForm(modifier: Modifier = Modifier,viewModel: LoginViewModel,navController: NavController) {
@@ -34,12 +31,12 @@ fun LoginForm(modifier: Modifier = Modifier,viewModel: LoginViewModel,navControl
     val loginState = viewModel.loginState.collectAsState()
 
     LaunchedEffect(loginState.value) {
-        Log.d("OMAOMOM",loginState.value.toString())
+
         if(loginState.value is LoginState.Error){
             val message = (loginState.value as LoginState.Error).message
             Toast.makeText(ctx,message,Toast.LENGTH_SHORT).show()
         }else if(loginState.value is LoginState.Success){
-            navController.navigate("splash")
+            navController.navigate("navScreen")
         }
     }
     DisposableEffect(Unit) {

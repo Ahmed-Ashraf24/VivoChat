@@ -3,6 +3,7 @@ package com.example.vivochat.presentation.viewModel.signup_view_model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.vivochat.data.dataSource.local.LocalDataSource
 import com.example.vivochat.domain.repository.IUserRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SignupViewModel(
-    private val userRepository: IUserRepository
+    private val userRepository: IUserRepository,
+    private val localDataSource: LocalDataSource
 ) : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
 

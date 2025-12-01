@@ -1,18 +1,18 @@
-package com.example.vivochat.presentation.viewModel.signup_view_model
+package com.example.vivochat.presentation.viewModel.splash_view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.vivochat.data.dataSource.local.LocalDataSource
-import com.example.vivochat.domain.repository.IUserRepository
+import com.example.vivochat.presentation.viewModel.login_view_model.LoginViewModel
 
-class SignupViewModelFac(
-    private val userRepository: IUserRepository,
+
+class SplashViewModelFac(
     private val localDataSource: LocalDataSource
-) : ViewModelProvider.Factory{
+)  : ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SignupViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(SplashViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return SignupViewModel(userRepository,localDataSource) as T
+            return SplashViewModel(localDataSource) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
