@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ChatItem(onChatClicked:()->Unit) {
+fun ChatItem(name:String,onChatClicked:()->Unit) {
 
     Row(
 
@@ -37,7 +37,7 @@ fun ChatItem(onChatClicked:()->Unit) {
             Column(
                 verticalArrangement = Arrangement.Center,
             ) {
-                Text("Omar Osama", fontSize = 17.sp)
+                Text(name, fontSize = 17.sp)
                 Spacer(Modifier.height(5.dp))
                 Text(
                     "Hey How r u doing",

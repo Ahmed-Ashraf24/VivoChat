@@ -6,30 +6,39 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.vivochat.data.dataSource.firebase_remote_datasource.FirebaseRemoteDataSource
+import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseIstance
+import com.example.vivochat.data.repository.MessageRepo
+import com.example.vivochat.domain.entity.Message
+import com.example.vivochat.domain.entity.MessageType
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatBottomBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatTopBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ConversationMessagesComponent
+import com.example.vivochat.presentation.viewModel.MessageViewModel
 
 
 @Composable
-fun ChatScreen(navController: NavController) {
+fun ChatScreen(navController: NavController,reciverName:String, reciverId:String) {
     var message by remember { mutableStateOf("") }
+    val messageViewModel= MessageViewModel(MessageRepo(FirebaseRemoteDataSource()))
+    messageViewModel.getMessages(FirebaseIstance.firebaseAuth.currentUser!!.uid,reciverId)
+    val messageList =messageViewModel.messageData.collectAsState()
     Scaffold(modifier = Modifier.imePadding(),
         containerColor = Color.White,
         topBar = {
             ChatTopBar(
                 Modifier
                     .padding(top = 30.dp)
-                    .padding(horizontal = 10.dp),
+                    .padding(horizontal = 10.dp), userName = reciverName,
                 onBackClicked = {navController.navigate("navscreen")}
             )
         },
@@ -39,11 +48,24 @@ fun ChatScreen(navController: NavController) {
                     vertical = 20.dp,
                     horizontal = 10.dp
                 ), message = message,
-                onMessageChange = {message=it}
+                onMessageChange = {message=it},
+                onSendClicked = {messageViewModel.sendMessage(
+                    message = Message(
+                        senderId = FirebaseIstance.firebaseAuth.currentUser!!.uid!!,
+                        senderName ="ahmed",
+                        message = message,
+                        messageType = MessageType.MyMessage,
+                        messageDate = "TODO()",
+                        senderProfileUrl = "TODO()"
+                    ),
+                    reciverId = reciverId
+                )
+                message=""
+                }
             )
         }) { innerPadding ->
         Column(Modifier.padding(innerPadding)) {
-            ConversationMessagesComponent(Modifier.fillMaxWidth().padding(horizontal = 10.dp))
+            ConversationMessagesComponent(Modifier.fillMaxWidth().padding(horizontal = 10.dp),messageList.value)
         }
     }
 }

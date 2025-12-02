@@ -21,15 +21,10 @@ import com.example.vivochat.domain.entity.MessageType
 
 @Preview(showSystemUi = true)
 @Composable
-fun ConversationMessagesComponent(modifier: Modifier = Modifier) {
-    val messageList = listOf(
-        Message("ahmed", "hi", MessageType.MyMessage, "2:00AM", "222"),
-        Message("mohamed", "hello", MessageType.OthersMessage, "2:02AM", "222"),
-        Message("ahmed", "how are you", MessageType.MyMessage, "2:03AM", "222"),
-        Message("mohamed", "fine", MessageType.OthersMessage, "2:05AM", "222"),
-    )
+fun ConversationMessagesComponent(modifier: Modifier = Modifier,messageList:List<Message>) {
+
     Column(modifier.fillMaxWidth()) {
-    messageList.forEach {message ->
+        messageList.forEach {message ->
 
         when(message.messageType){
             MessageType.MyMessage -> {

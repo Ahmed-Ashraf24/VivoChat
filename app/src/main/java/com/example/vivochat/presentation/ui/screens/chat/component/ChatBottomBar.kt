@@ -1,5 +1,6 @@
 package com.example.vivochat.presentation.ui.screens.chat.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,7 +22,7 @@ import com.example.vivochat.presentation.ui.theme.onlineColor
 
 
 @Composable
-fun ChatBottomBar(modifier: Modifier = Modifier, message: String,onMessageChange:(String)->Unit) {
+fun ChatBottomBar(modifier: Modifier = Modifier, message: String,onMessageChange:(String)->Unit,onSendClicked:()->Unit) {
     Row(modifier = modifier
         .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
 
@@ -49,8 +50,8 @@ fun ChatBottomBar(modifier: Modifier = Modifier, message: String,onMessageChange
         )
         Icon(
             painter = painterResource(R.drawable.send_ic),
-            "attach",
-            modifier = Modifier.size(24.dp),
+            "sned",
+            modifier = Modifier.size(24.dp).clickable{onSendClicked()},
             tint = Color.Gray
         )
 
@@ -60,5 +61,5 @@ fun ChatBottomBar(modifier: Modifier = Modifier, message: String,onMessageChange
 @Preview(showSystemUi = true)
 @Composable
 private fun ChatBottomBarPrev() {
-    ChatBottomBar(modifier = Modifier.padding(vertical = 30.dp, horizontal = 10.dp),message = "",{})
+    ChatBottomBar(modifier = Modifier.padding(vertical = 30.dp, horizontal = 10.dp),message = "",{},{})
 }
