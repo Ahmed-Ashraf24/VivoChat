@@ -1,9 +1,12 @@
 package com.example.vivochat.data.repository
 
+import android.util.Log
 import com.example.vivochat.data.dataSource.RemoteDataSource
 import com.example.vivochat.data.dto.UserDto
 import com.example.vivochat.data.mapper.UserMapper
+import com.example.vivochat.data.mappers.convertToUserList
 import com.example.vivochat.data.mappers.toUser
+import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.domain.entity.User
 import com.example.vivochat.domain.repository.IUserRepository
 
@@ -37,6 +40,7 @@ class UserRepository(
 
     }
 
+
     override suspend fun getAllUsers(): Result<List<User>> {
         return try {
             Result.success(remoteDataSource.getUsersList().map (UserMapper::toUser))
@@ -44,5 +48,39 @@ class UserRepository(
             Result.failure(Exception("somthing happened when trying to get the users "))
         }
     }
+
+    override suspend fun filterContacts(contactList: List<Contact>): Pair<List<User>, List<Contact>> {
+        val availableContacts: MutableList<User> = mutableListOf()
+        val unAvailableContacts: MutableList<Contact> = mutableListOf()
+        val allUsers: MutableList<User> = mutableListOf()
+        getAllUsers().onSuccess { users ->
+            allUsers.addAll(users)
+        }
+
+
+
+        for (i in contactList) {
+            if(i.phoneNum=="01287106301"){
+                Log.d("i found him","ahmed")
+            }
+
+            var userFound = false
+            for (j in allUsers) {
+                if (i.phoneNum == j.phoneNum) {
+
+                    availableContacts.add(j)
+                    userFound = true
+                    break
+                }
+            }
+            if(!userFound){
+                unAvailableContacts.add(i)
+            }
+        }
+
+        return Pair(availableContacts, unAvailableContacts)
+    }
+
+
 
 }
