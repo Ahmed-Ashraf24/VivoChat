@@ -3,7 +3,6 @@ package com.example.vivochat.presentation.viewModel.signup_view_model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.vivochat.data.dataSource.local.LocalDataSource
 import com.example.vivochat.domain.repository.IUserRepository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,9 +11,9 @@ import kotlinx.coroutines.launch
 
 class SignupViewModel(
     private val userRepository: IUserRepository,
-    private val localDataSource: LocalDataSource
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
-    private val auth = FirebaseAuth.getInstance()
+
 
     private val _signupState = MutableStateFlow<SignupState>(SignupState.Idle)
     val signupState: StateFlow<SignupState>
@@ -25,10 +24,10 @@ class SignupViewModel(
 
         _signupState.value = SignupState.Loading
 
-        auth.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val uid = auth.currentUser?.uid ?: ""
+                    val uid = firebaseAuth.currentUser?.uid ?: ""
                     uploadUserData(uid, fullName, email, phoneNum)
                 } else {
                     _signupState.value = SignupState.Error("Authentication failed")

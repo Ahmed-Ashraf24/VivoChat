@@ -5,7 +5,9 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class LoginViewModel : ViewModel(){
+class LoginViewModel (
+
+): ViewModel(){
     private val auth = FirebaseAuth.getInstance()
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
@@ -21,6 +23,7 @@ class LoginViewModel : ViewModel(){
                 if (task.isSuccessful) {
                     val uid = auth.currentUser?.uid ?: ""
                     _loginState.value = LoginState.Success(uid)
+
                 } else {
                     _loginState.value = LoginState.Error(
                         task.exception?.localizedMessage ?: "Login failed"

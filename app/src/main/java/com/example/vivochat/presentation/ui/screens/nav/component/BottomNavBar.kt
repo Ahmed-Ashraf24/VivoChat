@@ -1,6 +1,7 @@
 package com.example.vivochat.presentation.ui.screens.nav.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.example.vivochat.R
 import com.example.vivochat.presentation.ui.theme.Primary
 
@@ -21,6 +23,7 @@ fun BottomNavBar(modifier: Modifier = Modifier,onTabSelected:(Int)->Unit) {
         containerColor = Color.White,
         selectedTabIndex = selectedTab,
         modifier = modifier
+            .height(70.dp)
             .fillMaxWidth(),
         indicator = {},
         divider = {}

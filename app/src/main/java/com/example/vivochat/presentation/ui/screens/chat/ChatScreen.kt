@@ -2,6 +2,7 @@ package com.example.vivochat.presentation.ui.screens.chat
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -22,7 +23,7 @@ import com.example.vivochat.presentation.ui.screens.chat.component.ConversationM
 @Composable
 fun ChatScreen(navController: NavController) {
     var message by remember { mutableStateOf("") }
-    Scaffold(
+    Scaffold(modifier = Modifier.imePadding(),
         containerColor = Color.White,
         topBar = {
             ChatTopBar(

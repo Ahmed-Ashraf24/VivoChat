@@ -10,8 +10,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 
 class FirebaseRemoteDataSource() : RemoteDataSource {
-    val firebaseDatabase = FirebaseDatabase.getInstance()
-    val firestore = FirebaseFirestore.getInstance()
+    private val firebaseDatabase = FirebaseDatabase.getInstance()
+    private val firestore = FirebaseFirestore.getInstance()
 
     override fun sendMessage(message: FirebaseMessage) {
         TODO("Not yet implemented")
