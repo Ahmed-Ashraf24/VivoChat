@@ -9,4 +9,5 @@ interface RemoteDataSource {
     suspend fun getUsersList():List<UserDto>
     suspend fun uploadUserData(userId:String,fullName : String,email : String,phoneNumber: String): Result<Any>
     suspend fun getUserData(userId : String): Result<UserDto>
+
 }

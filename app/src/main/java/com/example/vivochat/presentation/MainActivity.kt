@@ -57,6 +57,7 @@ class MainActivity : ComponentActivity() {
                             firebaseAuth
                     )
                 }
+
                 composable("chat") { ChatScreen(navController) }
             }
 

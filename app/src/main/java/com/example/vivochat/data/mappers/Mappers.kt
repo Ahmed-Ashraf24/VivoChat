@@ -12,3 +12,15 @@ fun UserDto.toUser(): User {
         this.phoneNum
     )
 }
+
+fun convertToUserList(usersDto: List<UserDto>): List<User> {
+    return usersDto.map { dto ->
+        User(
+            userId = dto.userId,
+            fullName = dto.fullName,
+            email = dto.email,
+            phoneNum = dto.phoneNum
+        )
+    }
+
+}

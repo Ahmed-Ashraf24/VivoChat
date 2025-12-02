@@ -43,7 +43,7 @@ fun HomeHeader(
     ) {
         Column(
         ) {
-            if(userDataState.value is HomeState.UserDataSuccess){
+            if(userDataState.value is HomeState.DataSuccess){
                 Text(viewModel.user.fullName, fontSize = 24.sp, fontWeight = FontWeight.Medium)
             }else{
                 Box(

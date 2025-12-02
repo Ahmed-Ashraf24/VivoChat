@@ -17,14 +17,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.vivochat.domain.entity.User
 
 @Composable
-fun ChatItem(onChatClicked:()->Unit) {
+fun ChatItem(fullName : String,navController : NavController) {
 
     Row(
 
         modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp).clickable{
-            onChatClicked()
+            navController.navigate("chat")
         },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -37,7 +39,7 @@ fun ChatItem(onChatClicked:()->Unit) {
             Column(
                 verticalArrangement = Arrangement.Center,
             ) {
-                Text("Omar Osama", fontSize = 17.sp)
+                Text(fullName, fontSize = 17.sp)
                 Spacer(Modifier.height(5.dp))
                 Text(
                     "Hey How r u doing",

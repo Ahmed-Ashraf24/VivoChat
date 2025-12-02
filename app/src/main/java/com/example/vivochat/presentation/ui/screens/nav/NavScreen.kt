@@ -1,6 +1,7 @@
 package com.example.vivochat.presentation.ui.screens.nav
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -30,6 +31,7 @@ fun NavScreen(
     userRepository: IUserRepository,
     firebaseAuth: FirebaseAuth
 ) {
+
     val state = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
     Scaffold(

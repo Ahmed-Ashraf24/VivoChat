@@ -1,12 +1,18 @@
 package com.example.vivochat.presentation.ui.screens.Splash
 
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
@@ -20,6 +26,11 @@ import com.example.vivochat.presentation.viewModel.splash_view_model.SplashViewM
 import com.example.vivochat.presentation.viewModel.splash_view_model.SplashViewModelFac
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
+import android.Manifest
+import android.app.Activity
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.core.app.ActivityCompat
 
 @Composable
 fun SplashScreen(
@@ -39,14 +50,35 @@ fun SplashScreen(
     val progress = animateLottieCompositionAsState(
         composition = animation.value,
         iterations = Int.MAX_VALUE
-        )
+    )
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            viewModel.autoLogin()
+        }
+
+    }
+
+    LaunchedEffect(Unit) {
+        permissionLauncher.launch(Manifest.permission.READ_CONTACTS)
+    }
+
+
     LaunchedEffect(state.value) {
-        if (state.value is SplashState.AutoLoginFailed) {
-            delay(1000)
-            navController.navigate("login")
-        } else if (state.value is SplashState.AutoLoginSuccess) {
-            delay(1000)
-            navController.navigate("navScreen")
+        try{
+            if (state.value is SplashState.AutoLoginFailed) {
+                delay(1000)
+
+                navController.navigate("login")
+            } else if (state.value is SplashState.AutoLoginSuccess) {
+                delay(1000)
+
+                navController.navigate("navScreen")
+            }
+        }catch (e : Exception){
+            Log.d("Ausifaaaa",e.toString())
         }
     }
 
