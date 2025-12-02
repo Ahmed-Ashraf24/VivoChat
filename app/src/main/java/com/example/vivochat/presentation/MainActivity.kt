@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.vivochat.data.dataSource.FirebaseRemoteDataSource
+import androidx.navigation.navArgument
+import com.example.vivochat.data.dataSource.firebase_remote_datasource.FirebaseRemoteDataSource
 import com.example.vivochat.data.dataSource.RemoteDataSource
 
 import com.example.vivochat.data.repository.UserRepository
@@ -57,7 +59,18 @@ class MainActivity : ComponentActivity() {
                             firebaseAuth
                     )
                 }
-                composable("chat") { ChatScreen(navController) }
+                composable("chat/{userName}/{userId}",
+                    arguments = listOf(
+                        navArgument("userName") { type = NavType.StringType },
+                        navArgument("userId") { type = NavType.StringType }
+
+
+                    )) { backStackEntry ->
+                    val userId = backStackEntry.arguments?.getString("userId")!!
+                    val userName = backStackEntry.arguments?.getString("userName")!!
+                    ChatScreen(navController = navController, reciverName = userName, reciverId = userId)
+
+                }
             }
 
 

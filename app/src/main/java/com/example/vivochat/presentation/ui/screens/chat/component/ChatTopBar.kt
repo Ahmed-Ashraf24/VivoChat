@@ -26,7 +26,7 @@ import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.ui.theme.onlineColor
 
 @Composable
-fun ChatTopBar(modifier: Modifier = Modifier,onBackClicked:()->Unit) {
+fun ChatTopBar(modifier: Modifier = Modifier,userName:String,onBackClicked:()->Unit) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Icon(
             painter = painterResource(R.drawable.outline_arrow_back_ios_24),
@@ -47,7 +47,7 @@ fun ChatTopBar(modifier: Modifier = Modifier,onBackClicked:()->Unit) {
                 .align(Alignment.Top)
                 .padding(horizontal = 8.dp)
         ) {
-            Text("user name ", fontSize = 18.sp, fontFamily = Poppins)
+            Text(userName, fontSize = 18.sp, fontFamily = Poppins)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Active", fontSize = 10.sp, fontFamily = Poppins, color = Color.Gray, modifier = Modifier.padding(end = 5.dp))
                 Surface(

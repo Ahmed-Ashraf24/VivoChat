@@ -2,8 +2,9 @@ package com.example.vivochat.domain.repository
 
 import com.example.vivochat.domain.entity.Message
 import com.example.vivochat.domain.entity.Response
+import kotlinx.coroutines.flow.Flow
 
 interface IMessageRep {
-    fun sendMessage(message: Message)
-    fun getMessages(): Response
+    fun sendMessage(message: Message,recrverId:String)
+    fun getMessages(userId:String,otherUserId:String): Flow<List<Message>>
 }

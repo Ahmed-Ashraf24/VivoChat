@@ -16,7 +16,8 @@ class HomeViewModel(
 ) : ViewModel() {
 
     lateinit var user: User
-
+    private val _usersList= MutableStateFlow<List<User>>(emptyList())
+    val userList: StateFlow<List<User>> = _usersList
 
     private var _userData = MutableStateFlow<HomeState>(HomeState.Idle)
     val userData : StateFlow<HomeState>
@@ -36,8 +37,17 @@ class HomeViewModel(
 
         }
     }
+    fun getAllUsers(){
+        viewModelScope.launch {
+            val res=userRepo.getAllUsers()
+            if (res.isSuccess){
+                _usersList.emit(res.getOrNull()!!)
+            }
+        }
+    }
     init {
         getUserData()
+        getAllUsers()
     }
 
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -32,7 +33,7 @@ fun Home(
     val viewModelFac = HomeViewModelFac(userRepo,firebaseAuth)
     val viewModel =
         ViewModelProvider(viewModelStoreOwner, viewModelFac).get(HomeViewModel::class.java)
-
+    val userList =viewModel.userList.collectAsState()
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -47,8 +48,8 @@ fun Home(
         item { ChatHeader() }
 
         item { Spacer(Modifier.height(10.dp)) }
-        items(12) {
-            ChatItem({ navController.navigate("chat") })
+        items(userList.value.size) {
+            ChatItem(userList.value[it].fullName,{ navController.navigate("chat/${userList.value[it].fullName}/${userList.value[it].userId}") })
             Spacer(Modifier.height(10.dp))
         }
     }
