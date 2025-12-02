@@ -1,60 +1,37 @@
 package com.example.vivochat.data.repository
 
-import android.util.Log
-import com.example.vivochat.data.dto.UserDto
+import com.example.vivochat.data.dataSource.RemoteDataSource
+import com.example.vivochat.data.mappers.toUser
 import com.example.vivochat.domain.entity.User
 import com.example.vivochat.domain.repository.IUserRepository
-import com.example.vivochat.presentation.ui.screens.login.Login
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.tasks.await
 
 class UserRepository(
-    private val firestore: FirebaseFirestore
+    private val remoteDataSource: RemoteDataSource
 ) : IUserRepository {
+
     override suspend fun uploadUserData(
         userId: String,
         fullName: String,
         email: String,
         phoneNumber: String
     ): Result<Any> {
-
-        try {
-            val user = UserDto(userId, fullName, email,phoneNumber,null)
-            firestore.collection("users")
-                .document(userId)
-                .set(user)
-                .await()
-
-            return Result.success("data sent successfully")
-        } catch (e: Exception) {
-            return Result.failure(e)
+        val response = remoteDataSource.uploadUserData(userId, fullName, email, phoneNumber)
+        if (response.isSuccess) {
+            return Result.success("Data uploaded successfully")
         }
+
+        return Result.failure(Exception("Failed to upload user data"))
     }
 
     override suspend fun getUserData(userId: String): Result<User> {
+        val response = remoteDataSource.getUserData(userId)
 
+        if (response.isSuccess) {
+            val userDto = response.getOrNull()!!
+            return Result.success(userDto.toUser())
+        }
 
-            val response = firestore.collection("users")
-                .document(userId)
-                .get()
-                .await()
-
-            if (response.exists()) {
-
-                val userDto = response.toObject(UserDto::class.java)
-
-
-
-                val user = User(
-                    userId  = userDto!!.userId,
-                    fullName = userDto.fullName,
-                    email = userDto.email,
-                    phoneNum = userDto.phoneNum
-                )
-                return Result.success(user)
-            } else {
-                return Result.failure(Exception("User not found"))
-            }
+        return Result.failure(Exception("failed to get user data"))
 
     }
 

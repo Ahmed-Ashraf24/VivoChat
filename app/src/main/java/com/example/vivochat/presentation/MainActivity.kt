@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.vivochat.data.dataSource.FirebaseRemoteDataSource
+import com.example.vivochat.data.dataSource.RemoteDataSource
 import com.example.vivochat.data.dataSource.local.LocalDataSource
 import com.example.vivochat.data.repository.UserRepository
 import com.example.vivochat.domain.repository.IUserRepository
@@ -27,7 +29,9 @@ class MainActivity : ComponentActivity() {
             val viewModelStoreOwner = this
             val navController = rememberNavController()
             val localDataSource = LocalDataSource(this)
-            val userRepo: IUserRepository = UserRepository(FirebaseFirestore.getInstance())
+            val firestore = FirebaseFirestore.getInstance()
+            val fireBaseDataSource : RemoteDataSource = FirebaseRemoteDataSource(firestore)
+            val userRepo: IUserRepository = UserRepository(fireBaseDataSource)
             NavHost(navController, "splash") {
                 composable("splash") { SplashScreen(navController,viewModelStoreOwner,localDataSource) }
                 composable("login") { Login(viewModelStoreOwner, navController, localDataSource) }
