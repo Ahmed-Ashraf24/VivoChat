@@ -108,41 +108,24 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
 
-                    if (!snapshot.exists()) {
-                        trySend(emptyList())
-                        return
-                    }
-
-
                     val conversationId = snapshot.child("conversationId").getValue(String::class.java)
-                    if (conversationId == null) {
+                    if (!snapshot.exists() || conversationId == null) {
                         trySend(emptyList())
                         return
                     }
-                    conversationListener?.let { listener ->
-                        FirebaseIstance.firebaseDatabase.getReference("conversations")
-                            .child(conversationId)
-                            .removeEventListener(listener)
-                    }
-                    val convRef = FirebaseIstance.firebaseDatabase
-                        .getReference("conversations")
+
+                    FirebaseIstance.firebaseDatabase.getReference("conversations")
                         .child(conversationId)
-
-                    val newListener = object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val list = snapshot.children.mapNotNull { it.getValue(FirebaseMessage::class.java) }
-                            trySend(list)
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            cancel("Conversation cancelled", error.toException())
-                        }
-                    }
-
-                    convRef.addValueEventListener(newListener)
-                    conversationListener = newListener
+                        .addValueEventListener(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                val messages = snapshot.children.mapNotNull { it.getValue(FirebaseMessage::class.java) }
+                                trySend(messages)
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                                close(error.toException())
+                            }
+                        })
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     cancel("Conversation metadata cancelled", error.toException())
                 }

@@ -1,9 +1,13 @@
 package com.example.vivochat.presentation.ui.screens.chat
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,6 +30,7 @@ import com.example.vivochat.presentation.ui.screens.chat.component.ConversationM
 import com.example.vivochat.presentation.viewModel.MessageViewModel
 
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Composable
 fun ChatScreen(navController: NavController,reciverName:String, reciverId:String) {
     var message by remember { mutableStateOf("") }
@@ -64,8 +69,12 @@ fun ChatScreen(navController: NavController,reciverName:String, reciverId:String
                 }
             )
         }) { innerPadding ->
-        Column(Modifier.padding(innerPadding)) {
-            ConversationMessagesComponent(Modifier.fillMaxWidth().padding(horizontal = 10.dp),messageList.value)
+
+        LazyColumn (Modifier.padding(innerPadding)) {
+            item {
+                ConversationMessagesComponent(Modifier.fillMaxWidth().padding(horizontal = 10.dp),messageList.value)
+
+            }
         }
     }
 }

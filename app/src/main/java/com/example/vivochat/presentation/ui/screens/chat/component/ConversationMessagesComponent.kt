@@ -29,7 +29,7 @@ fun ConversationMessagesComponent(modifier: Modifier = Modifier,messageList:List
         when(message.messageType){
             MessageType.MyMessage -> {
                 MyMessageComponent(
-                    modifier = Modifier.align(Alignment.End),
+                    modifier = Modifier.padding(top = 15.dp).align(Alignment.End),
                     message = message.message
                 )
             }
