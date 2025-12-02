@@ -7,4 +7,6 @@ interface RemoteDataSource {
     fun sendMessage(message: FirebaseMessage)
     fun getConversation(userId:String):List<FirebaseMessage>
     suspend fun getUsersList():List<UserDto>
+    suspend fun uploadUserData(userId:String,fullName : String,email : String,phoneNumber: String): Result<Any>
+    suspend fun getUserData(userId : String): Result<UserDto>
 }

@@ -35,4 +35,40 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
             )
         }
     }
+
+    override suspend fun uploadUserData(
+        userId: String,
+        fullName: String,
+        email: String,
+        phoneNumber: String
+    ): Result<Any> {
+        try {
+            val user = UserDto(userId, fullName, email, phoneNumber, null)
+            firestore.collection("users")
+                .document(userId)
+                .set(user)
+                .await()
+
+            return Result.success("data sent successfully")
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+    }
+
+    override suspend fun getUserData(userId: String): Result<UserDto> {
+
+        val response = firestore.collection("users")
+            .document(userId)
+            .get()
+            .await()
+
+        if (response.exists()) {
+
+            val userDto = response.toObject(UserDto::class.java)
+
+            return Result.success(userDto!!)
+        } else {
+            return Result.failure(Exception("User not found"))
+        }
+    }
 }
