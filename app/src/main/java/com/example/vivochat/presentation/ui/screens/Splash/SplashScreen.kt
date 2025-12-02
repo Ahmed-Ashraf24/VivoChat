@@ -15,19 +15,19 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.vivochat.R
-import com.example.vivochat.data.dataSource.local.LocalDataSource
 import com.example.vivochat.presentation.viewModel.splash_view_model.SplashState
 import com.example.vivochat.presentation.viewModel.splash_view_model.SplashViewModel
 import com.example.vivochat.presentation.viewModel.splash_view_model.SplashViewModelFac
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
     navController: NavController,
     viewModelStoreOwner: ViewModelStoreOwner,
-    localDataSource: LocalDataSource
+    firebaseAuth: FirebaseAuth
 ) {
-    val viewModelFac = SplashViewModelFac(localDataSource)
+    val viewModelFac = SplashViewModelFac(firebaseAuth)
     val viewModel =
         ViewModelProvider(viewModelStoreOwner, viewModelFac).get(SplashViewModel::class.java)
     val state = viewModel.autoLogin.collectAsState()

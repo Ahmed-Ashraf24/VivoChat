@@ -1,15 +1,12 @@
 package com.example.vivochat.presentation.viewModel.splash_view_model
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.vivochat.data.dataSource.local.LocalDataSource
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 class SplashViewModel(
-    private val localDataSource: LocalDataSource
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
 
@@ -19,17 +16,12 @@ class SplashViewModel(
 
 
     fun autoLogin() {
-      try{
-          viewModelScope.launch {
-              if (localDataSource.getUserId() == null) {
-                  _autoLogin.value = SplashState.AutoLoginFailed
-              } else {
-                  _autoLogin.value = SplashState.AutoLoginSuccess
-              }
-          }
-      }catch (e : Exception){
-          Log.d("Ecefjpdos",e.toString())
-      }
+        if(firebaseAuth.currentUser!=null){
+            //auto login the user
+            _autoLogin.value = SplashState.AutoLoginSuccess
+        }else{
+            _autoLogin.value = SplashState.AutoLoginFailed
+        }
     }
 
     init {

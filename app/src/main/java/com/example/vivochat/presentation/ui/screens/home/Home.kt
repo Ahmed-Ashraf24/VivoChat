@@ -14,22 +14,22 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
-import com.example.vivochat.data.dataSource.local.LocalDataSource
 import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 import com.example.vivochat.presentation.view.home.components.HomeHeader
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModelFac
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun Home(
     navController: NavController,
     viewModelStoreOwner: ViewModelStoreOwner,
     userRepo: IUserRepository,
-    localDataSource: LocalDataSource
+    firebaseAuth: FirebaseAuth
 ) {
-    val viewModelFac = HomeViewModelFac(userRepo,localDataSource)
+    val viewModelFac = HomeViewModelFac(userRepo,firebaseAuth)
     val viewModel =
         ViewModelProvider(viewModelStoreOwner, viewModelFac).get(HomeViewModel::class.java)
 

@@ -17,26 +17,23 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
-import com.example.vivochat.data.dataSource.local.LocalDataSource
 import com.example.vivochat.presentation.ui.screens.login.components.CreateAccRow
 import com.example.vivochat.presentation.ui.screens.login.components.LoginForm
 import com.example.vivochat.presentation.ui.screens.login.components.LoginHeader
 import com.example.vivochat.presentation.ui.screens.login.components.OrDivider
 import com.example.vivochat.presentation.viewModel.login_view_model.LoginViewModel
-import com.example.vivochat.presentation.viewModel.login_view_model.LoginViewModelFac
 
 @Composable
 fun Login(
     viewModelStoreOwner: ViewModelStoreOwner,
     navController: NavController,
-    localDataSource: LocalDataSource
 ) {
 
     val scrollState = rememberScrollState()
 
-    val viewModelFac = LoginViewModelFac(localDataSource)
+
     val viewModel =
-        ViewModelProvider(viewModelStoreOwner, viewModelFac).get(LoginViewModel::class.java)
+        ViewModelProvider(viewModelStoreOwner).get(LoginViewModel::class.java)
 
     Column(
         modifier = Modifier
