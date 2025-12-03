@@ -18,6 +18,7 @@ import com.example.vivochat.presentation.ui.screens.Splash.SplashScreen
 import com.example.vivochat.presentation.ui.screens.chat.ChatScreen
 import com.example.vivochat.presentation.ui.screens.login.Login
 import com.example.vivochat.presentation.ui.screens.nav.NavScreen
+import com.example.vivochat.presentation.ui.screens.profile_image.ProfileImageScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
             val firebaseAuth = FirebaseAuth.getInstance()
             val fireBaseDataSource: RemoteDataSource = FirebaseRemoteDataSource()
             val userRepo: IUserRepository = UserRepository(fireBaseDataSource)
+
             NavHost(navController, "splash") {
                 composable("splash") {
                     SplashScreen(

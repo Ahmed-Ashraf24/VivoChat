@@ -164,7 +164,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
         phoneNumber: String
     ): Result<Any> {
         try {
-            val user = UserDto(userId, fullName, email, phoneNumber, null)
+            val user = UserDto(userId, fullName, email, phoneNumber, "")
             FirebaseIstance.firestore.collection("users")
                 .document(userId)
                 .set(user)
@@ -175,6 +175,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
             return Result.failure(e)
         }
     }
+
 
     override suspend fun getUserData(userId: String): Result<UserDto> {
 

@@ -5,5 +5,6 @@ data class UserDto(
     val fullName:String="",
     val email:String="",
     val phoneNum:String="",
+    val profileUrl:String="",
     val stories:List<StoryDto>? = null
 )
