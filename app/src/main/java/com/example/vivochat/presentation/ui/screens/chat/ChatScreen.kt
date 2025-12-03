@@ -27,7 +27,7 @@ import com.example.vivochat.domain.entity.MessageType
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatBottomBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatTopBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ConversationMessagesComponent
-import com.example.vivochat.presentation.viewModel.MessageViewModel
+import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageViewModel
 
 
 @SuppressLint("ViewModelConstructorInComposable")

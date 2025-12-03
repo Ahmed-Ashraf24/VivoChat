@@ -1,6 +1,8 @@
 package com.example.vivochat.data.dto
 
+import com.example.vivochat.domain.entity.MediaType
+
 data class StoryDto(
-    val imageUrl: String,
-    val viewers : List<String>
+    val mediaUrl: String,
+    val mediaType : MediaType
 )
