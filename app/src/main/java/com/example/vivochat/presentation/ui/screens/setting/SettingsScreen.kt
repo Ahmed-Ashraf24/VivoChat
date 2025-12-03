@@ -1,15 +1,11 @@
 package com.example.vivochat.presentation.ui.screens.setting
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,23 +15,28 @@ import com.example.vivochat.presentation.ui.screens.setting.components.ProfileSe
 import com.example.vivochat.presentation.ui.screens.setting.components.SettingsItem
 import com.example.vivochat.presentation.ui.theme.kumbuhFont
 import com.example.vivochat.presentation.ui.theme.montserratFont
-@Preview
-@Composable
-fun SettingsScreen() {
+import com.example.vivochat.presentation.viewModel.darkmode_viewmodel.DarkModeViewModel
 
-    var darkMode by remember { mutableStateOf(false) }
+@Composable
+fun SettingsScreen(
+    darkModeViewModel: DarkModeViewModel   // 👈 بيجيلك من NavScreen
+) {
+
+    val darkMode by darkModeViewModel.isDarkMode.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp)
+            .background(MaterialTheme.colorScheme.background)
     ) {
 
         Text(
             text = "Settings",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            fontFamily = montserratFont
+            fontFamily = montserratFont,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -62,8 +63,7 @@ fun SettingsScreen() {
             icon = R.drawable.helpp
         )
 
-
-// dark modeee
+        // Dark mode switch
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -71,13 +71,23 @@ fun SettingsScreen() {
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text("Dark Mode", fontSize = 18.sp , fontFamily = kumbuhFont , fontWeight = FontWeight.Bold)
+                Text(
+                    "Dark Mode",
+                    fontSize = 18.sp,
+                    fontFamily = kumbuhFont,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+
+                )
             }
 
-            Switch(checked = darkMode, onCheckedChange = { darkMode = it })
+            Switch(
+                checked = darkMode,
+                onCheckedChange = {isChecked ->
+                    darkModeViewModel.toggleDarkMode(isChecked)   // 👈 يغيّر القيمة
+                }
+            )
         }
-
-
 
         Spacer(modifier = Modifier.height(14.dp))
 
