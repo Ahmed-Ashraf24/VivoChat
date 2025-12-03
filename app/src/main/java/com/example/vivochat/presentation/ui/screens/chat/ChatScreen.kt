@@ -1,13 +1,10 @@
 package com.example.vivochat.presentation.ui.screens.chat
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.vivochat.data.dataSource.firebase_remote_datasource.FirebaseRemoteDataSource
 import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseIstance
-import com.example.vivochat.data.repository.MessageRepo
+import com.example.vivochat.data.repository.MessageRepository
 import com.example.vivochat.domain.entity.Message
 import com.example.vivochat.domain.entity.MessageType
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatBottomBar
@@ -34,7 +31,7 @@ import com.example.vivochat.presentation.viewModel.MessageViewModel
 @Composable
 fun ChatScreen(navController: NavController,reciverName:String, reciverId:String) {
     var message by remember { mutableStateOf("") }
-    val messageViewModel= MessageViewModel(MessageRepo(FirebaseRemoteDataSource()))
+    val messageViewModel= MessageViewModel(MessageRepository(FirebaseRemoteDataSource()))
     messageViewModel.getMessages(FirebaseIstance.firebaseAuth.currentUser!!.uid,reciverId)
     val messageList =messageViewModel.messageData.collectAsState()
     Scaffold(modifier = Modifier.imePadding(),

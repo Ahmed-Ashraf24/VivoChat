@@ -30,7 +30,7 @@ class SignupViewModel(
                     val uid = firebaseAuth.currentUser?.uid ?: ""
                     uploadUserData(uid, fullName, email, phoneNum)
                 } else {
-                    _signupState.value = SignupState.Error("Authentication failed")
+                    _signupState.value = SignupState.Error(task.exception?.message?:"exception is null")
                 }
             }
 

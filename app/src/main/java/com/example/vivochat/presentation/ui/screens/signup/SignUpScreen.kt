@@ -35,12 +35,14 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import com.example.vivochat.domain.repository.IUserRepository
+import com.example.vivochat.presentation.ui.screens.signup.components.SignupScreenContent
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.ui.theme.interFont
 import com.example.vivochat.presentation.ui.theme.sansFont
@@ -83,158 +85,44 @@ fun SignupScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        horizontalAlignment = Alignment.Start
-    ) {
+    SignupScreenContent(
+        fullName = fullName,
+        onFullNameChange = { fullName = it },
 
-        Spacer(modifier = Modifier.height(20.dp))
+        email = email,
+        onEmailChange = { email = it },
 
-        // ******  Sign up ******
-        Text(
-            text = "Sign up",
-            fontSize = 32.sp,
-            fontWeight = Bold,
-            fontFamily = interFont
-        )
+        phone = phone,
+        onPhoneChange = { phone = it },
 
-        Spacer(modifier = Modifier.height(6.dp))
+        password = password,
+        onPasswordChange = { password = it },
 
-        Text(
-            text = "Create an account to continue!",
-            fontSize = 12.sp,
-            color = Color.Gray,
-            fontFamily = interFont
-        )
+        confirmPassword = confirmPassword,
+        onConfirmPasswordChange = { confirmPassword = it },
 
-        Spacer(modifier = Modifier.height(26.dp))
+        passVisible = passVisible,
+        onPassVisibleChange = { passVisible = it },
 
-        // ****** Full Name ******
-        Text("Full Name", fontSize = 12.sp ,color=Color.Gray, fontFamily = sansFont)
-        Spacer(modifier = Modifier.height(6.dp))
+        confirmVisible = confirmVisible,
+        onConfirmVisibleChange = { confirmVisible = it },
 
-        OutlinedTextField(
-            value = fullName,
-            onValueChange = { fullName = it },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
-        )
+        state = signupState.value,
 
-        Spacer(modifier = Modifier.height(18.dp))
-
-        // ****** Email ******
-        Text("Email", fontSize = 12.sp,color=Color.Gray)
-        Spacer(modifier = Modifier.height(6.dp))
-
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-        )
-
-        Spacer(modifier = Modifier.height(18.dp))
-
-        // ****** Phone Number ******
-        Text("Phone Number", fontSize = 12.sp,color=Color.Gray)
-        Spacer(modifier = Modifier.height(6.dp))
-
-        OutlinedTextField(
-            value = phone,
-            onValueChange = { phone = it },
-
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
-        )
-
-        Spacer(modifier = Modifier.height(18.dp))
-
-        // ****** Password ******
-        Text("Password", fontSize = 12.sp,color=Color.Gray)
-        Spacer(modifier = Modifier.height(6.dp))
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = if (passVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                IconButton(onClick = { passVisible = !passVisible }) {
-                    Icon(
-                        imageVector = if (passVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                        contentDescription = "toggle pass"
-                    )
-                }
-            },
-            shape = RoundedCornerShape(12.dp),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-        )
-
-        Spacer(modifier = Modifier.height(18.dp))
-
-        // ****** Confirm Password ******
-        Text("Confirm Password", fontSize = 12.sp,color=Color.Gray)
-        Spacer(modifier = Modifier.height(6.dp))
-
-        OutlinedTextField(
-            value = confirmPassword,
-            onValueChange = { confirmPassword = it },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = if (confirmVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            trailingIcon = {
-                IconButton(onClick = { confirmVisible = !confirmVisible }) {
-                    Icon(
-                        imageVector = if (confirmVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                        contentDescription = "toggle pass"
-                    )
-                }
-            },
-            shape = RoundedCornerShape(12.dp),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        // ****** Signup ******
-
-        if(signupState.value is SignupState.Loading){
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ){
-                CircularProgressIndicator(color = Primary)
-            }
-        }else{
-            Button(
-                onClick = {
-                    if(fullName.isEmpty()){
-                        Toast.makeText(ctx,"first name required",Toast.LENGTH_SHORT).show()
-                    }else if(email.isEmpty()){
-                        Toast.makeText(ctx,"email is required",Toast.LENGTH_SHORT).show()
-                    }else if(password.length<6){
-                        Toast.makeText(ctx,"Password must be more than 6 chars",Toast.LENGTH_SHORT).show()
-                    }else if(password!=confirmPassword){
-                        Toast.makeText(ctx,"passwords don't match",Toast.LENGTH_SHORT).show()
-                    }else if(phone.isEmpty()){
-                        Toast.makeText(ctx,"phone is required",Toast.LENGTH_SHORT).show()
-                    }else{
-                        viewModel.signUp(fullName,email,password,phone)
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(55.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Primary
-                )
-            ) {
-                Text(text = "Signup", fontSize = 14.sp, color = Color.White , fontFamily = interFont)
+        onSignupClick = {
+            if (fullName.isEmpty()) {
+                Toast.makeText(ctx, "First name required!", Toast.LENGTH_SHORT).show()
+            } else if (email.isEmpty()) {
+                Toast.makeText(ctx, "Email is required!", Toast.LENGTH_SHORT).show()
+            } else if (password.length < 6) {
+                Toast.makeText(ctx, "Password must be more than 6 characters!", Toast.LENGTH_SHORT).show()
+            } else if (password != confirmPassword) {
+                Toast.makeText(ctx, "Passwords don't match!", Toast.LENGTH_SHORT).show()
+            } else if (phone.isEmpty()) {
+                Toast.makeText(ctx, "Phone Number is required!", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.signUp(fullName, email, password, phone)
             }
         }
-    }
+    )
 }

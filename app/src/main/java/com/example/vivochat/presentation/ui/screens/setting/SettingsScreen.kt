@@ -1,4 +1,5 @@
 package com.example.vivochat.presentation.ui.screens.setting
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -14,9 +15,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vivochat.R
+import com.example.vivochat.presentation.ui.screens.setting.components.ProfileSection
+import com.example.vivochat.presentation.ui.screens.setting.components.SettingsItem
 import com.example.vivochat.presentation.ui.theme.kumbuhFont
 import com.example.vivochat.presentation.ui.theme.montserratFont
-
+@Preview
 @Composable
 fun SettingsScreen() {
 
@@ -37,28 +40,9 @@ fun SettingsScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // ******   Profile and email    ******
-        Row(verticalAlignment = Alignment.CenterVertically) {
-
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = "profile",
-                modifier = Modifier
-                    .size(75.dp)
-                    .clip(CircleShape)
-            )
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            Column {
-                Text("Shreya", fontSize = 20.sp,color=Color.Black, fontWeight = FontWeight.ExtraBold, fontFamily = kumbuhFont)
-                Text("xyz123@gmail.com", fontSize = 15.sp, color = Color.Gray, fontFamily = kumbuhFont , fontWeight = FontWeight.ExtraBold)
-            }
-        }
+        ProfileSection()
 
         Spacer(modifier = Modifier.height(26.dp))
-
-        // *************** Items ***************
 
         SettingsItem(
             title = "Account",
@@ -78,7 +62,8 @@ fun SettingsScreen() {
             icon = R.drawable.helpp
         )
 
-        // ****** Dark Mode Row ******
+
+// dark modeee
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -92,6 +77,8 @@ fun SettingsScreen() {
             Switch(checked = darkMode, onCheckedChange = { darkMode = it })
         }
 
+
+
         Spacer(modifier = Modifier.height(14.dp))
 
         SettingsItem(
@@ -100,36 +87,4 @@ fun SettingsScreen() {
             icon = R.drawable.logout
         )
     }
-}
-
-
-@Composable
-fun SettingsItem(title: String, subtitle: String, icon: Int) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(title, fontSize = 18.sp, fontFamily = kumbuhFont, fontWeight = FontWeight.Bold)
-            if (subtitle.isNotEmpty()) {
-                Text(subtitle, fontSize = 13.sp, color = Color.Gray)
-            }
-        }
-
-        Image(
-            painter = painterResource(id = icon),
-            contentDescription = "icon",
-            modifier = Modifier.size(22.dp)
-        )
-    }
-}
-@Composable
-@Preview
-fun prevS(){
-    SettingsScreen()
 }
