@@ -164,7 +164,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
         phoneNumber: String
     ): Result<Any> {
         try {
-            val user = UserDto(userId, fullName, email, phoneNumber, "")
+            val user = UserDto(userId, fullName, email, phoneNumber,"",null)
             FirebaseIstance.firestore.collection("users")
                 .document(userId)
                 .set(user)
