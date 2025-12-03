@@ -44,6 +44,14 @@ class MainActivity : ComponentActivity() {
                         firebaseAuth
                     )
                 }
+
+                composable("profileImageScreen") {
+                    ProfileImageScreen(
+                        viewModelStoreOwner,
+                        navController,
+                        userRepo
+                    )
+                }
                 composable("login") { Login(viewModelStoreOwner, navController) }
                 composable("signup") {
                     SignupScreen(

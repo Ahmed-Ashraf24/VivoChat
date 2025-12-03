@@ -81,7 +81,7 @@ fun SignupScreen(
             Toast.makeText(ctx,message,Toast.LENGTH_SHORT).show()
         }else if(signupState.value is SignupState.Success){
             Toast.makeText(ctx,"Account created successfully",Toast.LENGTH_SHORT).show()
-            navController.navigate("login")
+            navController.navigate("profileImageScreen")
         }
     }
 

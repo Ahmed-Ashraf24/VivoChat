@@ -1,6 +1,8 @@
 package com.example.vivochat.presentation.ui.screens.profile_image
 
 import android.net.Uri
+import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -24,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,22 +39,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.vivochat.R
 import com.example.vivochat.data.dataSource.MediaDatasource.CloudinaryDataSource
 import com.example.vivochat.data.repository.CloudinaryRepository
+import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
+import com.example.vivochat.presentation.viewModel.login_view_model.LoginState
+import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaState
 import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaViewModel
+import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaViewModelFac
 
-@Preview
+
 @Composable
-fun ProfileImageScreen(modifier: Modifier = Modifier) {
-    val viewModel= MediaViewModel(CloudinaryRepository(CloudinaryDataSource()))
+fun ProfileImageScreen(
+    viewModelStoreOwner: ViewModelStoreOwner,
+    navController: NavController,
+    userRepository: IUserRepository
+) {
+    val viewModelFac = MediaViewModelFac(CloudinaryRepository(CloudinaryDataSource()),userRepository)
+    val viewModel =
+        ViewModelProvider(viewModelStoreOwner, viewModelFac).get(MediaViewModel::class.java)
     val context = LocalContext.current
-    val imageUrl by viewModel.imageUrl.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
+    val state = viewModel.mediaState.collectAsState()
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -61,55 +76,86 @@ fun ProfileImageScreen(modifier: Modifier = Modifier) {
         }
     }
 
+    LaunchedEffect(state.value) {
+        if (state.value is MediaState.Success) {
+            navController.navigate("login")
+        }
+    }
+
 
     Scaffold(
-        topBar = {Row(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 30.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End) {
-            Text("Skip",color=Primary, fontSize = 18.sp,modifier=Modifier.padding(horizontal = 5.dp))
-            Icon(modifier=Modifier.size(18.dp), tint = Primary,painter = painterResource(R.drawable.outline_arrow_forward_ios_24), contentDescription = "skip")
-        }}
-    ) {
-    Column(
-        Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Box(Modifier.padding(bottom = 10.dp)){
-            Surface(
-                modifier = Modifier
-                    .size(150.dp)
-                    .border(1.dp, Color.Gray.copy(alpha = .4f), RoundedCornerShape(100.dp)),
-                shape = RoundedCornerShape(100.dp)
+        topBar = {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp, vertical = 30.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
             ) {
-                AsyncImage(
-                    model = imageUrl,
-                    contentScale = ContentScale.FillBounds,
-                    contentDescription = "profile image"
+                Text(
+                    "Skip",
+                    color = Primary,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(horizontal = 5.dp)
+                )
+                Icon(
+                    modifier = Modifier.size(18.dp),
+                    tint = Primary,
+                    painter = painterResource(R.drawable.outline_arrow_forward_ios_24),
+                    contentDescription = "skip"
                 )
             }
-
         }
-        Button(
-            onClick = { imagePickerLauncher.launch("image/*") },
-            modifier = Modifier
-                .height(57.dp)
-                .fillMaxWidth()
-                .padding(horizontal = 30.dp),
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Primary,
-            )
+    ) {
+        Column(
+            Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (isLoading) {
-                CircularProgressIndicator()
-                Text("Uploading...")
+
+            Box(Modifier.padding(bottom = 10.dp)) {
+                Surface(
+                    modifier = Modifier
+                        .size(150.dp)
+                        .border(1.dp, Color.Gray.copy(alpha = .4f), RoundedCornerShape(100.dp)),
+                    shape = RoundedCornerShape(100.dp)
+                ) {
+                    AsyncImage(
+                        model = viewModel.imageUrl?:"",
+                        contentScale = ContentScale.FillBounds,
+                        contentDescription = "profile image"
+                    )
+                }
+
             }
-            else
-            Text("upload photo", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            if(state.value is MediaState.Loading){
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+
+                    ,
+                    contentAlignment = Alignment.Center
+                ){
+                    CircularProgressIndicator(color = Primary)
+                }
+            }else{
+            Button(
+                onClick = { imagePickerLauncher.launch("image/*") },
+                modifier = Modifier
+                    .height(57.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 30.dp),
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Primary,
+                )
+            ) {
+                    Text("upload photo", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+
+            }
+            }
+
 
         }
 
-
+        }
     }
-    }
-}

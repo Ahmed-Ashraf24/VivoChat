@@ -7,16 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
-fun StoryItem() {
+fun StoryItem(viewModel: HomeViewModel) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        item { AddStoryAvatar() }
+        item { AddStoryAvatar(viewModel) }
         items(12) {
-            UserStory()
+            UserStory(viewModel)
 
         }
 

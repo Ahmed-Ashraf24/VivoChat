@@ -17,9 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.vivochat.domain.entity.LastMessagePreview
+import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
-fun ChatItem(name:String,onChatClicked:()->Unit) {
+fun ChatItem(lastMessagePreview: String="",name:String,onChatClicked:()->Unit,viewModel: HomeViewModel) {
 
     Row(
 
@@ -33,14 +36,14 @@ fun ChatItem(name:String,onChatClicked:()->Unit) {
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CircleAvatar()
+            CircleAvatar(viewModel)
             Column(
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(name, fontSize = 17.sp)
                 Spacer(Modifier.height(5.dp))
                 Text(
-                    "Hey How r u doing",
+                    text = lastMessagePreview,
                     maxLines = 1,
                     fontSize = 12.sp,
                     overflow = TextOverflow.Ellipsis,

@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,6 +21,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.vivochat.presentation.ui.theme.Primary
+
 @Composable
 fun SignupPasswordField(
     label: String,
@@ -35,6 +38,7 @@ fun SignupPasswordField(
         value = value,
         onValueChange = onChange,
         modifier = Modifier.fillMaxWidth(),
+        colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Primary),
         visualTransformation =
             if (visible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {

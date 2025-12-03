@@ -13,14 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
-fun UserStory() {
+fun UserStory(viewModel: HomeViewModel) {
     Column(
         modifier = Modifier.width(70.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CircleAvatar()
+        CircleAvatar(viewModel)
         Spacer(Modifier.height(4.dp))
         Text(
             "Omar Osama",

@@ -2,6 +2,8 @@ package com.example.vivochat.data.mapper
 
 import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseIstance
 import com.example.vivochat.data.dto.FirebaseMessage
+import com.example.vivochat.data.dto.LastMessageData
+import com.example.vivochat.domain.entity.LastMessagePreview
 import com.example.vivochat.domain.entity.Message
 import com.example.vivochat.domain.entity.MessageType
 
@@ -16,4 +18,11 @@ object MessageMapper {
             senderProfileUrl = "TODO()"
         )
     }
+    fun toLastMessagePreview(lastMessageData: LastMessageData): LastMessagePreview {
+        return LastMessagePreview(
+            message = lastMessageData.message,
+            date = lastMessageData.timestamp
+        )
+    }
+
 }

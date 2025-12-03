@@ -81,6 +81,17 @@ class UserRepository(
         return Pair(availableContacts, unAvailableContacts)
     }
 
+    override suspend fun uploadUserImage(
+        userId: String,
+        imageUrl: String
+    ): Result<Any> {
+         val response = remoteDataSource.uploadUserImage(userId,imageUrl)
+        if(response.isSuccess){
+            return Result.success("Image uploaded successfully")
+        }else{
+            return Result.failure(Exception("failed to upload user pic"))
+        }
+    }
 
 
 }

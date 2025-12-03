@@ -9,19 +9,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.navigation.NavController
 import com.example.vivochat.R
+import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.setting.components.ProfileSection
 import com.example.vivochat.presentation.ui.screens.setting.components.SettingsItem
+import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.ui.theme.kumbuhFont
 import com.example.vivochat.presentation.ui.theme.montserratFont
-@Preview
+import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
+import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModelFac
+import com.google.firebase.auth.FirebaseAuth
+
+
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(navController: NavController,viewModelStoreOwner: ViewModelStoreOwner,
+                   userRepository: IUserRepository,
+                   firebaseAuth: FirebaseAuth) {
+    val viewModelFac = HomeViewModelFac(userRepository, firebaseAuth, LocalContext.current)
+    val viewModel =
+        ViewModelProvider(viewModelStoreOwner, viewModelFac).get(HomeViewModel::class.java)
 
     var darkMode by remember { mutableStateOf(false) }
 
@@ -40,26 +55,29 @@ fun SettingsScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        ProfileSection()
+        ProfileSection(viewModel.user)
 
         Spacer(modifier = Modifier.height(26.dp))
 
         SettingsItem(
             title = "Account",
             subtitle = "Security notifications, change number",
-            icon = R.drawable.profile
+            icon = R.drawable.profile,
+            {}
         )
 
         SettingsItem(
             title = "App language",
             subtitle = "English (device's language)",
-            icon = R.drawable.language
+            icon = R.drawable.language,
+            {}
         )
 
         SettingsItem(
             title = "Help",
             subtitle = "Help centre, contact us, privacy policy",
-            icon = R.drawable.helpp
+            icon = R.drawable.helpp,
+            {}
         )
 
 
@@ -74,7 +92,7 @@ fun SettingsScreen() {
                 Text("Dark Mode", fontSize = 18.sp , fontFamily = kumbuhFont , fontWeight = FontWeight.Bold)
             }
 
-            Switch(checked = darkMode, onCheckedChange = { darkMode = it })
+            Switch(checked = darkMode, onCheckedChange = { darkMode = it }, colors = SwitchDefaults.colors(checkedTrackColor = Primary))
         }
 
 
@@ -84,7 +102,11 @@ fun SettingsScreen() {
         SettingsItem(
             title = "Log out",
             subtitle = "",
-            icon = R.drawable.logout
+            icon = R.drawable.logout,
+            {
+                firebaseAuth.signOut()
+                navController.navigate("login")
+            }
         )
     }
 }

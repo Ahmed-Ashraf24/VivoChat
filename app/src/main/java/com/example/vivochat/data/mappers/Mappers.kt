@@ -9,7 +9,8 @@ fun UserDto.toUser(): User {
         this.userId,
         this.fullName,
         this.email,
-        this.phoneNum
+        this.phoneNum,
+        this.imageUrl
     )
 }
 
@@ -19,7 +20,8 @@ fun convertToUserList(usersDto: List<UserDto>): List<User> {
             userId = dto.userId,
             fullName = dto.fullName,
             email = dto.email,
-            phoneNum = dto.phoneNum
+            phoneNum = dto.phoneNum,
+            imageUrl = dto.imageUrl
         )
     }
 

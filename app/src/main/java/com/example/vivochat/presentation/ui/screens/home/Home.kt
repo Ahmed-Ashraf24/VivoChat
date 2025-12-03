@@ -1,6 +1,5 @@
 package com.example.vivochat.presentation.view.home
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,11 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
-import com.example.vivochat.domain.entity.User
+import com.example.vivochat.data.dataSource.firebase_remote_datasource.FirebaseRemoteDataSource
+import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseIstance
+import com.example.vivochat.data.repository.MessageRepository
 import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 import com.example.vivochat.presentation.view.home.components.HomeHeader
+import com.example.vivochat.presentation.viewModel.MessageViewModel
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeState
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModelFac
@@ -39,6 +42,7 @@ fun Home(
     val viewModelFac = HomeViewModelFac(userRepo, firebaseAuth, LocalContext.current)
     val viewModel =
         ViewModelProvider(viewModelStoreOwner, viewModelFac).get(HomeViewModel::class.java)
+    val messageViewModel= MessageViewModel(MessageRepository(FirebaseRemoteDataSource()))
 
     val state = viewModel.userData.collectAsState()
 
@@ -58,8 +62,17 @@ fun Home(
         item { Spacer(Modifier.height(10.dp)) }
         if (state.value is HomeState.DataSuccess) {
             items(viewModel.availableContacts.size) {
-                ChatItem(viewModel.availableContacts[it].fullName,
-                    { navController.navigate("chat/${viewModel.availableContacts[it].fullName}/${viewModel.availableContacts[it].userId}") })
+                val reciverId=viewModel.availableContacts[it].userId
+                LaunchedEffect( reciverId) {
+                    messageViewModel.getLastMessage(firebaseAuth.currentUser!!.uid, reciverId)
+                }
+                val lastMessageMap = messageViewModel.lastMessages.collectAsState()
+                val lastMessage = lastMessageMap.value[reciverId]
+                ChatItem(lastMessage?.message?:"",
+                    viewModel.availableContacts[it].fullName,
+                    { navController.navigate("chat/${viewModel.availableContacts[it].fullName}/${reciverId}") },
+                    viewModel
+                )
                 Spacer(Modifier.height(10.dp))
             }
         } else {
@@ -70,7 +83,7 @@ fun Home(
 
         if (state.value is HomeState.DataSuccess) {
             items(viewModel.unAvailableContacts.size) {
-                ChatItem(viewModel.unAvailableContacts[it].name, { navController.navigate("chat") })
+                ChatItem(lastMessagePreview = "invite to the app",name = viewModel.unAvailableContacts[it].name, onChatClicked = { navController.navigate("chat") }, viewModel = viewModel)
                 Spacer(Modifier.height(10.dp))
             }
         } else {

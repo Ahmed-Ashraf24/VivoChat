@@ -3,6 +3,7 @@ package com.example.vivochat.data.dataSource.firebase_remote_datasource
 import com.example.vivochat.data.dataSource.RemoteDataSource
 import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseIstance
 import com.example.vivochat.data.dto.FirebaseMessage
+import com.example.vivochat.data.dto.LastMessageData
 import com.example.vivochat.data.dto.UserDto
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -143,6 +144,50 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
                 }
             }
         }
+    override fun getLastMessage(
+        userId: String,
+        otherUserId: String
+    ): Flow<LastMessageData?>
+            = callbackFlow {
+
+        val ref = FirebaseIstance.firebaseDatabase
+            .getReference("users")
+            .child(userId)
+            .child(otherUserId)
+
+        val listener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    trySend(null)
+                    return
+                }
+
+                val lastMessage = snapshot.child("lastMessage").getValue(String::class.java)
+                val lastTime = snapshot.child("lastMessageTime").getValue(Long::class.java)
+
+                if (lastMessage != null && lastTime != null ) {
+                    trySend(
+                        LastMessageData(
+                            message = lastMessage,
+                            timestamp = lastTime
+                        )
+                    )
+                } else {
+                    trySend(null)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                close(error.toException())
+            }
+        }
+
+        ref.addValueEventListener(listener)
+
+        awaitClose {
+            ref.removeEventListener(listener)
+        }
+    }
 
     override suspend fun getUsersList(): List<UserDto> {
         val result = FirebaseIstance.firestore.collection("users").get().await()
@@ -164,7 +209,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
         phoneNumber: String
     ): Result<Any> {
         try {
-            val user = UserDto(userId, fullName, email, phoneNumber,"",null)
+            val user = UserDto(userId, fullName, email, phoneNumber,null)
             FirebaseIstance.firestore.collection("users")
                 .document(userId)
                 .set(user)
@@ -193,5 +238,21 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
             return Result.failure(Exception("User not found"))
         }
     }
+
+        override suspend fun uploadUserImage(userId: String,imageUrl:String): Result<Any> {
+            try {
+                FirebaseIstance.firestore.collection("users")
+                    .document(userId)
+                    .update("imageUrl",imageUrl)
+                    .await()
+                return Result.success(Exception("image uploaded successfully"))
+            }catch (e : Exception){
+                return Result.failure(Exception("couldn't upload user pic"))
+            }
+        }
+
+
+
+
 
 }

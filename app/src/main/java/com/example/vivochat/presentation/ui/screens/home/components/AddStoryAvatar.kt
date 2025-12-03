@@ -23,16 +23,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vivochat.R
+import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
-fun AddStoryAvatar() {
+fun AddStoryAvatar(viewModel: HomeViewModel) {
 
     Column(
         modifier = Modifier.padding(start = 5.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box {
-            CircleAvatar()
+            CircleAvatar(viewModel)
             IconButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)

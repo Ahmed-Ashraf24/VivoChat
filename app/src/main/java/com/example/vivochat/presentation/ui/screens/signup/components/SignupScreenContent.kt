@@ -3,10 +3,12 @@ package com.example.vivochat.presentation.ui.screens.signup.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
@@ -38,15 +40,15 @@ fun SignupScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp)
+            .padding(20.dp),
     ) {
 
         Spacer(Modifier.height(20.dp))
-
+        Column(Modifier.fillMaxWidth().padding(top = 10.dp),horizontalAlignment = Alignment.CenterHorizontally) {
         Text("Sign up", fontSize = 32.sp, fontWeight = Bold, fontFamily = interFont)
         Spacer(Modifier.height(6.dp))
         Text("Create an account to continue!", fontSize = 12.sp, color = Color.Gray)
-
+        }
         Spacer(Modifier.height(26.dp))
 
         SignupInputField(label = "Full Name", value = fullName, onChange = onFullNameChange)

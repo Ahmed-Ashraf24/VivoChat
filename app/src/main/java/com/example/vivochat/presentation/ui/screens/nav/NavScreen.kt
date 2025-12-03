@@ -55,7 +55,7 @@ fun NavScreen(
                     firebaseAuth
                 )
                 1 -> StoryScreen()
-                2 -> SettingsScreen()
+                2 -> SettingsScreen(navController,viewModelStoreOwner,userRepository,firebaseAuth)
             }
 
         }

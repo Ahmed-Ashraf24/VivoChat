@@ -3,64 +3,73 @@ package com.example.vivochat.presentation.viewModel.media_viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseIstance
+import com.example.vivochat.data.repository.UserRepository
 import com.example.vivochat.domain.repository.IMediaRepository
+import com.example.vivochat.domain.repository.IUserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 
-class MediaViewModel(private val mediaRepo: IMediaRepository): ViewModel() {
+class MediaViewModel(
+    private val mediaRepo: IMediaRepository,
+    private val userRepository: IUserRepository
+) : ViewModel() {
 
-    private val _imageUrl = MutableStateFlow<String?>(null)
-    val imageUrl: StateFlow<String?> = _imageUrl.asStateFlow()
+     var imageUrl:String?=null
 
-    private val _videoUrl = MutableStateFlow<String?>(null)
-    val videoUrl: StateFlow<String?> = _videoUrl.asStateFlow()
+    private val _mediaState = MutableStateFlow<MediaState>(MediaState.Idle)
+    val mediaState: StateFlow<MediaState>
+        get() = _mediaState
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
-    private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error.asStateFlow()
 
     fun uploadImage(file: File) {
         viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
+            _mediaState.value = MediaState.Loading
 
             mediaRepo.uploadImage(file)
                 .onSuccess { url ->
-                    Log.d("image url",url)
-                    _imageUrl.value = url
-                    _isLoading.value = false
+                     imageUrl = url
+
+                    val res = userRepository.uploadUserImage(
+                        FirebaseIstance.firebaseAuth.currentUser!!.uid,
+                        url
+                    )
+
+                    if(res.isSuccess){
+
+                        _mediaState.value = MediaState.Success
+                    }else{
+
+                        _mediaState.value = MediaState.Failure(res.isFailure.toString())
+                    }
                 }
                 .onFailure { exception ->
-                    _error.value = exception.message
-                    _isLoading.value = false
+
+                    _mediaState.value = MediaState.Failure(exception.toString())
                 }
         }
     }
 
     fun uploadVideo(file: File) {
         viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
-
-            mediaRepo.uploadVideo(file)
-                .onSuccess { result ->
-                    _videoUrl.value = result.streamUrl
-                    _isLoading.value = false
-                }
-                .onFailure { exception ->
-                    _error.value = exception.message
-                    _isLoading.value = false
-                }
+//            _isLoading.value = true
+//            _error.value = null
+//
+//            mediaRepo.uploadVideo(file)
+//                .onSuccess { result ->
+//                    _videoUrl.value = result.streamUrl
+//                    _isLoading.value = false
+//                }
+//                .onFailure { exception ->
+//                    _error.value = exception.message
+//                    _isLoading.value = false
+//                }
         }
     }
 
-    fun clearError() {
-        _error.value = null
-    }
+
 }
 

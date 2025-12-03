@@ -1,10 +1,10 @@
 package com.example.vivochat.data.dto
 
 data class UserDto(
-    val userId:String="",
-    val fullName:String="",
-    val email:String="",
-    val phoneNum:String="",
-    val profileUrl:String="",
-    val stories:List<StoryDto>? = null
+    val userId: String = "",
+    val fullName: String = "",
+    val email: String = "",
+    val phoneNum: String = "",
+    val stories: List<StoryDto>? = null,
+    val imageUrl: String? = null
 )

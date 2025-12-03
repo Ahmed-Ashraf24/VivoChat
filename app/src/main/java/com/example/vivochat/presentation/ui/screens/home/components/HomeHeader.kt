@@ -74,5 +74,5 @@ fun HomeHeader(
         }
     }
     Spacer(Modifier.height(10.dp))
-    StoryItem()
+    StoryItem(viewModel)
 }

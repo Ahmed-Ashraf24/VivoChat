@@ -35,7 +35,6 @@ fun ChatScreen(navController: NavController,reciverName:String, reciverId:String
     messageViewModel.getMessages(FirebaseIstance.firebaseAuth.currentUser!!.uid,reciverId)
     val messageList =messageViewModel.messageData.collectAsState()
     Scaffold(modifier = Modifier.imePadding(),
-        containerColor = Color.White,
         topBar = {
             ChatTopBar(
                 Modifier
