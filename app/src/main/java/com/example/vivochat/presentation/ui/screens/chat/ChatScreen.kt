@@ -25,7 +25,6 @@ import com.example.vivochat.presentation.ui.screens.chat.component.ConversationM
 import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageViewModel
 
 
-@SuppressLint("ViewModelConstructorInComposable")
 @Composable
 fun ChatScreen(messageViewModel: MessageViewModel = hiltViewModel(), navController: NavController, reciverName:String, reciverId:String, reciverImageUrl:String) {
     var message by remember { mutableStateOf("") }

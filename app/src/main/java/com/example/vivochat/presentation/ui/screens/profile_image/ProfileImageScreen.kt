@@ -47,15 +47,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.vivochat.R
-import com.example.vivochat.data.dataSource.MediaDatasource.CloudinaryDataSource
-import com.example.vivochat.data.repository.CloudinaryRepository
-import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
-import com.example.vivochat.presentation.viewModel.login_view_model.LoginState
 import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaState
 import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaViewModel
-import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaViewModelFac
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

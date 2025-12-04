@@ -1,8 +1,10 @@
 package com.example.vivochat.di
 
+import com.example.vivochat.data.repository.AuthRepository
 import com.example.vivochat.data.repository.CloudinaryRepository
 import com.example.vivochat.data.repository.MessageRepository
 import com.example.vivochat.data.repository.UserRepository
+import com.example.vivochat.domain.repository.IAuthRepo
 import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IMessageRep
 import com.example.vivochat.domain.repository.IUserRepository
@@ -22,5 +24,7 @@ abstract class ViewModelModule {
 
     @Binds
     abstract fun bindUserRepo(userRepo: UserRepository): IUserRepository
+    @Binds
+    abstract fun bindAuthRepo(authRepo: AuthRepository): IAuthRepo
 
 }

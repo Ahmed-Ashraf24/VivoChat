@@ -20,7 +20,6 @@ class MessageViewModel @Inject constructor(private val messageRepo: IMessageRep)
     val lastMessages: StateFlow<Map<String, LastMessagePreview?>> = _lastMessages
     fun sendMessage(message: Message, reciverId:String){
         viewModelScope.launch {
-            Log.d("message from MessageViewmodel",message.toString())
         messageRepo.sendMessage(message = message,reciverId)
     }
     }

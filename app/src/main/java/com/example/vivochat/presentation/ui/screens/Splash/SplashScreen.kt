@@ -72,6 +72,7 @@ fun SplashScreen(
                 delay(1000)
 
                 navController.navigate("navScreen")
+
             }
         }catch (e : Exception){
             Log.d("Ausifaaaa",e.toString())

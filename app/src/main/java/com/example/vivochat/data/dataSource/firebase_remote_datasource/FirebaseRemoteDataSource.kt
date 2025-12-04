@@ -278,7 +278,6 @@ class FirebaseRemoteDataSource @Inject constructor() : RemoteDataSource {
     }
 
     override suspend fun getUserStories(userId: String): Result<List<StoryDto>> {
-        //we need to get a specific user stories and it might be null
 
         try{
             val snapShot = FirebaseInstance.fireStore.collection("users")
@@ -293,6 +292,36 @@ class FirebaseRemoteDataSource @Inject constructor() : RemoteDataSource {
         }catch (e : Exception){
             return Result.failure(Exception("failed to fetch user stories"))
         }
+    }
+
+    override suspend fun loginUser(
+        email: String,
+        password: String
+    ): Result<String> {
+
+        try{
+            val result=FirebaseInstance.firebaseAuth.signInWithEmailAndPassword(email,password).await()
+            return Result.success(result.user!!.uid)
+        }catch (e : Exception){
+            e.printStackTrace()
+            return Result.failure(Exception("failed to login"))
+        }
+    }
+
+    override suspend fun signUpUser(
+        email: String,
+        password: String
+    ): Result<String> {
+        try{
+            val result=FirebaseInstance.firebaseAuth.createUserWithEmailAndPassword(email,password).await()
+            return Result.success(result.user!!.uid)
+        }catch (e : Exception){
+            return Result.failure(Exception("failed to login"))
+        }
+    }
+
+    override suspend fun logoutUser() {
+        FirebaseInstance.firebaseAuth.signOut()
     }
 
 

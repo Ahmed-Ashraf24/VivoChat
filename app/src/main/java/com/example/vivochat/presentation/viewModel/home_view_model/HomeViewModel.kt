@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.domain.entity.User
+import com.example.vivochat.domain.repository.IAuthRepo
 import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.Story.StoryScreen
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val mediaRepo: IMediaRepository,
     private val userRepo: IUserRepository,
+    private val authRpp: IAuthRepo,
     private val contactUtility: ContactUtility
 ) : ViewModel() {
 
@@ -41,7 +43,7 @@ class HomeViewModel @Inject constructor(
             _userDataState.value = HomeState.UserDataLoading
             val phoneContacts = contactUtility.getContact()
             viewModelScope.launch {
-                val userId = userRepo.getLoggedUserIdOrNull()!!
+                val userId = authRpp.getLoggedUserIdOrNull()!!
                 val res = userRepo.getUserData(userId)
 
                 if (res.isSuccess) {

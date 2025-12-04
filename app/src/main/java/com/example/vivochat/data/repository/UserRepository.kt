@@ -116,9 +116,9 @@ class UserRepository @Inject constructor(
          }
     }
 
-    override fun getLoggedUserIdOrNull(): String? {
-        return remoteDataSource.getLoggedUserIdOrNull()
-    }
+
+
+
 
 
 }

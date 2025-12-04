@@ -12,5 +12,5 @@ interface IUserRepository{
     suspend fun uploadUserImage(userId: String,imageUrl:String): Result<Any>
     suspend fun uploadStory(userId:String,imageUrl:String): Result<Any>
     suspend fun getUserStories(userId:String):Result<List<Story>>
-    fun getLoggedUserIdOrNull():String?
+
 }

@@ -6,6 +6,7 @@ import com.example.vivochat.data.dto.LastMessageData
 import com.example.vivochat.domain.entity.LastMessagePreview
 import com.example.vivochat.domain.entity.Message
 import com.example.vivochat.domain.entity.MessageType
+import com.example.vivochat.presentation.utility.TimeFormateUtility
 
 object MessageMapper {
     fun toMessage(firebaseMessage: FirebaseMessage): Message {
@@ -14,14 +15,14 @@ object MessageMapper {
             senderName = "",
             message = firebaseMessage.message,
             messageType = if (firebaseMessage.senderId == FirebaseInstance.firebaseAuth.currentUser!!.uid!!) MessageType.MyMessage else MessageType.OthersMessage,
-            messageDate = firebaseMessage.timestamp.toString(),
+            messageDate = TimeFormateUtility.formateTampToDayAndHour(firebaseMessage.timestamp),
             senderProfileUrl = "TODO()"
         )
     }
     fun toLastMessagePreview(lastMessageData: LastMessageData): LastMessagePreview {
         return LastMessagePreview(
             message = lastMessageData.message,
-            date = lastMessageData.timestamp
+            date = TimeFormateUtility.formateTampToHour(lastMessageData.timestamp)
         )
     }
 

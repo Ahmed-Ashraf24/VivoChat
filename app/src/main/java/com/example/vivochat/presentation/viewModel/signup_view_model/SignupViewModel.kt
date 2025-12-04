@@ -3,15 +3,18 @@ package com.example.vivochat.presentation.viewModel.signup_view_model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.vivochat.domain.repository.IAuthRepo
 import com.example.vivochat.domain.repository.IUserRepository
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
-class SignupViewModel(
+import javax.inject.Inject
+@HiltViewModel
+class SignupViewModel @Inject constructor(
     private val userRepository: IUserRepository,
-    private val firebaseAuth: FirebaseAuth
+    private val authRepo: IAuthRepo
 ) : ViewModel() {
 
 
@@ -23,16 +26,19 @@ class SignupViewModel(
     fun signUp(fullName: String, email: String, password: String, phoneNum: String) {
 
         _signupState.value = SignupState.Loading
+        viewModelScope.launch {
+            authRepo.signUpUser(email,password).fold(
+            onSuccess = {userId->
+                uploadUserData(userId, fullName, email, phoneNum)
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val uid = firebaseAuth.currentUser?.uid ?: ""
-                    uploadUserData(uid, fullName, email, phoneNum)
-                } else {
-                    _signupState.value = SignupState.Error(task.exception?.message?:"exception is null")
-                }
+            },
+            onFailure = {errorMessage->
+                _signupState.value = SignupState.Error(errorMessage.message?:"signup failed ")
+
             }
+        )
+        }
+
 
     }
 

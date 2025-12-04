@@ -4,42 +4,36 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.vivochat.data.dataSource.MediaDatasource.CloudinaryDataSource
-import com.example.vivochat.data.dataSource.firebase_remote_datasource.FirebaseRemoteDataSource
-import com.example.vivochat.data.dataSource.RemoteDataSource
-import com.example.vivochat.data.repository.CloudinaryRepository
-
-import com.example.vivochat.data.repository.UserRepository
 import com.example.vivochat.domain.entity.Contact
-import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.Contacts.Contacts
 import com.example.vivochat.presentation.ui.screens.Splash.SplashScreen
 import com.example.vivochat.presentation.ui.screens.chat.ChatScreen
 import com.example.vivochat.presentation.ui.screens.login.Login
 import com.example.vivochat.presentation.ui.screens.nav.NavScreen
 import com.example.vivochat.presentation.ui.screens.profile_image.ProfileImageScreen
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.vivochat.presentation.ui.theme.VivoChatTheme
+import com.example.vivochat.presentation.utility.ThemeManager
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.URLDecoder
-
+import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject lateinit var themeManager: ThemeManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
 
-            val viewModelStoreOwner = this
-            val navController = rememberNavController()
-            val firebaseAuth = FirebaseAuth.getInstance()
-            val fireBaseDataSource: RemoteDataSource = FirebaseRemoteDataSource()
-            val userRepo: IUserRepository = UserRepository(fireBaseDataSource)
+           val navController = rememberNavController()
+            val isDark by themeManager.isDarkMode.collectAsState()
+            VivoChatTheme(userPreferenceDarkTheme = isDark) {
 
             NavHost(navController, "splash") {
                 composable("splash") {
@@ -53,13 +47,10 @@ class MainActivity : ComponentActivity() {
                         navController=navController
                     )
                 }
-                composable("login") { Login(viewModelStoreOwner, navController) }
+                composable("login") { Login(navController= navController) }
                 composable("signup") {
                     SignupScreen(
-                        viewModelStoreOwner,
-                        navController,
-                        userRepo,
-                        firebaseAuth
+                        navController= navController
                     )
                 }
                 composable("navScreen") {
@@ -87,6 +78,7 @@ class MainActivity : ComponentActivity() {
                     ChatScreen(navController = navController, reciverName = userName, reciverImageUrl = userImageUrl, reciverId = userId)
 
                 }
+            }
             }
 
 

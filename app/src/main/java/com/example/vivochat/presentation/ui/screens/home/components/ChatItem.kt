@@ -22,7 +22,7 @@ import com.example.vivochat.domain.entity.LastMessagePreview
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
-fun ChatItem(lastMessagePreview: String="",name:String,imageUrl:String?,onChatClicked:()->Unit,viewModel: HomeViewModel) {
+fun ChatItem(lastMessagePreview: String="",timeOfMessage:String?,name:String,imageUrl:String?,onChatClicked:()->Unit,viewModel: HomeViewModel) {
 
     Row(
 
@@ -52,6 +52,6 @@ fun ChatItem(lastMessagePreview: String="",name:String,imageUrl:String?,onChatCl
 
             }
         }
-        Text("19:45")
+        Text(timeOfMessage?:"")
     }
 }
