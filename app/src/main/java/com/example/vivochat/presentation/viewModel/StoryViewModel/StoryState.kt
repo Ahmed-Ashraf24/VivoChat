@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.viewModel.home_view_model
+package com.example.vivochat.presentation.viewModel.StoryViewModel
 
 sealed class StoryState{
     object Idle : StoryState()

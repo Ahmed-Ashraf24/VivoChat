@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavType
@@ -14,18 +15,21 @@ import androidx.navigation.navArgument
 import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.presentation.ui.screens.Contacts.Contacts
 import com.example.vivochat.presentation.ui.screens.Splash.SplashScreen
+import com.example.vivochat.presentation.ui.screens.Story.StoryView
 import com.example.vivochat.presentation.ui.screens.chat.ChatScreen
 import com.example.vivochat.presentation.ui.screens.login.Login
 import com.example.vivochat.presentation.ui.screens.nav.NavScreen
 import com.example.vivochat.presentation.ui.screens.profile_image.ProfileImageScreen
 import com.example.vivochat.presentation.ui.theme.VivoChatTheme
 import com.example.vivochat.presentation.utility.ThemeManager
+import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.URLDecoder
 import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject lateinit var themeManager: ThemeManager
+    val sharedViewModel : SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -55,7 +59,8 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("navScreen") {
                     NavScreen(
-                        navController
+                        navController,
+                        sharedViewModel = sharedViewModel
                     )
                 }
                 composable("contacts") {navBackStackEntry->
@@ -78,11 +83,19 @@ class MainActivity : ComponentActivity() {
                     ChatScreen(navController = navController, reciverName = userName, reciverImageUrl = userImageUrl, reciverId = userId)
 
                 }
-            }
+                composable("storyViewScreen") {
+                    StoryView(
+                        sharedViewModel
+                    )
+                }
+
+
             }
 
 
         }
     }
+}
+
 }
 

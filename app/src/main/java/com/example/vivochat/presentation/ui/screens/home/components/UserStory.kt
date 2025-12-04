@@ -1,6 +1,7 @@
 package com.example.vivochat.presentation.view.home.components
 
 import CircleAvatar
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,20 +17,25 @@ import androidx.compose.ui.unit.sp
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
-fun UserStory(name:String,imageUrl:String?) {
-    Column(
-        modifier = Modifier.width(70.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        CircleAvatar(imageUrl)
-        Spacer(Modifier.height(4.dp))
-        Text(
-            name,
-            maxLines = 1,
-            fontSize = 10.sp,
-            overflow = TextOverflow.Ellipsis
-        )
+fun UserStory(name:String,imageUrl:String?,onClick:()->Unit) {
+
+    Box(
+        modifier = Modifier.clickable{onClick()}
+    ){
+        Column(
+            modifier = Modifier.width(70.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CircleAvatar(imageUrl)
+            Spacer(Modifier.height(4.dp))
+            Text(
+                name,
+                maxLines = 1,
+                fontSize = 10.sp,
+                overflow = TextOverflow.Ellipsis
+            )
 
 
+        }
     }
 }
