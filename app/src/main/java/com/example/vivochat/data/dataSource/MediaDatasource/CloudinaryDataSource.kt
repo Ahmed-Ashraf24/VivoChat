@@ -11,7 +11,7 @@ import javax.inject.Inject
 class CloudinaryDataSource @Inject constructor(): MediaDataSource {
     private val cloudinary = Cloudinary(
         ObjectUtils.asMap(
-            "cloud_name", "name",
+            "cloud_name", "name ",
             "api_key", "api key",
             "api_secret", "secret key"
         )
