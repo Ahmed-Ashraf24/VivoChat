@@ -68,7 +68,7 @@ class UserRepository @Inject constructor(
 
             var userFound = false
             for (j in allUsers) {
-                if (i.phoneNum == j.phoneNum||i.phoneNum =="+20${j.phoneNum}") {
+                if (i.phoneNum == j.phoneNum||i.phoneNum =="+2${j.phoneNum}") {
 
                     availableContacts.add(j)
                     userFound = true
