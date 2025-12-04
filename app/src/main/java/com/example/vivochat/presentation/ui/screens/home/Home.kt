@@ -27,6 +27,8 @@ import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
+import com.example.vivochat.presentation.ui.screens.home.components.ChatItemShimmer
+import com.example.vivochat.presentation.ui.screens.home.components.HomeHeaderShimmer
 import com.example.vivochat.presentation.view.home.components.HomeHeader
 import com.example.vivochat.presentation.viewModel.MessageViewModel
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeState
@@ -62,6 +64,10 @@ fun Home(
         ) {
         if (state.value is HomeState.DataSuccess) {
          item { HomeHeader(viewModel, navController) }
+         }
+        else{
+            item { HomeHeaderShimmer() }
+        }
         item { Spacer(Modifier.height(10.dp)) }
 
         item { ChatHeader() }
@@ -86,10 +92,13 @@ fun Home(
             }
         } else {
 
-            item { Text("Loading") }
+            items(6) {
+                ChatItemShimmer()
+                Spacer(Modifier.height(16.dp))
+            }
         }
 
-    }
+
 
 }
 
