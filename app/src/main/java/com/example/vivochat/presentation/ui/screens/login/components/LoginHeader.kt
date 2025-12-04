@@ -1,5 +1,6 @@
 package com.example.vivochat.presentation.ui.screens.login.components
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,6 +14,7 @@ fun LoginHeader(modifier: Modifier = Modifier) {
         text = "Vivo Chat",
         fontSize = 36.sp,
         fontWeight = FontWeight.Bold,
-        modifier =modifier
+        modifier =modifier,
+        color = MaterialTheme.colorScheme.onSurface
     )
 }

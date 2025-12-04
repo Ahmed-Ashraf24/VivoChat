@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +37,7 @@ fun Login(
             .fillMaxSize()
             .verticalScroll(scrollState)
             .imePadding()
+            .background(MaterialTheme.colorScheme.background)
 
             .padding(top = 200.dp, start = 16.dp, end = 16.dp, bottom = 12.dp)
     ) {

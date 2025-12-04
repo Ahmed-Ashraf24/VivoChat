@@ -1,6 +1,7 @@
 package com.example.vivochat.presentation.ui.screens.login.components
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -14,7 +15,7 @@ fun CreateAccRow(modifier: Modifier,onClick:()->Unit) {
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text("Don't have an account?")
+        Text("Don't have an account?", color = MaterialTheme.colorScheme.onSurface)
         TextButton(onClick) {
             Text("Signup", color = Primary)
         }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -25,7 +26,7 @@ fun PasswordTextField(value : String,onValueChane:(String)->Unit) {
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = Color(0xFFE5E5EA),
+                color = MaterialTheme.colorScheme.background,
                 shape = RoundedCornerShape(7.dp)
             ),
         keyboardOptions = KeyboardOptions(
@@ -36,8 +37,8 @@ fun PasswordTextField(value : String,onValueChane:(String)->Unit) {
         visualTransformation = if (showText.value) VisualTransformation.None else PasswordVisualTransformation(),
         placeholder = { Text("Password") },
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color(0xFFFAFAFA),
-            unfocusedContainerColor = Color(0xFFFAFAFA),
+            focusedContainerColor = MaterialTheme.colorScheme.background,
+            unfocusedContainerColor = MaterialTheme.colorScheme.background,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             cursorColor = Color.Black,

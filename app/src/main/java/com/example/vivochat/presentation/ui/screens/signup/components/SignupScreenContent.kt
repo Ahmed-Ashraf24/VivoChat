@@ -1,5 +1,6 @@
 package com.example.vivochat.presentation.ui.screens.signup.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -47,12 +49,13 @@ fun SignupScreenContent(
             .fillMaxSize()
             .verticalScroll(scrollState)
             .imePadding()
+            .background(MaterialTheme.colorScheme.background)
             .padding(20.dp),
     ) {
 
         Spacer(Modifier.height(20.dp))
         Column(Modifier.fillMaxWidth().padding(top = 10.dp),horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("Sign up", fontSize = 32.sp, fontWeight = Bold, fontFamily = interFont)
+        Text("Sign up", fontSize = 32.sp, color = MaterialTheme.colorScheme.onSurface, fontWeight = Bold, fontFamily = interFont)
         Spacer(Modifier.height(6.dp))
         Text("Create an account to continue!", fontSize = 12.sp, color = Color.Gray)
         }
