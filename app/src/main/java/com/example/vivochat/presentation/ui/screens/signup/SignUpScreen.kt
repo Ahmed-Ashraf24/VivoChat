@@ -116,9 +116,18 @@ fun SignupScreen(
                 Toast.makeText(ctx, "Passwords don't match!", Toast.LENGTH_SHORT).show()
             } else if (phone.isEmpty()) {
                 Toast.makeText(ctx, "Phone Number is required!", Toast.LENGTH_SHORT).show()
-            } else {
+            }else if(!isValidEgyptianPhone(phone)){
+                Toast.makeText(ctx, "Invalid Egyptian phone number", Toast.LENGTH_SHORT).show()
+            }
+
+            else {
                 viewModel.signUp(fullName, email, password, phone)
             }
+
         }
     )
+}
+fun isValidEgyptianPhone(phone: String): Boolean {
+    val regex = Regex("^(010|011|012|015)\\\\d{8}\$")
+    return regex.matches(phone)
 }

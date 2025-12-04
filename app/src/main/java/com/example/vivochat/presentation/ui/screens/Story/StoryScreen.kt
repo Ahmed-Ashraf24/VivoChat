@@ -20,7 +20,6 @@ fun StoryScreen() {
     Column(Modifier
         .fillMaxSize()
         .padding(vertical = 30.dp, horizontal = 10.dp)){
-        Text("Story", fontSize = 25.sp, fontFamily = Poppins)
         CreateStoryItem(Modifier.padding(vertical = 10.dp))
         Text("Recent Updates", fontSize = 18.sp, color = Color.Gray.copy(alpha = .6f))
         StoryItem(modifier = Modifier.padding(vertical = 10.dp),hasStory = true)
