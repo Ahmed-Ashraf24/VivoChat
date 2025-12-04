@@ -16,8 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.presentation.ui.screens.Contacts.components.ContactItem
-import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
-import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
 fun Contacts(

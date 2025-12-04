@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
 fun UserStory(name:String,imageUrl:String?,onClick:()->Unit) {

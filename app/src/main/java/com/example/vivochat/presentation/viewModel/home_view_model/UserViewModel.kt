@@ -1,7 +1,5 @@
 package com.example.vivochat.presentation.viewModel.home_view_model
 
-import android.content.Context
-import android.provider.ContactsContract
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,12 +8,8 @@ import com.example.vivochat.domain.entity.User
 import com.example.vivochat.domain.repository.IAuthRepo
 import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
-import com.example.vivochat.presentation.ui.screens.Story.StoryScreen
-import com.example.vivochat.presentation.ui.screens.login.components.LoginForm
 import com.example.vivochat.presentation.utility.ContactUtility
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryState
-import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaState
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +17,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class UserViewModel @Inject constructor(
     private val mediaRepo: IMediaRepository,
     private val userRepo: IUserRepository,
     private val authRpp: IAuthRepo,
@@ -34,14 +28,14 @@ class HomeViewModel @Inject constructor(
     lateinit var availableContacts: List<User>
     lateinit var unAvailableContacts: List<Contact>
 
-    private var _userDataState = MutableStateFlow<HomeState>(HomeState.Idle)
-    val userData: StateFlow<HomeState>
+    private var _userDataState = MutableStateFlow<UserState>(UserState.Idle)
+    val userData: StateFlow<UserState>
         get() = _userDataState
 
 
     fun getUserData() {
         try {
-            _userDataState.value = HomeState.UserDataLoading
+            _userDataState.value = UserState.UserDataLoading
             val phoneContacts = contactUtility.getContact()
             viewModelScope.launch {
                 val userId = authRpp.getLoggedUserIdOrNull()!!
@@ -53,12 +47,12 @@ class HomeViewModel @Inject constructor(
                     val pair = userRepo.filterContacts(phoneContacts)
                     availableContacts = pair.first
                     unAvailableContacts = pair.second
-                    _userDataState.value = HomeState.UserDataSuccess
+                    _userDataState.value = UserState.UserDataSuccess
 
 
 
                 } else {
-                    _userDataState.value = HomeState.UserDataFailed
+                    _userDataState.value = UserState.UserDataFailed
                 }
 
             }
@@ -80,7 +74,7 @@ class HomeViewModel @Inject constructor(
 
 
     fun resetState(){
-        _userDataState.value = HomeState.Idle
+        _userDataState.value = UserState.Idle
     }
 
 

@@ -1,7 +1,6 @@
 package com.example.vivochat.presentation.ui.screens.Story
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,17 +18,16 @@ import com.example.vivochat.presentation.ui.screens.Story.component.CreateStoryI
 import com.example.vivochat.presentation.ui.screens.Story.component.StoryItem
 import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadingIndicator
 import com.example.vivochat.presentation.ui.theme.Poppins
-import com.example.vivochat.presentation.view.home.components.UserStory
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.StoryViewModel.UploadingStoryState
-import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
+import com.example.vivochat.presentation.viewModel.home_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 
 @Preview
 @Composable
 fun StoryScreen(
     sharedViewModel: SharedViewModel,
-    homeViewModel: HomeViewModel,
+    userViewModel: UserViewModel,
     navController: NavController,
     storyViewModel: StoryViewModel
 ) {
@@ -59,19 +56,19 @@ fun StoryScreen(
             CreateStoryItem(
                 Modifier.padding(vertical = 10.dp),
                 storyViewModel,
-                homeViewModel,
+                userViewModel,
                 sharedViewModel,
                 navController
             )
         }
-        items(homeViewModel.availableContacts.size) {
-            if (homeViewModel.availableContacts[it].stories!!.size > 0 && homeViewModel.user.userId != homeViewModel.availableContacts[it].userId) {
+        items(userViewModel.availableContacts.size) {
+            if (userViewModel.availableContacts[it].stories!!.size > 0 && userViewModel.user.userId != userViewModel.availableContacts[it].userId) {
                 StoryItem(
                     modifier = Modifier.padding(vertical = 10.dp),
                     hasStory = true,
-                    homeViewModel.availableContacts[it],
+                    userViewModel.availableContacts[it],
                     {
-                        sharedViewModel.sendUser(homeViewModel.availableContacts[it])
+                        sharedViewModel.sendUser(userViewModel.availableContacts[it])
                         navController.navigate("storyViewScreen")
                     }
                 )

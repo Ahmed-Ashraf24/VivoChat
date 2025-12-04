@@ -3,35 +3,29 @@ package com.example.vivochat.presentation.ui.screens.nav
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
-import com.example.vivochat.domain.repository.IMediaRepository
-import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.Story.StoryScreen
 import com.example.vivochat.presentation.ui.screens.nav.component.BottomNavBar
 import com.example.vivochat.presentation.ui.screens.setting.SettingsScreen
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.view.home.Home
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
-import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
+import com.example.vivochat.presentation.viewModel.home_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NavScreen(
     navController: NavController,
-    homeViewModel: HomeViewModel = hiltViewModel(),
+    userViewModel: UserViewModel = hiltViewModel(),
     sharedViewModel : SharedViewModel,
     storyViewModel: StoryViewModel=hiltViewModel()
 ) {
@@ -56,11 +50,11 @@ fun NavScreen(
                 0 -> Home(
                     navController = navController,
                     sharedViewModel = sharedViewModel,
-                    viewModel = homeViewModel,
+                    viewModel = userViewModel,
                     storyViewModel = storyViewModel
                 )
-                1 -> StoryScreen(sharedViewModel,homeViewModel,navController,storyViewModel)
-                2 -> SettingsScreen(navController, loggedUser = homeViewModel.user)
+                1 -> StoryScreen(sharedViewModel,userViewModel,navController,storyViewModel)
+                2 -> SettingsScreen(navController, loggedUser = userViewModel.user)
             }
 
         }

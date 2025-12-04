@@ -1,28 +1,20 @@
 package com.example.vivochat.presentation.view.home
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
-import com.example.vivochat.data.dataSource.firebase_remote_datasource.FirebaseRemoteDataSource
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItemShimmer
@@ -30,8 +22,8 @@ import com.example.vivochat.presentation.ui.screens.home.components.HomeHeaderSh
 import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadingIndicator
 import com.example.vivochat.presentation.view.home.components.HomeHeader
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
-import com.example.vivochat.presentation.viewModel.home_view_model.HomeState
-import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
+import com.example.vivochat.presentation.viewModel.home_view_model.UserState
+import com.example.vivochat.presentation.viewModel.home_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryState
 import com.example.vivochat.presentation.viewModel.StoryViewModel.UploadingStoryState
 import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageViewModel
@@ -42,7 +34,7 @@ import java.net.URLEncoder
 fun Home(
     navController: NavController,
     storyViewModel: StoryViewModel,
-    viewModel: HomeViewModel,
+    viewModel: UserViewModel,
     storyVM: StoryViewModel=hiltViewModel(),
     messageViewModel: MessageViewModel =hiltViewModel(),
     sharedViewModel: SharedViewModel
@@ -55,7 +47,7 @@ fun Home(
     val storyState = storyViewModel.storyState.collectAsState()
     val uploadingStoryState = storyViewModel.uploadingStoryState.collectAsState()
     LaunchedEffect(state.value) {
-        if (state.value is HomeState.UserDataSuccess) {
+        if (state.value is UserState.UserDataSuccess) {
             storyViewModel.getAvaUsersStories(viewModel.availableContacts,viewModel.user)
             viewModel.resetState()
         }
@@ -84,7 +76,7 @@ fun Home(
             .padding(top = 40.dp),
 
         ) {
-        if (state.value is HomeState.Idle && storyState.value is StoryState.StorySuccess) {
+        if (state.value is UserState.Idle && storyState.value is StoryState.StorySuccess) {
             item { HomeHeader(viewModel, navController, storyViewModel,sharedViewModel) }
             item { Spacer(Modifier.height(10.dp)) }
 

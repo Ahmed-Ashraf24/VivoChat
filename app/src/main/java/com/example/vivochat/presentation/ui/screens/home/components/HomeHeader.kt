@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,15 +26,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.vivochat.R
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
-import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
+import com.example.vivochat.presentation.viewModel.home_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.placeholder
-import com.google.accompanist.placeholder.material.shimmer
 
 @Composable
 fun HomeHeader(
-    viewModel: HomeViewModel,
+    viewModel: UserViewModel,
     navController: NavController,
     storyViewModel: StoryViewModel,
     sharedViewModel: SharedViewModel
