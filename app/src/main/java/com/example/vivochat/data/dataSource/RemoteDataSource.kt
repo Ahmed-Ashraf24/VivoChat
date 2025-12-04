@@ -23,5 +23,6 @@ interface RemoteDataSource {
     suspend fun getUserStories(userId:String):Result<List<StoryDto>>
     suspend fun loginUser(email: String,password:String):Result<String>
     suspend fun signUpUser(email: String,password:String):Result<String>
+    suspend fun logoutUser()
 
 }

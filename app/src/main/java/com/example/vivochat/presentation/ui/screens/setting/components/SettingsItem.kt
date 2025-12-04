@@ -18,13 +18,11 @@ import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.ui.theme.kumbuhFont
 
 @Composable
-fun SettingsItem(title: String, subtitle: String, icon: Int,onSectionClicked:()->Unit) {
+fun SettingsItem(title: String, subtitle: String, icon: Int, onClick: (() -> Unit)? =null) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable{
-                onSectionClicked()
-            }
+            .clickable { onClick?.invoke() }
             .padding(vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -41,13 +39,7 @@ fun SettingsItem(title: String, subtitle: String, icon: Int,onSectionClicked:()-
         Icon(
             painter = painterResource(id = icon),
             contentDescription = "icon",
-            modifier = Modifier.size(22.dp),
-            tint = Primary
+            modifier = Modifier.size(22.dp)
         )
     }
-}
-@Preview
-@Composable
-fun pp(){
-    SettingsItem("ss",":ss",1,{})
 }

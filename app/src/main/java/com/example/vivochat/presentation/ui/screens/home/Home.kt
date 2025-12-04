@@ -44,7 +44,7 @@ import java.net.URLEncoder
 fun Home(
     navController: NavController,
 
-    viewModel: HomeViewModel= hiltViewModel(),
+    viewModel: HomeViewModel,
     storyVM: StoryViewModel=hiltViewModel(),
     messageViewModel: MessageViewModel =hiltViewModel()
 ) {
@@ -68,7 +68,6 @@ fun Home(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White)
             .imePadding()
             .padding(top = 40.dp),
 
@@ -89,7 +88,7 @@ fun Home(
                 val lastMessage = lastMessageMap.value[reciverId]
                 val encodedUrl = URLEncoder.encode(viewModel.availableContacts[it].imageUrl ?: "", "UTF-8")
                 Log.d("avilable contact data",viewModel.availableContacts.toString())
-                ChatItem(lastMessage?.message?:"",
+                ChatItem(lastMessage?.message?:"", timeOfMessage = lastMessage?.date,
                     viewModel.availableContacts[it].fullName, imageUrl = viewModel.availableContacts[it].imageUrl,
                     { navController.navigate("chat/${viewModel.availableContacts[it].fullName}/${reciverId}/${encodedUrl}") },
                     viewModel

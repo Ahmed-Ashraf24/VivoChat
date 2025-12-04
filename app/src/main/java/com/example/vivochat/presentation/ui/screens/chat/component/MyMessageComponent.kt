@@ -22,7 +22,7 @@ import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.ui.theme.Primary
 
 @Composable
-fun MyMessageComponent(modifier: Modifier = Modifier,message:String) {
+fun MyMessageComponent(modifier: Modifier = Modifier,message:String,date:String) {
     var isVisible by remember { mutableStateOf(false) }
     Column (modifier = modifier,horizontalAlignment = Alignment.End
        ) {
@@ -35,7 +35,7 @@ fun MyMessageComponent(modifier: Modifier = Modifier,message:String) {
         }
     }
         AnimatedVisibility(visible = isVisible) {
-            Text("4:00pm", fontFamily = Poppins, color = Color.Gray, modifier = Modifier.align(Alignment.CenterHorizontally))
+            Text(date, fontFamily = Poppins, color = Color.Gray, modifier = Modifier.align(Alignment.CenterHorizontally))
         }
     }
 

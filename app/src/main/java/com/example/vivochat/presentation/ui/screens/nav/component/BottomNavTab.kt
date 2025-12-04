@@ -18,7 +18,7 @@ import com.example.vivochat.presentation.ui.theme.Primary
 fun BottomNavTab(modifier: Modifier = Modifier,iconColor:Color,selectedIconColor:Color, icon: Painter,selectedIcon:Painter,name:String,selected: Boolean, onClick:()->Unit) {
     Tab(
         selectedContentColor =  Primary,
-        unselectedContentColor = Color.White,
+
         selected = selected,
         onClick = onClick,
     ){

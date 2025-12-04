@@ -320,5 +320,9 @@ class FirebaseRemoteDataSource @Inject constructor() : RemoteDataSource {
         }
     }
 
+    override suspend fun logoutUser() {
+        FirebaseInstance.firebaseAuth.signOut()
+    }
+
 
 }

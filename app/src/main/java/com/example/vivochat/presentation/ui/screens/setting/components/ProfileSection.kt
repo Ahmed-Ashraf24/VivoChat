@@ -21,25 +21,24 @@ import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.theme.kumbuhFont
 
 @Composable
-fun ProfileSection(user: User) {
+fun ProfileSection(userName:String,userImageUrl:String?,userEmail:String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
 
         AsyncImage(
-            model = user.imageUrl,
+            model =userImageUrl,
             contentDescription = "profile",
             modifier = Modifier
                 .size(75.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.FillBounds
+                .clip(CircleShape)
         )
 
         Spacer(modifier = Modifier.width(16.dp))
 
         Column {
-            Text(user.fullName, fontSize = 20.sp, color = Color.Black,
+            Text(userName, fontSize = 20.sp,
                 fontWeight = FontWeight.ExtraBold, fontFamily = kumbuhFont)
 
-            Text(user.email, fontSize = 15.sp, color = Color.Gray,
+            Text(userEmail, fontSize = 15.sp, color = Color.Gray,
                 fontFamily = kumbuhFont , fontWeight = FontWeight.ExtraBold)
         }
     }

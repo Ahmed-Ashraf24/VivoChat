@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,6 +25,8 @@ import com.example.vivochat.presentation.ui.screens.chat.ChatScreen
 import com.example.vivochat.presentation.ui.screens.login.Login
 import com.example.vivochat.presentation.ui.screens.nav.NavScreen
 import com.example.vivochat.presentation.ui.screens.profile_image.ProfileImageScreen
+import com.example.vivochat.presentation.ui.theme.VivoChatTheme
+import com.example.vivochat.presentation.viewModel.darkmode_viewmodel.DarkModeViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,16 +34,17 @@ import java.net.URLDecoder
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val darkModeViewModel: DarkModeViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
 
-            val viewModelStoreOwner = this
-            val navController = rememberNavController()
-            val firebaseAuth = FirebaseAuth.getInstance()
-            val fireBaseDataSource: RemoteDataSource = FirebaseRemoteDataSource()
-            val userRepo: IUserRepository = UserRepository(fireBaseDataSource)
+           val navController = rememberNavController()
+        val isDark = darkModeViewModel.isDarkMode.collectAsState().value
+
+            VivoChatTheme(userPreferenceDarkTheme = isDark) {
 
             NavHost(navController, "splash") {
                 composable("splash") {
@@ -61,7 +66,8 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("navScreen") {
                     NavScreen(
-                        navController
+                        navController,
+                        darkModeViewModel = darkModeViewModel
                     )
                 }
                 composable("contacts") {navBackStackEntry->
@@ -84,6 +90,7 @@ class MainActivity : ComponentActivity() {
                     ChatScreen(navController = navController, reciverName = userName, reciverImageUrl = userImageUrl, reciverId = userId)
 
                 }
+            }
             }
 
 

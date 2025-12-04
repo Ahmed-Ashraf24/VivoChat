@@ -36,8 +36,9 @@ fun ChatTopBar(modifier: Modifier = Modifier,userImageUrl:String,userName:String
             tint = Color.Gray
         )
         AsyncImage(
-            model = userImageUrl.ifEmpty { painterResource(R.drawable.image) },
+            model = userImageUrl,
             contentDescription = "profile",
+            placeholder = painterResource(R.drawable.image),
             modifier = Modifier
                 .size(35.dp)
                 .clip(RoundedCornerShape(50.dp)),

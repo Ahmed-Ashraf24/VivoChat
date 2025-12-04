@@ -20,7 +20,7 @@ fun BottomNavBar(modifier: Modifier = Modifier,onTabSelected:(Int)->Unit) {
     var selectedTab by remember { mutableStateOf(0) }
 
     TabRow(
-        containerColor = Color.White,
+
         selectedTabIndex = selectedTab,
         modifier = modifier
             .height(70.dp)

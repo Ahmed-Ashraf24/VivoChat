@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import com.example.vivochat.domain.repository.IMediaRepository
@@ -20,14 +21,18 @@ import com.example.vivochat.presentation.ui.screens.nav.component.BottomNavBar
 import com.example.vivochat.presentation.ui.screens.setting.SettingsScreen
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.view.home.Home
+import com.example.vivochat.presentation.viewModel.darkmode_viewmodel.DarkModeViewModel
+import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NavScreen(
     navController: NavController,
-
+    viewModel: HomeViewModel= hiltViewModel(),
+    darkModeViewModel: DarkModeViewModel
 ) {
     val state = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
@@ -48,10 +53,10 @@ fun NavScreen(
 
             when (pageIndex) {
                 0 -> Home(
-                    navController = navController
+                    navController = navController,viewModel
                 )
                 1 -> StoryScreen()
-                2 -> SettingsScreen(navController)
+                2 -> SettingsScreen(navController,darkModeViewModel, loggedUser = viewModel.user)
             }
 
         }

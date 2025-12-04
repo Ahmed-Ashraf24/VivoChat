@@ -19,7 +19,6 @@ import com.example.vivochat.R
 import com.example.vivochat.domain.entity.Message
 import com.example.vivochat.domain.entity.MessageType
 
-@Preview(showSystemUi = true)
 @Composable
 fun ConversationMessagesComponent(modifier: Modifier = Modifier,messageList:List<Message>) {
 
@@ -30,7 +29,8 @@ fun ConversationMessagesComponent(modifier: Modifier = Modifier,messageList:List
             MessageType.MyMessage -> {
                 MyMessageComponent(
                     modifier = Modifier.padding(top = 15.dp).align(Alignment.End),
-                    message = message.message
+                    message = message.message,
+                    date = message.messageDate
                 )
             }
             MessageType.OthersMessage-> {
@@ -41,7 +41,7 @@ fun ConversationMessagesComponent(modifier: Modifier = Modifier,messageList:List
                         contentScale = ContentScale.FillBounds
                     )
                     }
-                    OthersMessageComponent(modifier = Modifier.padding(horizontal = 5.dp),message = message.message)
+                    OthersMessageComponent(modifier = Modifier.padding(horizontal = 5.dp),message = message.message, date = message.message)
                 }
 
             }

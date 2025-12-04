@@ -15,4 +15,5 @@ interface IUserRepository{
     fun getLoggedUserIdOrNull():String?
     suspend fun loginUser(email:String,password:String):Result<String>
     suspend fun signUpUser(email:String,password:String): Result<String>
+    suspend fun signOutUser()
 }
