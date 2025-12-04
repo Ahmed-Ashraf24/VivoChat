@@ -42,7 +42,6 @@ import java.net.URLEncoder
 @Composable
 fun Home(
     navController: NavController,
-
     viewModel: HomeViewModel,
     storyVM: StoryViewModel=hiltViewModel(),
     messageViewModel: MessageViewModel =hiltViewModel(),
