@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseInstance
 import com.example.vivochat.domain.entity.Message
 import com.example.vivochat.domain.entity.MessageType
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatBottomBar
@@ -28,7 +27,7 @@ import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageView
 @Composable
 fun ChatScreen(messageViewModel: MessageViewModel = hiltViewModel(), navController: NavController, reciverName:String, reciverId:String, reciverImageUrl:String) {
     var message by remember { mutableStateOf("") }
-    messageViewModel.getMessages(FirebaseInstance.firebaseAuth.currentUser!!.uid,reciverId)
+    messageViewModel.getMessages(reciverId)
     val messageList =messageViewModel.messageData.collectAsState()
     Scaffold(modifier = Modifier.imePadding(),
         topBar = {
@@ -47,14 +46,7 @@ fun ChatScreen(messageViewModel: MessageViewModel = hiltViewModel(), navControll
                 ), message = message,
                 onMessageChange = {message=it},
                 onSendClicked = {messageViewModel.sendMessage(
-                    message = Message(
-                        senderId = FirebaseInstance.firebaseAuth.currentUser!!.uid!!,
-                        senderName ="ahmed",
-                        message = message,
-                        messageType = MessageType.MyMessage,
-                        messageDate = "TODO()",
-                        senderProfileUrl = "TODO()"
-                    ),
+                    message = message,
                     reciverId = reciverId
                 )
                 message=""

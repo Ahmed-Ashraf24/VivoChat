@@ -39,6 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -82,7 +83,9 @@ val context = LocalContext.current
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 30.dp),
+                    .padding(horizontal = 10.dp, vertical = 30.dp).clickable{
+                        viewModel.skipUploadingMessage()
+                    },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
             ) {

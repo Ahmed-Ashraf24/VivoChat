@@ -26,7 +26,7 @@ fun CircleAvatar(
 
    if(imageUrl==null){
        Image(
-           painter = painterResource(R.drawable.ronaldo),
+           painter = painterResource(R.drawable.profile_ic),
            contentDescription = null,
            contentScale = ContentScale.Crop,
            modifier = Modifier

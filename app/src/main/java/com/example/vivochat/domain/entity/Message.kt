@@ -8,7 +8,7 @@ data class Message(
     val message: String,
     val messageType: MessageType,
     val messageDate: String,
-    val senderProfileUrl: String
+
 )
 fun Message.toFirebaseMessage(): FirebaseMessage{
   return  FirebaseMessage(

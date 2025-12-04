@@ -15,8 +15,7 @@ object MessageMapper {
             senderName = "",
             message = firebaseMessage.message,
             messageType = if (firebaseMessage.senderId == FirebaseInstance.firebaseAuth.currentUser!!.uid!!) MessageType.MyMessage else MessageType.OthersMessage,
-            messageDate = TimeFormateUtility.formateTampToDayAndHour(firebaseMessage.timestamp),
-            senderProfileUrl = "TODO()"
+            messageDate = TimeFormateUtility.formateTampToDayAndHour(firebaseMessage.timestamp)
         )
     }
     fun toLastMessagePreview(lastMessageData: LastMessageData): LastMessagePreview {

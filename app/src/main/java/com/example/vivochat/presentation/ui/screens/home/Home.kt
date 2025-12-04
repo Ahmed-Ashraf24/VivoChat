@@ -23,7 +23,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import com.example.vivochat.data.dataSource.firebase_remote_datasource.FirebaseRemoteDataSource
-import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseInstance.firebaseAuth
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItemShimmer
@@ -94,7 +93,7 @@ fun Home(
             items(viewModel.availableContacts.size) {
                 val reciverId=viewModel.availableContacts[it].userId
                 LaunchedEffect( reciverId) {
-                    messageViewModel.getLastMessage(firebaseAuth.currentUser!!.uid, reciverId)
+                    messageViewModel.getLastMessage( reciverId)
                 }
                 val lastMessageMap = messageViewModel.lastMessages.collectAsState()
                 val lastMessage = lastMessageMap.value[reciverId]

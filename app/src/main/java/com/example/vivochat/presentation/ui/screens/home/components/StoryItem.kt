@@ -26,7 +26,7 @@ fun StoryItem(
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        item { AddStoryAvatar(viewModel, storyViewModel, navController, sharedViewModel) }
+        item { AddStoryAvatar(viewModel, storyViewModel, navController = navController, sharedViewModel =  sharedViewModel) }
         items(viewModel.availableContacts.size) {
             if (viewModel.availableContacts[it].stories!!.size > 0 && viewModel.user.userId != viewModel.availableContacts[it].userId) {
                 UserStory(
