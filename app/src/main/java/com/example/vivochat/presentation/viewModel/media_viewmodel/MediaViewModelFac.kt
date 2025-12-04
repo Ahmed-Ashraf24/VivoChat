@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.viewModel.splash_view_model.SplashViewModel
+import javax.inject.Inject
 
-class MediaViewModelFac(
+class MediaViewModelFac @Inject constructor(
     private val mediaRepo: IMediaRepository,
     private val userRepository: IUserRepository
 ) : ViewModelProvider.Factory{

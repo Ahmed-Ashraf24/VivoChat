@@ -13,26 +13,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.vivochat.data.dataSource.firebase_remote_datasource.FirebaseRemoteDataSource
-import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseIstance
-import com.example.vivochat.data.repository.MessageRepository
+import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseInstance
 import com.example.vivochat.domain.entity.Message
 import com.example.vivochat.domain.entity.MessageType
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatBottomBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatTopBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ConversationMessagesComponent
-import com.example.vivochat.presentation.viewModel.MessageViewModel
+import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageViewModel
 
 
 @SuppressLint("ViewModelConstructorInComposable")
 @Composable
-fun ChatScreen(navController: NavController,reciverName:String, reciverId:String,reciverImageUrl:String) {
+fun ChatScreen(messageViewModel: MessageViewModel = hiltViewModel(), navController: NavController, reciverName:String, reciverId:String, reciverImageUrl:String) {
     var message by remember { mutableStateOf("") }
-    val messageViewModel= MessageViewModel(MessageRepository(FirebaseRemoteDataSource()))
-    messageViewModel.getMessages(FirebaseIstance.firebaseAuth.currentUser!!.uid,reciverId)
+    messageViewModel.getMessages(FirebaseInstance.firebaseAuth.currentUser!!.uid,reciverId)
     val messageList =messageViewModel.messageData.collectAsState()
     Scaffold(modifier = Modifier.imePadding(),
         topBar = {
@@ -52,7 +49,7 @@ fun ChatScreen(navController: NavController,reciverName:String, reciverId:String
                 onMessageChange = {message=it},
                 onSendClicked = {messageViewModel.sendMessage(
                     message = Message(
-                        senderId = FirebaseIstance.firebaseAuth.currentUser!!.uid!!,
+                        senderId = FirebaseInstance.firebaseAuth.currentUser!!.uid!!,
                         senderName ="ahmed",
                         message = message,
                         messageType = MessageType.MyMessage,

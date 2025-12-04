@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 
-object FirebaseIstance {
+object FirebaseInstance {
      val firebaseDatabase = FirebaseDatabase.getInstance()
      val firestore = FirebaseFirestore.getInstance()
      val firebaseAuth= FirebaseAuth.getInstance()

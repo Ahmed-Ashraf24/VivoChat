@@ -8,9 +8,13 @@ import android.content.Context
 import android.provider.ContactsContract
 import android.util.Log
 import com.example.vivochat.domain.entity.Contact
+import com.example.vivochat.domain.repository.IUserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SplashViewModel(
-    private val firebaseAuth: FirebaseAuth
+@HiltViewModel
+class SplashViewModel @Inject constructor(
+    private val userRepo: IUserRepository
 ) : ViewModel() {
 
 
@@ -21,7 +25,7 @@ class SplashViewModel(
 
     fun autoLogin() {
        try{
-           if (firebaseAuth.currentUser != null) {
+           if (userRepo.getLoggedUserIdOrNull() != null) {
                _autoLogin.value = SplashState.AutoLoginSuccess
            } else {
                _autoLogin.value = SplashState.AutoLoginFailed

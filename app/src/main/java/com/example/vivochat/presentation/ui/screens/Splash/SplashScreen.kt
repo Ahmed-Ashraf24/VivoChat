@@ -23,7 +23,6 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.vivochat.R
 import com.example.vivochat.presentation.viewModel.splash_view_model.SplashState
 import com.example.vivochat.presentation.viewModel.splash_view_model.SplashViewModel
-import com.example.vivochat.presentation.viewModel.splash_view_model.SplashViewModelFac
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import android.Manifest
@@ -31,17 +30,14 @@ import android.app.Activity
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.core.app.ActivityCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun SplashScreen(
     navController: NavController,
-    viewModelStoreOwner: ViewModelStoreOwner,
-    firebaseAuth: FirebaseAuth
+    viewModel : SplashViewModel= hiltViewModel()
 ) {
-    val viewModelFac = SplashViewModelFac(firebaseAuth)
-    val viewModel =
-        ViewModelProvider(viewModelStoreOwner, viewModelFac).get(SplashViewModel::class.java)
-    val state = viewModel.autoLogin.collectAsState()
+  val state = viewModel.autoLogin.collectAsState()
 
     val animation =
         rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splashscreenanimation))

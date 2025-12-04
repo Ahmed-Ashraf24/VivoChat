@@ -1,19 +1,18 @@
 package com.example.vivochat.presentation.viewModel.media_viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseIstance
-import com.example.vivochat.data.repository.UserRepository
+import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseInstance
 import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
-
-class MediaViewModel(
+import javax.inject.Inject
+@HiltViewModel
+class MediaViewModel @Inject constructor(
     private val mediaRepo: IMediaRepository,
     private val userRepository: IUserRepository
 ) : ViewModel() {
@@ -34,7 +33,7 @@ class MediaViewModel(
                      imageUrl = url
 
                     val res = userRepository.uploadUserImage(
-                        FirebaseIstance.firebaseAuth.currentUser!!.uid,
+                        FirebaseInstance.firebaseAuth.currentUser!!.uid,
                         url
                     )
 

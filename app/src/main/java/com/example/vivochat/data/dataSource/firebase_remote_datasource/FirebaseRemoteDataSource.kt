@@ -1,7 +1,7 @@
 package com.example.vivochat.data.dataSource.firebase_remote_datasource
 
 import com.example.vivochat.data.dataSource.RemoteDataSource
-import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseIstance
+import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseInstance
 import com.example.vivochat.data.dto.FirebaseMessage
 import com.example.vivochat.data.dto.LastMessageData
 import com.example.vivochat.data.dto.StoryDto
@@ -16,8 +16,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
+import javax.inject.Inject
 
-class FirebaseRemoteDataSource() : RemoteDataSource {
+class FirebaseRemoteDataSource @Inject constructor() : RemoteDataSource {
 
     override fun sendMessage( senderId: String,receiverId: String,message: FirebaseMessage) {
         initConversation(senderId, receiverId) { conversationId ->
@@ -30,7 +31,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
         receiverId: String,
         onReady: (String) -> Unit
     ) {
-        val userNode = FirebaseIstance.firebaseDatabase.getReference("users")
+        val userNode = FirebaseInstance.firebaseDatabase.getReference("users")
             .child(senderId)
             .child(receiverId)
 
@@ -54,7 +55,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
         receiverId: String,
         onReady: (String) -> Unit
     ) {
-        val convKey = FirebaseIstance.firebaseDatabase
+        val convKey = FirebaseInstance.firebaseDatabase
             .getReference("conversations")
             .push().key!!
 
@@ -64,7 +65,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
             "lastMessageTime" to System.currentTimeMillis()
         )
 
-        val usersRef = FirebaseIstance.firebaseDatabase.getReference("users")
+        val usersRef = FirebaseInstance.firebaseDatabase.getReference("users")
 
 
         usersRef.child(senderId).child(receiverId).setValue(meta)
@@ -77,7 +78,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
         receiverId: String,
         message: FirebaseMessage
     ) {
-        val convRef = FirebaseIstance.firebaseDatabase
+        val convRef = FirebaseInstance.firebaseDatabase
             .getReference("conversations")
             .child(conversationId)
             .push()
@@ -94,7 +95,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
                 "lastMessageTime" to System.currentTimeMillis()
             )
 
-            val usersRef = FirebaseIstance.firebaseDatabase.getReference("users")
+            val usersRef = FirebaseInstance.firebaseDatabase.getReference("users")
             usersRef.child(senderId).child(receiverId).updateChildren(metaUpdate)
             usersRef.child(receiverId).child(senderId).updateChildren(metaUpdate)
         }
@@ -102,7 +103,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
 
     override fun getConversation(userId: String,otherUserId:String): Flow<List<FirebaseMessage>> =
         callbackFlow {
-            val metaRef = FirebaseIstance.firebaseDatabase
+            val metaRef = FirebaseInstance.firebaseDatabase
                 .getReference("users")
                 .child(userId)
                 .child(otherUserId)
@@ -118,7 +119,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
                         return
                     }
 
-                    FirebaseIstance.firebaseDatabase.getReference("conversations")
+                    FirebaseInstance.firebaseDatabase.getReference("conversations")
                         .child(conversationId)
                         .addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
@@ -141,7 +142,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
                 conversationListener?.let { listener ->
                     val conversationId =
                         metaRef.child("conversationId").toString()
-                    FirebaseIstance.firebaseDatabase.getReference("conversations")
+                    FirebaseInstance.firebaseDatabase.getReference("conversations")
                         .child(conversationId)
                         .removeEventListener(listener)
                 }
@@ -153,7 +154,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
     ): Flow<LastMessageData?>
             = callbackFlow {
 
-        val ref = FirebaseIstance.firebaseDatabase
+        val ref = FirebaseInstance.firebaseDatabase
             .getReference("users")
             .child(userId)
             .child(otherUserId)
@@ -192,8 +193,12 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
         }
     }
 
+    override fun getLoggedUserIdOrNull(): String? {
+       return FirebaseInstance.firebaseAuth.currentUser?.uid
+    }
+
     override suspend fun getUsersList(): List<UserDto> {
-        val result = FirebaseIstance.firestore.collection("users").get().await()
+        val result = FirebaseInstance.firestore.collection("users").get().await()
 
         return result.documents.map { doc ->
             UserDto(
@@ -214,7 +219,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
     ): Result<Any> {
         try {
             val user = UserDto(userId, fullName, email, phoneNumber,null)
-            FirebaseIstance.firestore.collection("users")
+            FirebaseInstance.firestore.collection("users")
                 .document(userId)
                 .set(user)
                 .await()
@@ -228,7 +233,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
 
     override suspend fun getUserData(userId: String): Result<UserDto> {
 
-        val response = FirebaseIstance.firestore.collection("users")
+        val response = FirebaseInstance.firestore.collection("users")
             .document(userId)
             .get()
             .await()
@@ -245,7 +250,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
 
         override suspend fun uploadUserImage(userId: String,imageUrl:String): Result<Any> {
             try {
-                FirebaseIstance.firestore.collection("users")
+                FirebaseInstance.firestore.collection("users")
                     .document(userId)
                     .update("imageUrl",imageUrl)
                     .await()
@@ -259,7 +264,7 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
        try{
            val storyId = UUID.randomUUID().toString()
            val story = StoryDto(storyId, imageUrl, Timestamp.now())
-           FirebaseIstance.firestore.collection("users")
+           FirebaseInstance.firestore.collection("users")
                .document(userId)
                .collection("stories")
                .document(storyId)

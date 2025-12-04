@@ -4,8 +4,9 @@ import com.example.vivochat.data.dataSource.MediaDatasource.MediaDataSource
 import com.example.vivochat.domain.entity.VideoResult
 import com.example.vivochat.domain.repository.IMediaRepository
 import java.io.File
+import javax.inject.Inject
 
-class CloudinaryRepository(private val mediaDataSource: MediaDataSource): IMediaRepository {
+class CloudinaryRepository @Inject constructor(private val mediaDataSource: MediaDataSource): IMediaRepository {
     override suspend fun uploadImage(file: File): Result<String> {
         return mediaDataSource.uploadImage(file)
     }

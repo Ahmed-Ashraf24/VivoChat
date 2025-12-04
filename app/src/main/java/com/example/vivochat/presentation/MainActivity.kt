@@ -25,8 +25,10 @@ import com.example.vivochat.presentation.ui.screens.nav.NavScreen
 import com.example.vivochat.presentation.ui.screens.profile_image.ProfileImageScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.AndroidEntryPoint
 import java.net.URLDecoder
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +37,6 @@ class MainActivity : ComponentActivity() {
 
             val viewModelStoreOwner = this
             val navController = rememberNavController()
-            val mediaRepo = CloudinaryRepository(CloudinaryDataSource())
-            val firestore = FirebaseFirestore.getInstance()
             val firebaseAuth = FirebaseAuth.getInstance()
             val fireBaseDataSource: RemoteDataSource = FirebaseRemoteDataSource()
             val userRepo: IUserRepository = UserRepository(fireBaseDataSource)
@@ -45,16 +45,12 @@ class MainActivity : ComponentActivity() {
                 composable("splash") {
                     SplashScreen(
                         navController,
-                        viewModelStoreOwner,
-                        firebaseAuth
                     )
                 }
 
                 composable("profileImageScreen") {
                     ProfileImageScreen(
-                        viewModelStoreOwner,
-                        navController,
-                        userRepo
+                        navController=navController
                     )
                 }
                 composable("login") { Login(viewModelStoreOwner, navController) }
@@ -68,11 +64,7 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("navScreen") {
                     NavScreen(
-                        mediaRepo,
-                        navController,
-                        viewModelStoreOwner,
-                        userRepo,
-                            firebaseAuth
+                        navController
                     )
                 }
                 composable("contacts") {navBackStackEntry->

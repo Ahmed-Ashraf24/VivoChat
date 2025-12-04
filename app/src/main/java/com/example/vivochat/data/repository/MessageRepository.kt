@@ -8,8 +8,9 @@ import com.example.vivochat.domain.entity.toFirebaseMessage
 import com.example.vivochat.domain.repository.IMessageRep
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class MessageRepository(private val remoteDataSource: RemoteDataSource): IMessageRep {
+class MessageRepository @Inject constructor(private val remoteDataSource: RemoteDataSource): IMessageRep {
     override fun sendMessage(message: Message,recrverId:String) {
     remoteDataSource.sendMessage(senderId = message.senderId,recrverId,message.toFirebaseMessage())
     }

@@ -15,10 +15,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import com.example.vivochat.R
+import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseInstance.firebaseAuth
 import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.setting.components.ProfileSection
@@ -27,17 +29,13 @@ import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.ui.theme.kumbuhFont
 import com.example.vivochat.presentation.ui.theme.montserratFont
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
-import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModelFac
 import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun SettingsScreen(navController: NavController,mediaRepository: IMediaRepository,viewModelStoreOwner: ViewModelStoreOwner,
-                   userRepository: IUserRepository,
-                   firebaseAuth: FirebaseAuth) {
-    val viewModelFac = HomeViewModelFac(mediaRepository,userRepository, firebaseAuth, LocalContext.current)
-    val viewModel =
-        ViewModelProvider(viewModelStoreOwner, viewModelFac).get(HomeViewModel::class.java)
+fun SettingsScreen(navController: NavController,
+                   viewModel: HomeViewModel= hiltViewModel()
+) {
 
     var darkMode by remember { mutableStateOf(false) }
 

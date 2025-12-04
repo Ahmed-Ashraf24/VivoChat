@@ -9,8 +9,9 @@ import com.example.vivochat.data.mappers.toUser
 import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.domain.entity.User
 import com.example.vivochat.domain.repository.IUserRepository
+import javax.inject.Inject
 
-class UserRepository(
+class UserRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource
 ) : IUserRepository {
 
@@ -98,6 +99,10 @@ class UserRepository(
         }else{
             return Result.failure(Exception("failed to upload story"))
         }
+    }
+
+    override fun getLoggedUserIdOrNull(): String? {
+        return remoteDataSource.getLoggedUserIdOrNull()
     }
 
 

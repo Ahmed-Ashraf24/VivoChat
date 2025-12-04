@@ -39,7 +39,6 @@ fun StoryViewScreen() {
                 )
         )
 
-        // Header content
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -69,7 +68,7 @@ fun StoryViewScreen() {
             Column(modifier = Modifier.weight(1f)) {
 
                 Text(
-                    text = "John Doe",
+                    text = "ahmed ashraf",
                     color = Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold

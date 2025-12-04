@@ -6,8 +6,9 @@ import com.example.vivochat.domain.entity.VideoResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import javax.inject.Inject
 
-class CloudinaryDataSource: MediaDataSource {
+class CloudinaryDataSource @Inject constructor(): MediaDataSource {
     private val cloudinary = Cloudinary(
         ObjectUtils.asMap(
             "cloud_name", "dblglypwc",

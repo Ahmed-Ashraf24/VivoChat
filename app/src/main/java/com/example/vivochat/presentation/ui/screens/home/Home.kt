@@ -17,10 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import com.example.vivochat.data.dataSource.firebase_remote_datasource.FirebaseRemoteDataSource
+import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseInstance.firebaseAuth
 import com.example.vivochat.data.repository.MessageRepository
 import com.example.vivochat.domain.entity.User
 import com.example.vivochat.domain.repository.IMediaRepository
@@ -30,27 +32,20 @@ import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItemShimmer
 import com.example.vivochat.presentation.ui.screens.home.components.HomeHeaderShimmer
 import com.example.vivochat.presentation.view.home.components.HomeHeader
-import com.example.vivochat.presentation.viewModel.MessageViewModel
+import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageViewModel
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeState
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
-import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModelFac
 import com.google.firebase.auth.FirebaseAuth
 import java.net.URLEncoder
 
-@SuppressLint("ViewModelConstructorInComposable")
 @Composable
 fun Home(
-    mediaRepo: IMediaRepository,
     navController: NavController,
-    viewModelStoreOwner: ViewModelStoreOwner,
-    userRepo: IUserRepository,
-    firebaseAuth: FirebaseAuth
+
+    viewModel: HomeViewModel= hiltViewModel(),
+    messageViewModel: MessageViewModel=hiltViewModel()
 ) {
 
-    val viewModelFac = HomeViewModelFac(mediaRepo ,userRepo, firebaseAuth, LocalContext.current)
-    val viewModel =
-        ViewModelProvider(viewModelStoreOwner, viewModelFac).get(HomeViewModel::class.java)
-    val messageViewModel= MessageViewModel(MessageRepository(FirebaseRemoteDataSource()))
 
     val state = viewModel.userData.collectAsState()
 

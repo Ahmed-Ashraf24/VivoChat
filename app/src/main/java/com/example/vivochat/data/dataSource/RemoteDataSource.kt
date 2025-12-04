@@ -17,6 +17,7 @@ interface RemoteDataSource {
         userId: String,
         otherUserId: String
     ): Flow<LastMessageData?>
+    fun getLoggedUserIdOrNull():String?
     suspend fun uploadStory(userId:String,imageUrl:String): Result <Any>
 
 }

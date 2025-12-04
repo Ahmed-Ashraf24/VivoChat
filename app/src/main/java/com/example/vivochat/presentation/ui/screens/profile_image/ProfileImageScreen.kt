@@ -1,5 +1,6 @@
 package com.example.vivochat.presentation.ui.screens.profile_image
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -39,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -56,16 +58,13 @@ import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaViewMode
 import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaViewModelFac
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProfileImageScreen(
-    viewModelStoreOwner: ViewModelStoreOwner,
-    navController: NavController,
-    userRepository: IUserRepository
+    viewModel: MediaViewModel= hiltViewModel(),
+    navController: NavController
 ) {
-    val viewModelFac = MediaViewModelFac(CloudinaryRepository(CloudinaryDataSource()),userRepository)
-    val viewModel =
-        ViewModelProvider(viewModelStoreOwner, viewModelFac).get(MediaViewModel::class.java)
-    val context = LocalContext.current
+val context = LocalContext.current
     val state = viewModel.mediaState.collectAsState()
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()

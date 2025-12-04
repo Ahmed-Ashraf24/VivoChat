@@ -26,11 +26,8 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NavScreen(
-    mediaRepo: IMediaRepository,
     navController: NavController,
-    viewModelStoreOwner: ViewModelStoreOwner,
-    userRepository: IUserRepository,
-    firebaseAuth: FirebaseAuth
+
 ) {
     val state = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
@@ -51,14 +48,10 @@ fun NavScreen(
 
             when (pageIndex) {
                 0 -> Home(
-                    mediaRepo,
-                    navController = navController,
-                    viewModelStoreOwner,
-                    userRepository,
-                    firebaseAuth
+                    navController = navController
                 )
                 1 -> StoryScreen()
-                2 -> SettingsScreen(navController,   mediaRepo,viewModelStoreOwner,userRepository,firebaseAuth)
+                2 -> SettingsScreen(navController)
             }
 
         }
