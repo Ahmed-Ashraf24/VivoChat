@@ -1,6 +1,7 @@
 package com.example.vivochat.presentation.ui.screens.setting.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -9,16 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vivochat.presentation.ui.theme.kumbuhFont
 
 @Composable
-fun SettingsItem(title: String, subtitle: String, icon: Int) {
+fun SettingsItem(title: String, subtitle: String, icon: Int, onClick: (() -> Unit)? =null) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick?.invoke() }
             .padding(vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -38,9 +39,4 @@ fun SettingsItem(title: String, subtitle: String, icon: Int) {
             modifier = Modifier.size(22.dp)
         )
     }
-}
-@Preview
-@Composable
-fun pp(){
-    SettingsItem("ss",":ss",1)
 }

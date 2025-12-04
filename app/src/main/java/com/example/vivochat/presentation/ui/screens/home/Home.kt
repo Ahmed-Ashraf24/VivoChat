@@ -45,7 +45,7 @@ fun Home(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White)
+            //.background(color = Color.White)
             .imePadding()
             .padding(top = 50.dp),
 

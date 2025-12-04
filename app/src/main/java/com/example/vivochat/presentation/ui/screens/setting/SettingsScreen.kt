@@ -7,7 +7,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vivochat.R
@@ -17,12 +16,23 @@ import com.example.vivochat.presentation.ui.theme.kumbuhFont
 import com.example.vivochat.presentation.ui.theme.montserratFont
 import com.example.vivochat.presentation.viewModel.darkmode_viewmodel.DarkModeViewModel
 
+
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+
+
+
 fun SettingsScreen(
-    darkModeViewModel: DarkModeViewModel   // 👈 بيجيلك من NavScreen
+    darkModeViewModel: DarkModeViewModel
 ) {
 
     val darkMode by darkModeViewModel.isDarkMode.collectAsState()
+    var selectedLanguage by remember { mutableStateOf("English") }
+    var showLanguageSheet by remember { mutableStateOf(false) }
+
 
     Column(
         modifier = Modifier
@@ -48,26 +58,28 @@ fun SettingsScreen(
         SettingsItem(
             title = "Account",
             subtitle = "Security notifications, change number",
-            icon = R.drawable.profile
+            icon = R.drawable.profile,
         )
 
         SettingsItem(
             title = "App language",
-            subtitle = "English (device's language)",
-            icon = R.drawable.language
+            subtitle = "$selectedLanguage",
+            icon = R.drawable.language,
+            onClick = { showLanguageSheet = true }
         )
 
         SettingsItem(
             title = "Help",
             subtitle = "Help centre, contact us, privacy policy",
-            icon = R.drawable.helpp
+            icon = R.drawable.helpp,
         )
 
         // Dark mode switch
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
-        ) {
+        )
+        {
             Column(
                 modifier = Modifier.weight(1f)
             ) {
@@ -84,7 +96,7 @@ fun SettingsScreen(
             Switch(
                 checked = darkMode,
                 onCheckedChange = {isChecked ->
-                    darkModeViewModel.toggleDarkMode(isChecked)   // 👈 يغيّر القيمة
+                    darkModeViewModel.toggleDarkMode(isChecked)
                 }
             )
         }
@@ -94,7 +106,48 @@ fun SettingsScreen(
         SettingsItem(
             title = "Log out",
             subtitle = "",
-            icon = R.drawable.logout
+            icon = R.drawable.logout,
         )
+
+        // Language change XX
+        if (showLanguageSheet) {
+            ModalBottomSheet(
+                onDismissRequest = { showLanguageSheet = false }
+            ) {
+
+                val languages = listOf(
+                    "English", "Arabic", "French", "German", "Spanish", "Italian", "Turkish"
+                )
+
+                Column(modifier = Modifier.padding(20.dp)) {
+
+                    Text(
+                        text = "Choose App Language",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = montserratFont
+                    )
+
+                    Spacer(Modifier.height(16.dp))
+
+                    languages.forEach { lang ->
+                        TextButton(
+                            onClick = {
+                                selectedLanguage = lang
+                                showLanguageSheet = false
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = lang,
+                                fontSize = 18.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

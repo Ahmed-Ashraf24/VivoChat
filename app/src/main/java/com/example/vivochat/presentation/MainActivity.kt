@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                             viewModelStoreOwner,
                             userRepo,
                             firebaseAuth,
-                            darkModeViewModel = TODO()
+                            darkModeViewModel = darkModeViewModel
                         )
                     }
 
