@@ -31,14 +31,14 @@ class HomeViewModel @Inject constructor(
     lateinit var availableContacts: List<User>
     lateinit var unAvailableContacts: List<Contact>
 
-    private var _userData = MutableStateFlow<HomeState>(HomeState.Idle)
+    private var _userDataState = MutableStateFlow<HomeState>(HomeState.Idle)
     val userData: StateFlow<HomeState>
-        get() = _userData
+        get() = _userDataState
 
 
     fun getUserData() {
         try {
-            _userData.value = HomeState.DataLoading
+            _userDataState.value = HomeState.UserDataLoading
             val phoneContacts = contactUtility.getContact()
             viewModelScope.launch {
                 val userId = userRepo.getLoggedUserIdOrNull()!!
@@ -50,11 +50,12 @@ class HomeViewModel @Inject constructor(
                     val pair = userRepo.filterContacts(phoneContacts)
                     availableContacts = pair.first
                     unAvailableContacts = pair.second
-                    _userData.value = HomeState.DataSuccess
+                    _userDataState.value = HomeState.UserDataSuccess
+
 
 
                 } else {
-                    _userData.value = HomeState.DataFailed
+                    _userDataState.value = HomeState.UserDataFailed
                 }
 
             }
@@ -75,6 +76,9 @@ class HomeViewModel @Inject constructor(
 
 
 
+    fun resetState(){
+        _userDataState.value = HomeState.Idle
+    }
 
 
 

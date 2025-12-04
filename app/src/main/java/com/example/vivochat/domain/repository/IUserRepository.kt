@@ -1,6 +1,7 @@
 package com.example.vivochat.domain.repository
 
 import com.example.vivochat.domain.entity.Contact
+import com.example.vivochat.domain.entity.Story
 import com.example.vivochat.domain.entity.User
 
 interface IUserRepository{
@@ -10,5 +11,6 @@ interface IUserRepository{
     suspend fun filterContacts(contactList:List<Contact>): Pair<List<User>,List<Contact>>
     suspend fun uploadUserImage(userId: String,imageUrl:String): Result<Any>
     suspend fun uploadStory(userId:String,imageUrl:String): Result<Any>
+    suspend fun getUserStories(userId:String):Result<List<Story>>
     fun getLoggedUserIdOrNull():String?
 }

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.vivochat.R
-import com.example.vivochat.presentation.viewModel.home_view_model.HomeState
+import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
@@ -35,7 +35,8 @@ import com.google.accompanist.placeholder.material.shimmer
 @Composable
 fun HomeHeader(
     viewModel: HomeViewModel,
-    navController: NavController
+    navController: NavController,
+    storyViewModel: StoryViewModel
 ) {
 
 
@@ -72,5 +73,5 @@ fun HomeHeader(
         }
     }
     Spacer(Modifier.height(10.dp))
-   StoryItem(viewModel)
+     StoryItem(viewModel, storyViewModel)
 }

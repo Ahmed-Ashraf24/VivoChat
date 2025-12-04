@@ -2,6 +2,7 @@ package com.example.vivochat.data.dataSource
 
 import com.example.vivochat.data.dto.FirebaseMessage
 import com.example.vivochat.data.dto.LastMessageData
+import com.example.vivochat.data.dto.StoryDto
 import com.example.vivochat.data.dto.UserDto
 import kotlinx.coroutines.flow.Flow
 
@@ -19,5 +20,5 @@ interface RemoteDataSource {
     ): Flow<LastMessageData?>
     fun getLoggedUserIdOrNull():String?
     suspend fun uploadStory(userId:String,imageUrl:String): Result <Any>
-
+    suspend fun getUserStories(userId:String):Result<List<StoryDto>>
 }

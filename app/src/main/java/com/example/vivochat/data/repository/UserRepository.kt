@@ -2,11 +2,14 @@ package com.example.vivochat.data.repository
 
 import android.util.Log
 import com.example.vivochat.data.dataSource.RemoteDataSource
+import com.example.vivochat.data.dto.StoryDto
 import com.example.vivochat.data.dto.UserDto
+import com.example.vivochat.data.mapper.StoryMapper
 import com.example.vivochat.data.mapper.UserMapper
 import com.example.vivochat.data.mappers.convertToUserList
 import com.example.vivochat.data.mappers.toUser
 import com.example.vivochat.domain.entity.Contact
+import com.example.vivochat.domain.entity.Story
 import com.example.vivochat.domain.entity.User
 import com.example.vivochat.domain.repository.IUserRepository
 import javax.inject.Inject
@@ -99,6 +102,18 @@ class UserRepository @Inject constructor(
         }else{
             return Result.failure(Exception("failed to upload story"))
         }
+    }
+    override suspend fun getUserStories(userId: String): Result<List<Story>> {
+         try{
+             val response = remoteDataSource.getUserStories(userId)
+             val storiesDto  : List<StoryDto> = response.getOrNull()?:emptyList()
+             //map
+             val stories = StoryMapper.mapDtoListToDomainList(storiesDto)
+
+             return Result.success(stories)
+         }catch (e : Exception){
+             return Result.failure(Exception("fail"))
+         }
     }
 
     override fun getLoggedUserIdOrNull(): String? {

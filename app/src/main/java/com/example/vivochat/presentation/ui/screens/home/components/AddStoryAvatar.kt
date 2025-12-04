@@ -28,10 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vivochat.R
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
+import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
-fun AddStoryAvatar(viewModel: HomeViewModel) {
+fun AddStoryAvatar(viewModel: HomeViewModel,storyViewModel: StoryViewModel) {
 //From this composable we want to upload a sstory okayyyy
     val context = LocalContext.current
     val imagePickerLauncher = rememberLauncherForActivityResult(
@@ -39,7 +40,7 @@ fun AddStoryAvatar(viewModel: HomeViewModel) {
     ) { uri: Uri? ->
         uri?.let {
             val file = uriToFile(context, it)
-            viewModel.uploadStory(file)
+            storyViewModel.uploadStory(file,viewModel.user.userId)
         }
     }
 

@@ -198,7 +198,7 @@ class FirebaseRemoteDataSource @Inject constructor() : RemoteDataSource {
     }
 
     override suspend fun getUsersList(): List<UserDto> {
-        val result = FirebaseInstance.firestore.collection("users").get().await()
+        val result = FirebaseInstance.fireStore.collection("users").get().await()
 
         return result.documents.map { doc ->
             UserDto(
@@ -219,7 +219,7 @@ class FirebaseRemoteDataSource @Inject constructor() : RemoteDataSource {
     ): Result<Any> {
         try {
             val user = UserDto(userId, fullName, email, phoneNumber,null)
-            FirebaseInstance.firestore.collection("users")
+            FirebaseInstance.fireStore.collection("users")
                 .document(userId)
                 .set(user)
                 .await()
@@ -233,7 +233,7 @@ class FirebaseRemoteDataSource @Inject constructor() : RemoteDataSource {
 
     override suspend fun getUserData(userId: String): Result<UserDto> {
 
-        val response = FirebaseInstance.firestore.collection("users")
+        val response = FirebaseInstance.fireStore.collection("users")
             .document(userId)
             .get()
             .await()
@@ -248,35 +248,51 @@ class FirebaseRemoteDataSource @Inject constructor() : RemoteDataSource {
         }
     }
 
-        override suspend fun uploadUserImage(userId: String,imageUrl:String): Result<Any> {
-            try {
-                FirebaseInstance.firestore.collection("users")
-                    .document(userId)
-                    .update("imageUrl",imageUrl)
-                    .await()
-                return Result.success(Exception("image uploaded successfully"))
-            }catch (e : Exception){
-                return Result.failure(Exception("couldn't upload user pic"))
-            }
+    override suspend fun uploadUserImage(userId: String, imageUrl: String): Result<Any> {
+        try {
+            FirebaseInstance.fireStore.collection("users")
+                .document(userId)
+                .update("imageUrl", imageUrl)
+                .await()
+            return Result.success(Exception("image uploaded successfully"))
+        } catch (e: Exception) {
+            return Result.failure(Exception("couldn't upload user pic"))
         }
+    }
 
-    override suspend fun uploadStory(userId: String, imageUrl: String):Result<Any>{
-       try{
-           val storyId = UUID.randomUUID().toString()
-           val story = StoryDto(storyId, imageUrl, Timestamp.now())
-           FirebaseInstance.firestore.collection("users")
-               .document(userId)
-               .collection("stories")
-               .document(storyId)
-               .set(story)
-               .await()
+    override suspend fun uploadStory(userId: String, imageUrl: String): Result<Any> {
+        try {
+            val storyId = UUID.randomUUID().toString()
+            val story = StoryDto(storyId, imageUrl, Timestamp.now(), null)
+            FirebaseInstance.fireStore.collection("users")
+                .document(userId)
+                .collection("stories")
+                .document(storyId)
+                .set(story)
+                .await()
 
-           return Result.success("Story uploaded")
-       }catch (e : Exception){
-           return Result.failure(Exception("Failed to upload story"))
-       }
+            return Result.success("Story uploaded")
+        } catch (e: Exception) {
+            return Result.failure(Exception("Failed to upload story"))
+        }
+    }
 
+    override suspend fun getUserStories(userId: String): Result<List<StoryDto>> {
+        //we need to get a specific user stories and it might be null
 
+        try{
+            val snapShot = FirebaseInstance.fireStore.collection("users")
+                .document(userId)
+                .collection("stories")
+                .get()
+                .await()
+            val stories: List<StoryDto> = snapShot.documents.mapNotNull { doc ->
+                doc.toObject(StoryDto::class.java)
+            }
+            return Result.success(stories)
+        }catch (e : Exception){
+            return Result.failure(Exception("failed to fetch user stories"))
+        }
     }
 
 

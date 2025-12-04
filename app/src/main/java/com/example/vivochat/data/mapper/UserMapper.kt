@@ -11,7 +11,8 @@ object UserMapper {
         fullName = user.fullName,
         email = user.email,
         phoneNum = user.phoneNum,
-        imageUrl = user.imageUrl
+        imageUrl = user.imageUrl,
+        stories = null
     )
 
     }
