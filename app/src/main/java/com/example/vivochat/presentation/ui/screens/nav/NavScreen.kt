@@ -31,9 +31,7 @@ import kotlin.math.log
 @Composable
 fun NavScreen(
     navController: NavController,
-    viewModel: HomeViewModel= hiltViewModel(),
-    darkModeViewModel: DarkModeViewModel
-) {
+    viewModel: HomeViewModel= hiltViewModel()) {
     val state = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
@@ -56,7 +54,7 @@ fun NavScreen(
                     navController = navController,viewModel
                 )
                 1 -> StoryScreen()
-                2 -> SettingsScreen(navController,darkModeViewModel, loggedUser = viewModel.user)
+                2 -> SettingsScreen(navController, loggedUser = viewModel.user)
             }
 
         }

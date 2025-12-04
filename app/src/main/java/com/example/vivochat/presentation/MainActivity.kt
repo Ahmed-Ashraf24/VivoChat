@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,24 +28,24 @@ import com.example.vivochat.presentation.ui.screens.login.Login
 import com.example.vivochat.presentation.ui.screens.nav.NavScreen
 import com.example.vivochat.presentation.ui.screens.profile_image.ProfileImageScreen
 import com.example.vivochat.presentation.ui.theme.VivoChatTheme
+import com.example.vivochat.presentation.utility.ThemeManager
 import com.example.vivochat.presentation.viewModel.darkmode_viewmodel.DarkModeViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.URLDecoder
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val darkModeViewModel: DarkModeViewModel by viewModels()
-
+    @Inject lateinit var themeManager: ThemeManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
 
            val navController = rememberNavController()
-        val isDark = darkModeViewModel.isDarkMode.collectAsState().value
-
+            val isDark by themeManager.isDarkMode.collectAsState()
             VivoChatTheme(userPreferenceDarkTheme = isDark) {
 
             NavHost(navController, "splash") {
@@ -66,8 +68,7 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("navScreen") {
                     NavScreen(
-                        navController,
-                        darkModeViewModel = darkModeViewModel
+                        navController
                     )
                 }
                 composable("contacts") {navBackStackEntry->

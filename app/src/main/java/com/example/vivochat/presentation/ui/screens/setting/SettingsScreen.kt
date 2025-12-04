@@ -30,6 +30,7 @@ import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.ui.theme.kumbuhFont
 import com.example.vivochat.presentation.ui.theme.montserratFont
 import com.example.vivochat.presentation.viewModel.darkmode_viewmodel.DarkModeViewModel
+import com.example.vivochat.presentation.viewModel.setting_viewmodel.SettingsViewModel
 import kotlin.math.log
 
 
@@ -40,11 +41,11 @@ import kotlin.math.log
 
 fun SettingsScreen(
     navController: NavController,
-    darkModeViewModel: DarkModeViewModel,
+    setingViewModel: SettingsViewModel=hiltViewModel(),
     loggedUser: User
 ) {
 
-    val darkMode by darkModeViewModel.isDarkMode.collectAsState()
+    val darkMode by setingViewModel.isDarkMode.collectAsState()
     var selectedLanguage by remember { mutableStateOf("English") }
     var showLanguageSheet by remember { mutableStateOf(false) }
 
@@ -90,7 +91,7 @@ fun SettingsScreen(
             {}
         )
 
-        // Dark mode switch
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -112,7 +113,7 @@ fun SettingsScreen(
             Switch(
                 checked = darkMode,
                 onCheckedChange = {isChecked ->
-                    darkModeViewModel.toggleDarkMode(isChecked)
+                    setingViewModel.toggleDarkMode()
                 }
             )
         }
