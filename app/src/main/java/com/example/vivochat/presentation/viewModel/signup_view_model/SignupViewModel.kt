@@ -3,6 +3,7 @@ package com.example.vivochat.presentation.viewModel.signup_view_model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.vivochat.domain.repository.IAuthRepo
 import com.example.vivochat.domain.repository.IUserRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    private val userRepository: IUserRepository
+    private val userRepository: IUserRepository,
+    private val authRepo: IAuthRepo
 ) : ViewModel() {
 
 
@@ -25,7 +27,7 @@ class SignupViewModel @Inject constructor(
 
         _signupState.value = SignupState.Loading
         viewModelScope.launch {
-        userRepository.signUpUser(email,password).fold(
+            authRepo.signUpUser(email,password).fold(
             onSuccess = {userId->
                 uploadUserData(userId, fullName, email, phoneNum)
 
