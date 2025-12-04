@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.vivochat.presentation.viewModel.home_view_model.UserViewModel
+import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 
 @Composable
 fun ChatItem(lastMessagePreview: String="",timeOfMessage:String?,name:String,imageUrl:String?,onChatClicked:()->Unit,viewModel: UserViewModel) {

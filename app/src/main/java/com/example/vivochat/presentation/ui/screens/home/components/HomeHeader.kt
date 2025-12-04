@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.vivochat.R
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
-import com.example.vivochat.presentation.viewModel.home_view_model.UserViewModel
+import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 
 @Composable

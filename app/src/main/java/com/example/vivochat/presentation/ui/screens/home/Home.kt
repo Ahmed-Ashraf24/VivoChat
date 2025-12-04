@@ -22,8 +22,8 @@ import com.example.vivochat.presentation.ui.screens.home.components.HomeHeaderSh
 import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadingIndicator
 import com.example.vivochat.presentation.view.home.components.HomeHeader
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
-import com.example.vivochat.presentation.viewModel.home_view_model.UserState
-import com.example.vivochat.presentation.viewModel.home_view_model.UserViewModel
+import com.example.vivochat.presentation.viewModel.user_view_model.UserState
+import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryState
 import com.example.vivochat.presentation.viewModel.StoryViewModel.UploadingStoryState
 import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageViewModel

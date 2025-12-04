@@ -20,7 +20,7 @@ import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadi
 import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.StoryViewModel.UploadingStoryState
-import com.example.vivochat.presentation.viewModel.home_view_model.UserViewModel
+import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 
 @Preview
