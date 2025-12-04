@@ -13,4 +13,6 @@ interface IUserRepository{
     suspend fun uploadStory(userId:String,imageUrl:String): Result<Any>
     suspend fun getUserStories(userId:String):Result<List<Story>>
     fun getLoggedUserIdOrNull():String?
+    suspend fun loginUser(email:String,password:String):Result<String>
+    suspend fun signUpUser(email:String,password:String): Result<String>
 }

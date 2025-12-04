@@ -53,13 +53,10 @@ class MainActivity : ComponentActivity() {
                         navController=navController
                     )
                 }
-                composable("login") { Login(viewModelStoreOwner, navController) }
+                composable("login") { Login(navController= navController) }
                 composable("signup") {
                     SignupScreen(
-                        viewModelStoreOwner,
-                        navController,
-                        userRepo,
-                        firebaseAuth
+                        navController= navController
                     )
                 }
                 composable("navScreen") {

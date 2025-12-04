@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
@@ -25,15 +26,13 @@ import com.example.vivochat.presentation.viewModel.login_view_model.LoginViewMod
 
     @Composable
 fun Login(
-    viewModelStoreOwner: ViewModelStoreOwner,
-    navController: NavController,
+        viewModel: LoginViewModel= hiltViewModel(),
+        navController: NavController,
 ) {
 
     val scrollState = rememberScrollState()
 
 
-    val viewModel =
-        ViewModelProvider(viewModelStoreOwner).get(LoginViewModel::class.java)
 
     Column(
         modifier = Modifier

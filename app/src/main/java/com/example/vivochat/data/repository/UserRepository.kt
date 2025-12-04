@@ -120,5 +120,16 @@ class UserRepository @Inject constructor(
         return remoteDataSource.getLoggedUserIdOrNull()
     }
 
+    override suspend fun loginUser(email: String, password: String): Result<String>{
+       return remoteDataSource.loginUser(email,password)
+    }
+
+    override suspend fun signUpUser(
+        email: String,
+        password: String
+    ): Result<String> {
+        return remoteDataSource.signUpUser(email,password)
+    }
+
 
 }
