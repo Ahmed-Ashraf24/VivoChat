@@ -21,6 +21,7 @@ import com.example.vivochat.presentation.ui.screens.nav.component.BottomNavBar
 import com.example.vivochat.presentation.ui.screens.setting.SettingsScreen
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.view.home.Home
+import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -31,7 +32,8 @@ import kotlinx.coroutines.launch
 fun NavScreen(
     navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    sharedViewModel : SharedViewModel
+    sharedViewModel : SharedViewModel,
+    storyViewModel: StoryViewModel
 ) {
     val state = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
@@ -54,9 +56,10 @@ fun NavScreen(
                 0 -> Home(
                     navController = navController,
                     sharedViewModel = sharedViewModel,
-                    viewModel = homeViewModel
+                    viewModel = homeViewModel,
+                    storyViewModel = storyViewModel
                 )
-                1 -> StoryScreen()
+                1 -> StoryScreen(sharedViewModel,homeViewModel,navController,storyViewModel)
                 2 -> SettingsScreen(navController, loggedUser = homeViewModel.user)
             }
 

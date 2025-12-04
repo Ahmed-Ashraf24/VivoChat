@@ -29,7 +29,7 @@ class StoryViewModel @Inject constructor(
 
     val stories : MutableList<Story> = mutableListOf()
 
-    fun uploadStory(file: File,userId:String){
+    fun uploadStory(file: File,user:User){
         _uploadingStoryState.value = UploadingStoryState.UploadingStoryLoading
         var imageUrl : String
         viewModelScope.launch {
@@ -37,9 +37,11 @@ class StoryViewModel @Inject constructor(
                 .onSuccess { url ->
                     imageUrl = url
 
-                    val res = userRepo.uploadStory(userId,imageUrl)
+                    val res = userRepo.uploadStory(user.userId,imageUrl)
 
                     if(res.isSuccess){
+                        val resList = userRepo.getUserStories(user.userId).getOrNull() ?: emptyList()
+                        user.stories = resList
                         _uploadingStoryState.value = UploadingStoryState.UploadingStorySuccess
                     }else{
 

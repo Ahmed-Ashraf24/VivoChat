@@ -128,6 +128,6 @@ fun SignupScreen(
     )
 }
 fun isValidEgyptianPhone(phone: String): Boolean {
-    val regex = Regex("^(010|011|012|015)\\\\d{8}\$")
+    val regex = Regex("^(010|011|012|015)\\d{8}\$")
     return regex.matches(phone)
 }

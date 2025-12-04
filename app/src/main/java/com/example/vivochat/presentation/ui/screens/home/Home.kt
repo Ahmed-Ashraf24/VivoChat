@@ -42,9 +42,9 @@ import java.net.URLEncoder
 @Composable
 fun Home(
     navController: NavController,
-
+    storyViewModel: StoryViewModel,
     viewModel: HomeViewModel,
-    storyVM: StoryViewModel=hiltViewModel(),
+
     messageViewModel: MessageViewModel =hiltViewModel(),
     sharedViewModel: SharedViewModel
 ) {
@@ -53,11 +53,11 @@ fun Home(
     val state = viewModel.userData.collectAsState()
 
 
-    val storyState = storyVM.storyState.collectAsState()
-    val uploadingStoryState = storyVM.uploadingStoryState.collectAsState()
+    val storyState = storyViewModel.storyState.collectAsState()
+    val uploadingStoryState = storyViewModel.uploadingStoryState.collectAsState()
     LaunchedEffect(state.value) {
         if (state.value is HomeState.UserDataSuccess) {
-            storyVM.getAvaUsersStories(viewModel.availableContacts,viewModel.user)
+            storyViewModel.getAvaUsersStories(viewModel.availableContacts,viewModel.user)
             viewModel.resetState()
         }
     }
@@ -65,10 +65,10 @@ fun Home(
     LaunchedEffect(uploadingStoryState.value) {
         if(uploadingStoryState.value is UploadingStoryState.UploadingStorySuccess){
             Toast.makeText(context,"Story uploaded",Toast.LENGTH_SHORT).show()
-            storyVM.resetUploadedStoryState()
+            storyViewModel.resetUploadedStoryState()
         }else if (uploadingStoryState.value is UploadingStoryState.UploadingStoryFailed){
             Toast.makeText(context,"Failed to upload story",Toast.LENGTH_SHORT).show()
-            storyVM.resetUploadedStoryState()
+            storyViewModel.resetUploadedStoryState()
         }
 
     }
@@ -86,7 +86,7 @@ fun Home(
 
         ) {
         if (state.value is HomeState.Idle && storyState.value is StoryState.StorySuccess) {
-            item { HomeHeader(viewModel, navController, storyVM,sharedViewModel) }
+            item { HomeHeader(viewModel, navController, storyViewModel,sharedViewModel) }
             item { Spacer(Modifier.height(10.dp)) }
 
             item { ChatHeader() }

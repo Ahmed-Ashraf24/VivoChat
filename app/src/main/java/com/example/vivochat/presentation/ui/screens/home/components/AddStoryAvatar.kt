@@ -3,6 +3,7 @@ package com.example.vivochat.presentation.view.home.components
 import CircleAvatar
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -17,6 +18,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,8 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.vivochat.R
+import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadingIndicator
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
+import com.example.vivochat.presentation.viewModel.StoryViewModel.UploadingStoryState
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 
@@ -39,16 +44,16 @@ fun AddStoryAvatar(
     sharedViewModel: SharedViewModel
 ) {
 
+
     val context = LocalContext.current
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         uri?.let {
             val file = uriToFile(context, it)
-            storyViewModel.uploadStory(file, viewModel.user.userId)
+            storyViewModel.uploadStory(file, viewModel.user)
         }
     }
-
 
 
 
@@ -58,7 +63,6 @@ fun AddStoryAvatar(
     ) {
         Box(modifier = Modifier.clickable {
             sharedViewModel.sendUser(viewModel.user)
-            Log.d("MYYYYYSER",viewModel.user.toString())
             if (storyViewModel.stories.isNotEmpty()) {
                 navController.navigate("storyViewScreen")
             }

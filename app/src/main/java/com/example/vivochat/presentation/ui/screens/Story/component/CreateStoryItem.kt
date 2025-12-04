@@ -1,6 +1,12 @@
 package com.example.vivochat.presentation.ui.screens.Story.component
 
+import CircleAvatar
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,31 +22,57 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.vivochat.R
 import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.ui.theme.onlineColor
+import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
+import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
+import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
+import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 
-@Preview
 @Composable
-fun CreateStoryItem(modifier: Modifier = Modifier) {
+fun CreateStoryItem(
+    modifier: Modifier = Modifier,
+    storyViewModel: StoryViewModel,
+    viewModel: HomeViewModel,
+    sharedViewModel: SharedViewModel,
+    navController: NavController
+) {
+
+    val context = LocalContext.current
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            val file = uriToFile(context, it)
+            storyViewModel.uploadStory(file, viewModel.user)
+        }
+    }
+
+
     Row(modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Box {
-            Surface(shape = RoundedCornerShape(50.dp)) {
+            Surface(shape = RoundedCornerShape(50.dp), modifier = Modifier.clickable {
+                //open current user story
+                sharedViewModel.sendUser(viewModel.user)
+                if (storyViewModel.stories.isNotEmpty()) {
+                    navController.navigate("storyViewScreen")
+                }
+            }) {
 
-                Image(
-                    painter = painterResource(R.drawable.image),
-                    "profileImage",
-                    modifier = Modifier.size(50.dp),
-                    contentScale = ContentScale.FillBounds
-                )
-
+                CircleAvatar(viewModel.user.imageUrl)
             }
             Surface(
                 modifier = Modifier
+                    .clickable {
+                        imagePickerLauncher.launch("image/*")
+                    }
                     .size(18.dp)
                     .align(Alignment.BottomEnd),
                 shape = RoundedCornerShape(50.dp),
@@ -56,9 +88,11 @@ fun CreateStoryItem(modifier: Modifier = Modifier) {
         }
 
 
-        Column(Modifier
-            .padding(horizontal = 10.dp)
-            .weight(1f)) {
+        Column(
+            Modifier
+                .padding(horizontal = 10.dp)
+                .weight(1f)
+        ) {
             Text("Add Story", fontFamily = Poppins)
             Text(
                 "Disappears after 24 hours",

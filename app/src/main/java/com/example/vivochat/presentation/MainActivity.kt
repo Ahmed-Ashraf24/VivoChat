@@ -22,6 +22,7 @@ import com.example.vivochat.presentation.ui.screens.nav.NavScreen
 import com.example.vivochat.presentation.ui.screens.profile_image.ProfileImageScreen
 import com.example.vivochat.presentation.ui.theme.VivoChatTheme
 import com.example.vivochat.presentation.utility.ThemeManager
+import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.URLDecoder
@@ -30,6 +31,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject lateinit var themeManager: ThemeManager
     val sharedViewModel : SharedViewModel by viewModels()
+    val storyViewModel : StoryViewModel by viewModels ()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -37,6 +39,7 @@ class MainActivity : ComponentActivity() {
 
            val navController = rememberNavController()
             val isDark by themeManager.isDarkMode.collectAsState()
+
             VivoChatTheme(userPreferenceDarkTheme = isDark) {
 
             NavHost(navController, "splash") {
@@ -60,7 +63,8 @@ class MainActivity : ComponentActivity() {
                 composable("navScreen") {
                     NavScreen(
                         navController,
-                        sharedViewModel = sharedViewModel
+                        sharedViewModel = sharedViewModel,
+                        storyViewModel = storyViewModel
                     )
                 }
                 composable("contacts") {navBackStackEntry->
