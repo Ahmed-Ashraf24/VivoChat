@@ -41,11 +41,11 @@ import kotlin.math.log
 
 fun SettingsScreen(
     navController: NavController,
-    setingViewModel: SettingsViewModel=hiltViewModel(),
+    settingViewModel: SettingsViewModel=hiltViewModel(),
     loggedUser: User
 ) {
 
-    val darkMode by setingViewModel.isDarkMode.collectAsState()
+    val darkMode by settingViewModel.isDarkMode.collectAsState()
     var selectedLanguage by remember { mutableStateOf("English") }
     var showLanguageSheet by remember { mutableStateOf(false) }
 
@@ -113,7 +113,7 @@ fun SettingsScreen(
             Switch(
                 checked = darkMode,
                 onCheckedChange = {isChecked ->
-                    setingViewModel.toggleDarkMode()
+                    settingViewModel.toggleDarkMode()
                 }
             )
         }
