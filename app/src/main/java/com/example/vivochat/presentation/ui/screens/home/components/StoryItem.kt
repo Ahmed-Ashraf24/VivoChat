@@ -3,6 +3,8 @@ package com.example.vivochat.presentation.view.home.components
 import CircleAvatar
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +29,7 @@ fun StoryItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         item { AddStoryAvatar(viewModel, storyViewModel, navController, sharedViewModel) }
+        item { Spacer(Modifier.width(5.dp)) }
         items(viewModel.availableContacts.size) {
             if (viewModel.availableContacts[it].stories!!.size > 0 && viewModel.user.userId != viewModel.availableContacts[it].userId) {
                 UserStory(

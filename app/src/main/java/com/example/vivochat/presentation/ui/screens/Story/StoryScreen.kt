@@ -56,7 +56,7 @@ fun StoryScreen(
     ) {
         item {
             CreateStoryItem(
-                Modifier.padding(vertical = 10.dp),
+                Modifier.padding(vertical = 20.dp),
                 storyViewModel,
                 homeViewModel,
                 sharedViewModel,

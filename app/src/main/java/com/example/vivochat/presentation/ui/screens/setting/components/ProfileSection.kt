@@ -1,6 +1,7 @@
 package com.example.vivochat.presentation.ui.screens.setting.components
 
 
+import CircleAvatar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -24,13 +25,8 @@ import com.example.vivochat.presentation.ui.theme.kumbuhFont
 fun ProfileSection(userName:String,userImageUrl:String?,userEmail:String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
 
-        AsyncImage(
-            model =userImageUrl,
-            contentDescription = "profile",
-            modifier = Modifier
-                .size(75.dp)
-                .clip(CircleShape)
-        )
+
+        CircleAvatar(userImageUrl)
 
         Spacer(modifier = Modifier.width(16.dp))
 
