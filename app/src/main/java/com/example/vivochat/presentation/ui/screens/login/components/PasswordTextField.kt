@@ -26,7 +26,7 @@ fun PasswordTextField(value : String,onValueChane:(String)->Unit) {
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.background,
+                color = Color(0xFFE5E5EA),
                 shape = RoundedCornerShape(7.dp)
             ),
         keyboardOptions = KeyboardOptions(
