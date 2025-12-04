@@ -1,9 +1,10 @@
 package com.example.vivochat.domain.entity
 
+import com.google.firebase.Timestamp
+
 data class Story(
-    val id: String,
-    val mediaUrl: String,
-    val mediaType:MediaType,
-    val timestamp: Long,
-    val duration: Long
+    val storyId: String,
+    val imageUrl:String,
+    val watchedBy:List<String>?,
+    val date : Timestamp
 )

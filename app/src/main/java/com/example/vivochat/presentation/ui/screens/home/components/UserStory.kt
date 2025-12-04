@@ -16,15 +16,15 @@ import androidx.compose.ui.unit.sp
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
-fun UserStory(viewModel: HomeViewModel) {
+fun UserStory(name:String,imageUrl:String?) {
     Column(
         modifier = Modifier.width(70.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CircleAvatar(viewModel)
+        CircleAvatar(imageUrl)
         Spacer(Modifier.height(4.dp))
         Text(
-            "Omar Osama",
+            name,
             maxLines = 1,
             fontSize = 10.sp,
             overflow = TextOverflow.Ellipsis

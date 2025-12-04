@@ -4,7 +4,9 @@ import com.example.vivochat.data.dataSource.RemoteDataSource
 import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseIstance
 import com.example.vivochat.data.dto.FirebaseMessage
 import com.example.vivochat.data.dto.LastMessageData
+import com.example.vivochat.data.dto.StoryDto
 import com.example.vivochat.data.dto.UserDto
+import com.google.firebase.Timestamp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -13,6 +15,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
 class FirebaseRemoteDataSource() : RemoteDataSource {
 
@@ -197,7 +200,8 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
                 fullName = doc.getString("fullName") ?: "",
                 userId = doc.getString("userId") ?: "",
                 phoneNum = doc.getString("phoneNum") ?: "",
-                email = doc.getString("email") ?: ""
+                email = doc.getString("email") ?: "",
+                imageUrl = doc.getString("imageUrl")?:""
             )
         }
     }
@@ -251,8 +255,24 @@ class FirebaseRemoteDataSource() : RemoteDataSource {
             }
         }
 
+    override suspend fun uploadStory(userId: String, imageUrl: String):Result<Any>{
+       try{
+           val storyId = UUID.randomUUID().toString()
+           val story = StoryDto(storyId, imageUrl, Timestamp.now())
+           FirebaseIstance.firestore.collection("users")
+               .document(userId)
+               .collection("stories")
+               .document(storyId)
+               .set(story)
+               .await()
+
+           return Result.success("Story uploaded")
+       }catch (e : Exception){
+           return Result.failure(Exception("Failed to upload story"))
+       }
 
 
+    }
 
 
 }

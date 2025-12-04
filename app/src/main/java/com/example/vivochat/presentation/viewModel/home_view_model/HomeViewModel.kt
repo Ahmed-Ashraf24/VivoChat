@@ -7,14 +7,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.domain.entity.User
+import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
+import com.example.vivochat.presentation.ui.screens.Story.StoryScreen
 import com.example.vivochat.presentation.ui.screens.login.components.LoginForm
+import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaState
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.io.File
 
 class HomeViewModel(
+    private val mediaRepo: IMediaRepository,
     private val userRepo: IUserRepository,
     private val firebaseAuth: FirebaseAuth,
     private val context: Context
@@ -52,7 +57,7 @@ class HomeViewModel(
 
             }
         } catch (e: Exception) {
-            Log.d("catch the erro", e.toString())
+            Log.d("catch the error", e.toString())
         }
     }
 
@@ -87,4 +92,42 @@ class HomeViewModel(
         return contactsList
     }
 
+
+
+
+
+
+
+
+
+    private var _storyState = MutableStateFlow<StoryState>(StoryState.Idle)
+    val storyState: StateFlow<StoryState>
+        get() = _storyState
+
+
+    fun uploadStory(file: File){
+        var imageUrl : String
+        viewModelScope.launch {
+
+
+            mediaRepo.uploadImage(file)
+                .onSuccess { url ->
+                    imageUrl = url
+
+                    val res = userRepo.uploadStory(user.userId,imageUrl)
+
+                    if(res.isSuccess){
+
+                        _storyState.value = StoryState.StorySuccess
+                    }else{
+
+                        _storyState.value = StoryState.StoryFailed(res.isFailure.toString())
+                    }
+                }
+                .onFailure { exception ->
+
+                    _storyState.value = StoryState.StoryFailed(exception.toString())
+                }
+        }
+    }
 }

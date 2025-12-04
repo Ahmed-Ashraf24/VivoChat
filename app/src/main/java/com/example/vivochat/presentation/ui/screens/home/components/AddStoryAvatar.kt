@@ -1,6 +1,9 @@
 package com.example.vivochat.presentation.view.home.components
 
 import CircleAvatar
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,28 +20,45 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vivochat.R
+import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
 fun AddStoryAvatar(viewModel: HomeViewModel) {
+//From this composable we want to upload a sstory okayyyy
+    val context = LocalContext.current
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            val file = uriToFile(context, it)
+            viewModel.uploadStory(file)
+        }
+    }
+
+
+
 
     Column(
         modifier = Modifier.padding(start = 5.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box {
-            CircleAvatar(viewModel)
+            CircleAvatar(viewModel.user.imageUrl)
             IconButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .offset(x = (15).dp, y = (15).dp),
-                onClick = {}) {
+                onClick = {
+                    imagePickerLauncher.launch("image/*")
+                }) {
                 Icon(
                     painter = painterResource(R.drawable.add),
                     contentDescription = null,

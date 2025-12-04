@@ -9,4 +9,5 @@ interface IUserRepository{
     suspend fun getAllUsers(): Result<List<User>>
     suspend fun filterContacts(contactList:List<Contact>): Pair<List<User>,List<Contact>>
     suspend fun uploadUserImage(userId: String,imageUrl:String): Result<Any>
+    suspend fun uploadStory(userId:String,imageUrl:String): Result<Any>
 }

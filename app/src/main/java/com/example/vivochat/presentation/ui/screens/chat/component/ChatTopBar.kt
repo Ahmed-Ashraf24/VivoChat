@@ -21,12 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.vivochat.R
 import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.ui.theme.onlineColor
 
 @Composable
-fun ChatTopBar(modifier: Modifier = Modifier,userName:String,onBackClicked:()->Unit) {
+fun ChatTopBar(modifier: Modifier = Modifier,userImageUrl:String,userName:String,onBackClicked:()->Unit) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Icon(
             painter = painterResource(R.drawable.outline_arrow_back_ios_24),
@@ -34,8 +35,8 @@ fun ChatTopBar(modifier: Modifier = Modifier,userName:String,onBackClicked:()->U
             modifier = Modifier.size(24.dp).clickable{onBackClicked()},
             tint = Color.Gray
         )
-        Image(
-            painter = painterResource(R.drawable.image),
+        AsyncImage(
+            model = userImageUrl.ifEmpty { painterResource(R.drawable.image) },
             contentDescription = "profile",
             modifier = Modifier
                 .size(35.dp)

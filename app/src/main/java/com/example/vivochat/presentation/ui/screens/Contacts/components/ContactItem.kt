@@ -1,6 +1,9 @@
-package com.example.vivochat.presentation.ui.screens.home.components
+package com.example.vivochat.presentation.ui.screens.Contacts.components
 
 import CircleAvatar
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,36 +17,45 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.vivochat.domain.entity.LastMessagePreview
-import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
+import com.example.vivochat.domain.entity.Contact
 
 @Composable
-fun ChatItem(lastMessagePreview: String="",name:String,imageUrl:String?,onChatClicked:()->Unit,viewModel: HomeViewModel) {
-
+fun ContactItem(contact: Contact) {
+    val context = LocalContext.current
     Row(
-
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp).clickable{
-            onChatClicked()
-        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                try {
+                    Log.d("phoneeee num", contact.phoneNum)
+                    val uri = Uri.parse("smsto:${contact.phoneNum}")
+                    val intent = Intent(Intent.ACTION_SENDTO, uri).apply {
+                        putExtra("sms_body", "Join me on Vivo Chat! Let’s chat there. \uD83D\uDE04\n")
+                    }
+                    context.startActivity(intent)
+                } catch (e: Exception) {
+                    Log.d("Error", e.toString())
+                }
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
-        ) {
+    ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CircleAvatar(imageUrl)
+            UserAvatar()
             Column(
                 verticalArrangement = Arrangement.Center,
             ) {
-                Text(name, fontSize = 17.sp)
+                Text(contact.name, fontSize = 17.sp)
                 Spacer(Modifier.height(5.dp))
                 Text(
-                    text = lastMessagePreview,
+                    "I'm un Available",
                     maxLines = 1,
                     fontSize = 12.sp,
                     overflow = TextOverflow.Ellipsis,
@@ -52,6 +64,5 @@ fun ChatItem(lastMessagePreview: String="",name:String,imageUrl:String?,onChatCl
 
             }
         }
-        Text("19:45")
     }
 }

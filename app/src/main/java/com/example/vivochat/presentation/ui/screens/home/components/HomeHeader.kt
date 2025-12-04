@@ -2,6 +2,7 @@ package com.example.vivochat.presentation.view.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.vivochat.R
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeState
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
@@ -32,9 +34,11 @@ import com.google.accompanist.placeholder.material.shimmer
 
 @Composable
 fun HomeHeader(
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    navController: NavController
 ) {
-    val userDataState = viewModel.userData.collectAsState()
+
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -43,26 +47,20 @@ fun HomeHeader(
     ) {
         Column(
         ) {
-            if(userDataState.value is HomeState.DataSuccess){
-                Text(viewModel.user.fullName, fontSize = 24.sp, fontWeight = FontWeight.Medium)
-            }else{
-                Box(
-                    modifier = Modifier
-                        .height(28.dp)
-                        .width(120.dp)
-                        .placeholder(
-                            visible = true,
-                            highlight = PlaceholderHighlight.shimmer(),
-                            color = Color.LightGray,
-                            shape = RoundedCornerShape(4.dp)
-                        )
-                )
-            }
+             Text(viewModel.user.fullName, fontSize = 24.sp, fontWeight = FontWeight.Medium)
+
         }
         Box(
             modifier = Modifier
                 .width(40.dp)
                 .height(40.dp)
+                .clickable {
+
+                    navController.navigate("contacts")
+                    navController.currentBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("unAvailableContacts", viewModel.unAvailableContacts)
+                }
                 .background(color = Color(0xFFEEEEEE), shape = RoundedCornerShape(12.dp))
         ) {
             Image(
@@ -74,5 +72,5 @@ fun HomeHeader(
         }
     }
     Spacer(Modifier.height(10.dp))
-    StoryItem(viewModel)
+   StoryItem(viewModel)
 }

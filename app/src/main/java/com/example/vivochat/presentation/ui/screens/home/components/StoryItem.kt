@@ -16,9 +16,10 @@ fun StoryItem(viewModel: HomeViewModel) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         item { AddStoryAvatar(viewModel) }
-        items(12) {
-            UserStory(viewModel)
-
+        items(viewModel.availableContacts.size) {
+            if(viewModel.availableContacts[it].userId!=viewModel.user.userId){
+                UserStory(viewModel.availableContacts[it].fullName,viewModel.availableContacts[it].imageUrl)
+            }
         }
 
     }

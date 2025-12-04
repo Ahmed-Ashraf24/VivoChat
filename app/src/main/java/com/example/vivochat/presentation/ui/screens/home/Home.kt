@@ -1,5 +1,7 @@
 package com.example.vivochat.presentation.view.home
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,8 +21,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import com.example.vivochat.data.dataSource.firebase_remote_datasource.FirebaseRemoteDataSource
-import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseIstance
 import com.example.vivochat.data.repository.MessageRepository
+import com.example.vivochat.domain.entity.User
+import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
@@ -30,16 +33,19 @@ import com.example.vivochat.presentation.viewModel.home_view_model.HomeState
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModelFac
 import com.google.firebase.auth.FirebaseAuth
+import java.net.URLEncoder
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Composable
 fun Home(
+    mediaRepo: IMediaRepository,
     navController: NavController,
     viewModelStoreOwner: ViewModelStoreOwner,
     userRepo: IUserRepository,
     firebaseAuth: FirebaseAuth
 ) {
 
-    val viewModelFac = HomeViewModelFac(userRepo, firebaseAuth, LocalContext.current)
+    val viewModelFac = HomeViewModelFac(mediaRepo ,userRepo, firebaseAuth, LocalContext.current)
     val viewModel =
         ViewModelProvider(viewModelStoreOwner, viewModelFac).get(HomeViewModel::class.java)
     val messageViewModel= MessageViewModel(MessageRepository(FirebaseRemoteDataSource()))
@@ -51,10 +57,11 @@ fun Home(
             .fillMaxSize()
             .background(color = Color.White)
             .imePadding()
-            .padding(top = 50.dp),
+            .padding(top = 40.dp),
 
         ) {
-        item { HomeHeader(viewModel) }
+        if (state.value is HomeState.DataSuccess) {
+         item { HomeHeader(viewModel, navController) }
         item { Spacer(Modifier.height(10.dp)) }
 
         item { ChatHeader() }
@@ -68,27 +75,22 @@ fun Home(
                 }
                 val lastMessageMap = messageViewModel.lastMessages.collectAsState()
                 val lastMessage = lastMessageMap.value[reciverId]
+                val encodedUrl = URLEncoder.encode(viewModel.availableContacts[it].imageUrl ?: "", "UTF-8")
+                Log.d("avilable contact data",viewModel.availableContacts.toString())
                 ChatItem(lastMessage?.message?:"",
-                    viewModel.availableContacts[it].fullName,
-                    { navController.navigate("chat/${viewModel.availableContacts[it].fullName}/${reciverId}") },
+                    viewModel.availableContacts[it].fullName, imageUrl = viewModel.availableContacts[it].imageUrl,
+                    { navController.navigate("chat/${viewModel.availableContacts[it].fullName}/${reciverId}/${encodedUrl}") },
                     viewModel
                 )
                 Spacer(Modifier.height(10.dp))
             }
         } else {
+
             item { Text("Loading") }
         }
 
-        item { Text("All contacts") }
-
-        if (state.value is HomeState.DataSuccess) {
-            items(viewModel.unAvailableContacts.size) {
-                ChatItem(lastMessagePreview = "invite to the app",name = viewModel.unAvailableContacts[it].name, onChatClicked = { navController.navigate("chat") }, viewModel = viewModel)
-                Spacer(Modifier.height(10.dp))
-            }
-        } else {
-            item { Text("Loading") }
-        }
     }
+
+}
 
 }

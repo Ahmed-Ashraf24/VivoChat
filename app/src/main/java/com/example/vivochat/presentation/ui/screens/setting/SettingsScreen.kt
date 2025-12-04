@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import com.example.vivochat.R
+import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.setting.components.ProfileSection
 import com.example.vivochat.presentation.ui.screens.setting.components.SettingsItem
@@ -31,10 +32,10 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun SettingsScreen(navController: NavController,viewModelStoreOwner: ViewModelStoreOwner,
+fun SettingsScreen(navController: NavController,mediaRepository: IMediaRepository,viewModelStoreOwner: ViewModelStoreOwner,
                    userRepository: IUserRepository,
                    firebaseAuth: FirebaseAuth) {
-    val viewModelFac = HomeViewModelFac(userRepository, firebaseAuth, LocalContext.current)
+    val viewModelFac = HomeViewModelFac(mediaRepository,userRepository, firebaseAuth, LocalContext.current)
     val viewModel =
         ViewModelProvider(viewModelStoreOwner, viewModelFac).get(HomeViewModel::class.java)
 

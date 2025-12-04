@@ -29,7 +29,7 @@ import com.example.vivochat.presentation.viewModel.MessageViewModel
 
 @SuppressLint("ViewModelConstructorInComposable")
 @Composable
-fun ChatScreen(navController: NavController,reciverName:String, reciverId:String) {
+fun ChatScreen(navController: NavController,reciverName:String, reciverId:String,reciverImageUrl:String) {
     var message by remember { mutableStateOf("") }
     val messageViewModel= MessageViewModel(MessageRepository(FirebaseRemoteDataSource()))
     messageViewModel.getMessages(FirebaseIstance.firebaseAuth.currentUser!!.uid,reciverId)
@@ -39,7 +39,7 @@ fun ChatScreen(navController: NavController,reciverName:String, reciverId:String
             ChatTopBar(
                 Modifier
                     .padding(top = 30.dp)
-                    .padding(horizontal = 10.dp), userName = reciverName,
+                    .padding(horizontal = 10.dp), userImageUrl = reciverImageUrl, userName = reciverName,
                 onBackClicked = {navController.navigate("navscreen")}
             )
         },

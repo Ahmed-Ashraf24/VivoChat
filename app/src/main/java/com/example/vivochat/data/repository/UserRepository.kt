@@ -60,9 +60,7 @@ class UserRepository(
 
 
         for (i in contactList) {
-            if(i.phoneNum=="01287106301"){
-                Log.d("i found him","ahmed")
-            }
+
 
             var userFound = false
             for (j in allUsers) {
@@ -90,6 +88,15 @@ class UserRepository(
             return Result.success("Image uploaded successfully")
         }else{
             return Result.failure(Exception("failed to upload user pic"))
+        }
+    }
+
+    override suspend fun uploadStory(userId: String, imageUrl: String): Result<Any> {
+         val res = remoteDataSource.uploadStory(userId,imageUrl)
+        if(res.isSuccess){
+            return Result.success("story uploaded successfully")
+        }else{
+            return Result.failure(Exception("failed to upload story"))
         }
     }
 

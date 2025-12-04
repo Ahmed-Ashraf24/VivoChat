@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
+import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.Story.StoryScreen
 import com.example.vivochat.presentation.ui.screens.nav.component.BottomNavBar
@@ -25,6 +26,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NavScreen(
+    mediaRepo: IMediaRepository,
     navController: NavController,
     viewModelStoreOwner: ViewModelStoreOwner,
     userRepository: IUserRepository,
@@ -49,13 +51,14 @@ fun NavScreen(
 
             when (pageIndex) {
                 0 -> Home(
+                    mediaRepo,
                     navController = navController,
                     viewModelStoreOwner,
                     userRepository,
                     firebaseAuth
                 )
                 1 -> StoryScreen()
-                2 -> SettingsScreen(navController,viewModelStoreOwner,userRepository,firebaseAuth)
+                2 -> SettingsScreen(navController,   mediaRepo,viewModelStoreOwner,userRepository,firebaseAuth)
             }
 
         }

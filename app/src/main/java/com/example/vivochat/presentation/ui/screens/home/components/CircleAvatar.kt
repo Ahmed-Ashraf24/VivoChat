@@ -21,38 +21,36 @@ import com.example.vivochat.presentation.viewModel.home_view_model.HomeViewModel
 
 @Composable
 fun CircleAvatar(
-    viewModel: HomeViewModel
+    imageUrl: String?
 ) {
-    val state = viewModel.userData.collectAsState()
 
-    if (state.value is HomeState.DataSuccess) {
-        if (viewModel.user.imageUrl == null) {
-            Image(
-                painter = painterResource(R.drawable.ronaldo),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .height(60.dp)
-                    .width(60.dp)
-                    .clip(CircleShape)
-                    .border(1.dp, Color.Gray, CircleShape)
-            )
-        } else {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(viewModel.user.imageUrl)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .height(60.dp)
-                    .width(60.dp)
-                    .clip(CircleShape)
-                    .border(1.dp, Color.Gray, CircleShape),
-                placeholder = painterResource(R.drawable.addcontact),
-                error = painterResource(R.drawable.ronaldo)
-            )
-        }
-    }
+   if(imageUrl==null){
+       Image(
+           painter = painterResource(R.drawable.ronaldo),
+           contentDescription = null,
+           contentScale = ContentScale.Crop,
+           modifier = Modifier
+               .height(60.dp)
+               .width(60.dp)
+               .clip(CircleShape)
+               .border(1.dp, Color.Gray, CircleShape)
+       )
+   }else{
+       AsyncImage(
+           model = ImageRequest.Builder(LocalContext.current)
+               .data(imageUrl)
+               .crossfade(true)
+               .build(),
+           contentDescription = null,
+           contentScale = ContentScale.Crop,
+           modifier = Modifier
+               .height(60.dp)
+               .width(60.dp)
+               .clip(CircleShape)
+               .border(1.dp, Color.Gray, CircleShape),
+           placeholder = painterResource(R.drawable.addcontact),
+           error = painterResource(R.drawable.ronaldo)
+       )
+   }
+
 }
