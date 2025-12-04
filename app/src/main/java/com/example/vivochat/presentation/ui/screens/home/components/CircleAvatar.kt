@@ -26,7 +26,7 @@ fun CircleAvatar(
 
    if(imageUrl==null){
        Image(
-           painter = painterResource(R.drawable.profile_ic),
+           painter = painterResource(R.drawable.anonymoususer),
            contentDescription = null,
            contentScale = ContentScale.Crop,
            modifier = Modifier
@@ -48,8 +48,8 @@ fun CircleAvatar(
                .width(60.dp)
                .clip(CircleShape)
                .border(1.dp, Color.Gray, CircleShape),
-           placeholder = painterResource(R.drawable.addcontact),
-           error = painterResource(R.drawable.ronaldo)
+           placeholder = painterResource(R.drawable.anonymoususer),
+           error = painterResource(R.drawable.anonymoususer)
        )
    }
 

@@ -1,6 +1,7 @@
 package com.example.vivochat.presentation.ui.screens.setting.components
 
 
+import CircleAvatar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -27,28 +28,8 @@ import com.example.vivochat.presentation.ui.theme.kumbuhFont
 fun ProfileSection(userName:String,userImageUrl:String?,userEmail:String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
 
-        if(userImageUrl?.isEmpty() == true){
-            Image(
-                painter = painterResource(R.drawable.profile_ic),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .height(60.dp)
-                    .width(60.dp)
-                    .clip(CircleShape)
-                    .border(1.dp, Color.Gray, CircleShape)
-            )
-        }else{
-            AsyncImage(
-                model =userImageUrl,
-                contentDescription = "profile",
-                placeholder = painterResource(R.drawable.profile_ic),
-                modifier = Modifier
-                    .size(75.dp)
-                    .clip(CircleShape)
-            )
-        }
 
+        CircleAvatar(userImageUrl)
 
         Spacer(modifier = Modifier.width(16.dp))
 

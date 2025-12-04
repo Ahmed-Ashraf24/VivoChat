@@ -45,10 +45,9 @@ fun AddStoryAvatar(
     ) { uri: Uri? ->
         uri?.let {
             val file = uriToFile(context, it)
-            storyViewModel.uploadStory(file, viewModel.user.userId)
+            storyViewModel.uploadStory(file, viewModel.user)
         }
     }
-
 
 
 
@@ -58,7 +57,6 @@ fun AddStoryAvatar(
     ) {
         Box(modifier = Modifier.clickable {
             sharedViewModel.sendUser(viewModel.user)
-            Log.d("MYYYYYSER",viewModel.user.toString())
             if (storyViewModel.stories.isNotEmpty()) {
                 navController.navigate("storyViewScreen")
             }

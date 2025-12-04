@@ -50,14 +50,14 @@ fun ChatTopBar(modifier: Modifier = Modifier,userImageUrl:String,userName:String
                 .padding(horizontal = 8.dp)
         ) {
             Text(userName, fontSize = 18.sp, fontFamily = Poppins)
-            Row(verticalAlignment = Alignment.CenterVertically) {
+           /* Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Active", fontSize = 10.sp, fontFamily = Poppins, color = Color.Gray, modifier = Modifier.padding(end = 5.dp))
                 Surface(
                     Modifier.size(5.dp),
                     color = onlineColor,
                     shape = RoundedCornerShape(50.dp)
                 ) {}
-            }
+            }*/
         }
 
     }
