@@ -24,10 +24,6 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import com.example.vivochat.data.dataSource.firebase_remote_datasource.FirebaseRemoteDataSource
 import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseInstance.firebaseAuth
-import com.example.vivochat.data.repository.MessageRepository
-import com.example.vivochat.domain.entity.User
-import com.example.vivochat.domain.repository.IMediaRepository
-import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItemShimmer
@@ -41,7 +37,6 @@ import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryState
 import com.example.vivochat.presentation.viewModel.StoryViewModel.UploadingStoryState
 import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
-import com.google.firebase.auth.FirebaseAuth
 import java.net.URLEncoder
 
 @Composable

@@ -59,8 +59,10 @@ fun AddStoryAvatar(
         Box(modifier = Modifier.clickable {
             sharedViewModel.sendUser(viewModel.user)
             Log.d("MYYYYYSER",viewModel.user.toString())
-            navController.navigate("storyViewScreen")
-        }) {
+            if (storyViewModel.stories.isNotEmpty()) {
+                navController.navigate("storyViewScreen")
+            }
+            }) {
             CircleAvatar(viewModel.user.imageUrl)
             IconButton(
                 modifier = Modifier

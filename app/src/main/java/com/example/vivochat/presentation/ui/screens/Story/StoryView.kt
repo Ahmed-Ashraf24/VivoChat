@@ -45,7 +45,7 @@ fun StoryView(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
-                model = story?.get(index)!!.imageUrl,
+                model = story?.getOrNull(index)?.imageUrl,
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Fit
