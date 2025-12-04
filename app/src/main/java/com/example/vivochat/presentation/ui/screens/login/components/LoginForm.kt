@@ -39,7 +39,7 @@ fun LoginForm(modifier: Modifier = Modifier,viewModel: LoginViewModel,navControl
             Toast.makeText(ctx,message,Toast.LENGTH_SHORT).show()
         }else if(loginState.value is LoginState.Success){
             navController.navigate("navScreen")
-            navController.popBackStack()
+
         }
     }
     DisposableEffect(Unit) {

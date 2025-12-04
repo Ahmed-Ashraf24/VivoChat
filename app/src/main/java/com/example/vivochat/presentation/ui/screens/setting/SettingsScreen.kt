@@ -121,7 +121,7 @@ fun SettingsScreen(
             onClick = {
                 settingViewModel.signOut()
                 navController.navigate("login")
-                navController.popBackStack()
+
             }
         )
 
