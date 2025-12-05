@@ -48,9 +48,6 @@ class UserViewModel @Inject constructor(
                     availableContacts = pair.first
                     unAvailableContacts = pair.second
                     _userDataState.value = UserState.UserDataSuccess
-
-
-
                 } else {
                     _userDataState.value = UserState.UserDataFailed
                 }
@@ -59,6 +56,7 @@ class UserViewModel @Inject constructor(
         } catch (e: Exception) {
             Log.d("catch the error", e.toString())
         }
+
     }
 
 
@@ -108,5 +106,9 @@ class UserViewModel @Inject constructor(
                     _storyState.value = StoryState.StoryFailed(exception.toString())
                 }
         }
+    }
+
+    fun allSuccessState(){
+        _userDataState.value = UserState.AllSuccess
     }
 }

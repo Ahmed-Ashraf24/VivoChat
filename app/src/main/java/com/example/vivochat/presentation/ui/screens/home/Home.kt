@@ -10,10 +10,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.media3.common.util.Log
 import androidx.navigation.NavController
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
@@ -28,6 +32,8 @@ import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryState
 import com.example.vivochat.presentation.viewModel.StoryViewModel.UploadingStoryState
 import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import java.net.URLEncoder
 
 @Composable
@@ -35,83 +41,94 @@ fun Home(
     navController: NavController,
     storyViewModel: StoryViewModel,
     viewModel: UserViewModel,
-    storyVM: StoryViewModel=hiltViewModel(),
-    messageViewModel: MessageViewModel =hiltViewModel(),
+    storyVM: StoryViewModel = hiltViewModel(),
+    messageViewModel: MessageViewModel = hiltViewModel(),
     sharedViewModel: SharedViewModel
 ) {
 
     val context = LocalContext.current
     val state = viewModel.userDataState.collectAsState()
+    val isRefreshing = remember { mutableStateOf(false) }
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing.value)
 
 
     val storyState = storyViewModel.storyState.collectAsState()
     val uploadingStoryState = storyViewModel.uploadingStoryState.collectAsState()
     LaunchedEffect(state.value) {
         if (state.value is UserState.UserDataSuccess) {
-            storyViewModel.getAvaUsersStories(viewModel.availableContacts,viewModel.user)
-
+            storyViewModel.getAvaUsersStories(viewModel.availableContacts, viewModel.user)
+            viewModel.allSuccessState()
         }
     }
 
     LaunchedEffect(uploadingStoryState.value) {
-        if(uploadingStoryState.value is UploadingStoryState.UploadingStorySuccess){
-            Toast.makeText(context,"Story uploaded",Toast.LENGTH_SHORT).show()
+        if (uploadingStoryState.value is UploadingStoryState.UploadingStorySuccess) {
+            Toast.makeText(context, "Story uploaded", Toast.LENGTH_SHORT).show()
             storyViewModel.resetUploadedStoryState()
-        }else if (uploadingStoryState.value is UploadingStoryState.UploadingStoryFailed){
-            Toast.makeText(context,"Failed to upload story",Toast.LENGTH_SHORT).show()
+        } else if (uploadingStoryState.value is UploadingStoryState.UploadingStoryFailed) {
+            Toast.makeText(context, "Failed to upload story", Toast.LENGTH_SHORT).show()
             storyViewModel.resetUploadedStoryState()
         }
 
     }
 
-    if(uploadingStoryState.value == UploadingStoryState.UploadingStoryLoading){
+    if (uploadingStoryState.value == UploadingStoryState.UploadingStoryLoading) {
         StoryUploadingIndicator()
     }
 
+    SwipeRefresh(
+        state = swipeRefreshState,
+        onRefresh = {
+            viewModel.getUserData()
+        }
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .imePadding()
+                .padding(top = 40.dp),
+            ) {
+            if (state.value is UserState.AllSuccess && storyState.value is StoryState.StorySuccess) {
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .imePadding()
-            .padding(top = 40.dp),
+                item { HomeHeader(viewModel, navController, storyViewModel, sharedViewModel) }
+                item { Spacer(Modifier.height(10.dp)) }
 
-        ) {
-        if (state.value is UserState.UserDataSuccess && storyState.value is StoryState.StorySuccess) {
-            item { HomeHeader(viewModel, navController, storyViewModel,sharedViewModel) }
-            item { Spacer(Modifier.height(10.dp)) }
+                item { ChatHeader() }
 
-            item { ChatHeader() }
-
-            item { Spacer(Modifier.height(10.dp)) }
-            items(viewModel.availableContacts.size) {
-                val reciverId=viewModel.availableContacts[it].userId
-                LaunchedEffect( reciverId) {
-                    messageViewModel.getLastMessage( reciverId)
+                item { Spacer(Modifier.height(10.dp)) }
+                items(viewModel.availableContacts.size) {
+                    val reciverId = viewModel.availableContacts[it].userId
+                    LaunchedEffect(reciverId) {
+                        messageViewModel.getLastMessage(reciverId)
+                    }
+                    val lastMessageMap = messageViewModel.lastMessages.collectAsState()
+                    val lastMessage = lastMessageMap.value[reciverId]
+                    val encodedUrl =
+                        URLEncoder.encode(viewModel.availableContacts[it].imageUrl ?: "", "UTF-8")
+                    ChatItem(
+                        lastMessage?.message ?: "",
+                        timeOfMessage = lastMessage?.date,
+                        viewModel.availableContacts[it].fullName,
+                        imageUrl = viewModel.availableContacts[it].imageUrl,
+                        { navController.navigate("chat/${viewModel.availableContacts[it].fullName}/${reciverId}/${encodedUrl}") },
+                        viewModel
+                    )
+                    Spacer(Modifier.height(10.dp))
                 }
-                val lastMessageMap = messageViewModel.lastMessages.collectAsState()
-                val lastMessage = lastMessageMap.value[reciverId]
-                val encodedUrl = URLEncoder.encode(viewModel.availableContacts[it].imageUrl ?: "", "UTF-8")
-                ChatItem(lastMessage?.message?:"", timeOfMessage = lastMessage?.date,
-                    viewModel.availableContacts[it].fullName, imageUrl = viewModel.availableContacts[it].imageUrl,
-                    { navController.navigate("chat/${viewModel.availableContacts[it].fullName}/${reciverId}/${encodedUrl}") },
-                    viewModel
-                )
-                Spacer(Modifier.height(10.dp))
-            }
-        } else {
-            item { HomeHeaderShimmer() }
-            item { Spacer(Modifier.height(10.dp)) }
+            } else {
+                item { HomeHeaderShimmer() }
+                item { Spacer(Modifier.height(10.dp)) }
 
-            item { ChatHeader() }
+                item { ChatHeader() }
 
-            items(6) {
-                ChatItemShimmer()
-                Spacer(Modifier.height(16.dp))
+                items(6) {
+                    ChatItemShimmer()
+                    Spacer(Modifier.height(16.dp))
+                }
             }
+
+
         }
 
-
-
-}
-
+    }
 }

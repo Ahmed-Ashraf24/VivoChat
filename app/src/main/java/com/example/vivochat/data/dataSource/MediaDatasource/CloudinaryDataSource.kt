@@ -11,9 +11,9 @@ import javax.inject.Inject
 class CloudinaryDataSource @Inject constructor(): MediaDataSource {
     private val cloudinary = Cloudinary(
         ObjectUtils.asMap(
-            "cloud_name", "name ",
-            "api_key", "api key",
-            "api_secret", "secret key"
+            "cloud_name", "dblglypwc",
+            "api_key", "751973516836692",
+            "api_secret", "yX-UsHhY3A5fXklw0Y4qUgusjKw"
         )
     )
     override suspend fun uploadImage(file: File): Result<String> = withContext(Dispatchers.IO) {

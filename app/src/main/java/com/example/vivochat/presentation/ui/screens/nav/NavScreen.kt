@@ -42,7 +42,7 @@ fun NavScreen(
     var bottomBarEnabledState by remember { mutableStateOf(false) }
     val state = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
-        if (userDataState.value==UserState.UserDataSuccess&&userStoriesState.value == StoryState.StorySuccess){
+        if (userDataState.value==UserState.AllSuccess&&userStoriesState.value == StoryState.StorySuccess){
           bottomBarEnabledState=true
         }
 
