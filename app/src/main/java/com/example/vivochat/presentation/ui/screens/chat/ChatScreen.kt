@@ -22,17 +22,26 @@ import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageView
 
 
 @Composable
-fun ChatScreen(messageViewModel: MessageViewModel = hiltViewModel(), navController: NavController, reciverName:String, reciverId:String, reciverImageUrl:String) {
+fun ChatScreen(
+    messageViewModel: MessageViewModel = hiltViewModel(),
+    navController: NavController,
+    reciverName: String,
+    reciverId: String,
+    reciverImageUrl: String
+) {
     var message by remember { mutableStateOf("") }
     messageViewModel.getMessages(reciverId)
-    val messageList =messageViewModel.messageData.collectAsState()
-    Scaffold(modifier = Modifier.imePadding(),
+    val messageList = messageViewModel.messageData.collectAsState()
+    Scaffold(
+        modifier = Modifier.imePadding(),
         topBar = {
             ChatTopBar(
                 Modifier
                     .padding(top = 30.dp)
-                    .padding(horizontal = 10.dp), userImageUrl = reciverImageUrl, userName = reciverName,
-                onBackClicked = {navController.navigate("navscreen")}
+                    .padding(horizontal = 10.dp),
+                userImageUrl = reciverImageUrl,
+                userName = reciverName,
+                onBackClicked = { navController.navigate("navscreen") }
             )
         },
         bottomBar = {
@@ -41,19 +50,26 @@ fun ChatScreen(messageViewModel: MessageViewModel = hiltViewModel(), navControll
                     vertical = 20.dp,
                     horizontal = 10.dp
                 ), message = message,
-                onMessageChange = {message=it},
-                onSendClicked = {messageViewModel.sendMessage(
-                    message = message,
-                    reciverId = reciverId
-                )
-                message=""
+                onMessageChange = { message = it },
+                onSendClicked = {
+                    messageViewModel.sendMessage(
+                        message = message,
+                        reciverId = reciverId
+                    )
+                    message = ""
                 }
             )
         }) { innerPadding ->
 
-        LazyColumn (Modifier.padding(innerPadding)) {
+        LazyColumn(Modifier.padding(innerPadding)) {
             item {
-                ConversationMessagesComponent(Modifier.fillMaxWidth().padding(horizontal = 10.dp),messageList.value, profileImage = reciverImageUrl)
+                ConversationMessagesComponent(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                    messageList.value,
+                    profileImage = reciverImageUrl
+                )
 
             }
         }
