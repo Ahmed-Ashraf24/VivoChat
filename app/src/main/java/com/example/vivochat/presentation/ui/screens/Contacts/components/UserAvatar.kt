@@ -17,7 +17,7 @@ import com.example.vivochat.R
 @Composable
 fun UserAvatar() {
     Image(
-        painter = painterResource(R.drawable.ronaldo),
+        painter = painterResource(R.drawable.anonymoususer),
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = Modifier

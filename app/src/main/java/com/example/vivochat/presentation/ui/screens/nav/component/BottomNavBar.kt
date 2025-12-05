@@ -2,6 +2,8 @@ package com.example.vivochat.presentation.ui.screens.nav.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +25,7 @@ fun BottomNavBar(modifier: Modifier = Modifier,onTabSelected:(Int)->Unit) {
 
         selectedTabIndex = selectedTab,
         modifier = modifier
-            .height(70.dp)
+            .navigationBarsPadding()
             .fillMaxWidth(),
         indicator = {},
         divider = {}

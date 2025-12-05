@@ -24,7 +24,7 @@ import com.example.vivochat.presentation.ui.theme.onlineColor
 @Composable
 fun ChatBottomBar(modifier: Modifier = Modifier, message: String,onMessageChange:(String)->Unit,onSendClicked:()->Unit) {
     Row(modifier = modifier
-        .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        .fillMaxWidth().padding(bottom = 30.dp), verticalAlignment = Alignment.CenterVertically) {
 
         Surface(modifier = Modifier.weight(1f),color = onlineColor.copy(alpha = .1f), shape = RoundedCornerShape(15.dp)) {
             BasicTextField(
