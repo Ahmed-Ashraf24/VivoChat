@@ -46,7 +46,7 @@ class CloudinaryDataSource @Inject constructor(): MediaDataSource {
                 .publicId(publicId)
                 .generate()
 
-            Result.success(VideoResult(directUrl, hlsUrl, publicId))
+            Result.success(VideoResult(directUrl, hlsUrl))
         } catch (e: Exception) {
             Result.failure(e)
         }
