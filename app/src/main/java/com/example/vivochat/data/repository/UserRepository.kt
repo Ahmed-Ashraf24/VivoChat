@@ -1,12 +1,9 @@
 package com.example.vivochat.data.repository
 
-import android.util.Log
 import com.example.vivochat.data.dataSource.RemoteDataSource
 import com.example.vivochat.data.dto.StoryDto
-import com.example.vivochat.data.dto.UserDto
 import com.example.vivochat.data.mapper.StoryMapper
 import com.example.vivochat.data.mapper.UserMapper
-import com.example.vivochat.data.mappers.convertToUserList
 import com.example.vivochat.data.mappers.toUser
 import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.domain.entity.Story
