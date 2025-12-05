@@ -14,17 +14,3 @@ fun UserDto.toUser(): User {
         null
     )
 }
-
-fun convertToUserList(usersDto: List<UserDto>): List<User> {
-    return usersDto.map { dto ->
-        User(
-            userId = dto.userId,
-            fullName = dto.fullName,
-            email = dto.email,
-            phoneNum = dto.phoneNum,
-            imageUrl = dto.imageUrl,
-            stories = null
-        )
-    }
-
-}
