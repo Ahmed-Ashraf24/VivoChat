@@ -79,7 +79,7 @@ fun StoryView(
                     .weight(0.1f)
                     .fillMaxSize()
                     .clickable {
-                        if (index > 1) {
+                        if (index > 0) {
                             index -= 1
                         }
                     }

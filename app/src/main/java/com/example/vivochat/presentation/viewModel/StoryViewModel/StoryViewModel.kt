@@ -23,8 +23,8 @@ class StoryViewModel @Inject constructor(
     val storyState: StateFlow<StoryState>
         get() = _storyState
 
-    private var _uploadingStoryState = MutableStateFlow<StoryState>(UploadingStoryState.Idle)
-    val uploadingStoryState: StateFlow<StoryState>
+    private var _uploadingStoryState = MutableStateFlow<UploadingStoryState>(UploadingStoryState.Idle)
+    val uploadingStoryState: StateFlow<UploadingStoryState>
         get() = _uploadingStoryState
 
     val stories : MutableList<Story> = mutableListOf()
