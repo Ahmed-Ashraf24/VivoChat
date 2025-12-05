@@ -29,7 +29,7 @@ class UserViewModel @Inject constructor(
     lateinit var unAvailableContacts: List<Contact>
 
     private var _userDataState = MutableStateFlow<UserState>(UserState.Idle)
-    val userData: StateFlow<UserState>
+    val userDataState: StateFlow<UserState>
         get() = _userDataState
 
 

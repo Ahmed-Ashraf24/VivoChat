@@ -18,11 +18,10 @@ import com.example.vivochat.R
 import com.example.vivochat.presentation.ui.theme.Primary
 
 @Composable
-fun BottomNavBar(modifier: Modifier = Modifier,onTabSelected:(Int)->Unit) {
+fun BottomNavBar(modifier: Modifier = Modifier, onTabSelected: (Int) -> Unit, isEnabled: Boolean) {
     var selectedTab by remember { mutableStateOf(0) }
 
     TabRow(
-
         selectedTabIndex = selectedTab,
         modifier = modifier
             .navigationBarsPadding()
@@ -38,8 +37,10 @@ fun BottomNavBar(modifier: Modifier = Modifier,onTabSelected:(Int)->Unit) {
             iconColor = Primary,
             selectedIconColor = Primary,
             onClick = {
-                selectedTab = 0
-               onTabSelected(selectedTab)
+                if (isEnabled) {
+                    selectedTab = 0
+                    onTabSelected(selectedTab)
+                }
             }
         )
         BottomNavTab(
@@ -50,8 +51,10 @@ fun BottomNavBar(modifier: Modifier = Modifier,onTabSelected:(Int)->Unit) {
             iconColor = Primary,
             selectedIconColor = Primary,
             onClick = {
-                selectedTab = 1
-                onTabSelected(selectedTab)
+                if (isEnabled) {
+                    selectedTab = 1
+                    onTabSelected(selectedTab)
+                }
             }
         )
         BottomNavTab(
@@ -62,8 +65,10 @@ fun BottomNavBar(modifier: Modifier = Modifier,onTabSelected:(Int)->Unit) {
             iconColor = Primary,
             selectedIconColor = Primary,
             onClick = {
-                selectedTab = 2
-                onTabSelected(selectedTab)
+                if (isEnabled) {
+                    selectedTab = 2
+                    onTabSelected(selectedTab)
+                }
             }
         )
 

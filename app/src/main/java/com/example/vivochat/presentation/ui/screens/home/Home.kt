@@ -41,7 +41,7 @@ fun Home(
 ) {
 
     val context = LocalContext.current
-    val state = viewModel.userData.collectAsState()
+    val state = viewModel.userDataState.collectAsState()
 
 
     val storyState = storyViewModel.storyState.collectAsState()
@@ -49,7 +49,7 @@ fun Home(
     LaunchedEffect(state.value) {
         if (state.value is UserState.UserDataSuccess) {
             storyViewModel.getAvaUsersStories(viewModel.availableContacts,viewModel.user)
-            viewModel.resetState()
+
         }
     }
 
@@ -76,7 +76,7 @@ fun Home(
             .padding(top = 40.dp),
 
         ) {
-        if (state.value is UserState.Idle && storyState.value is StoryState.StorySuccess) {
+        if (state.value is UserState.UserDataSuccess && storyState.value is StoryState.StorySuccess) {
             item { HomeHeader(viewModel, navController, storyViewModel,sharedViewModel) }
             item { Spacer(Modifier.height(10.dp)) }
 
