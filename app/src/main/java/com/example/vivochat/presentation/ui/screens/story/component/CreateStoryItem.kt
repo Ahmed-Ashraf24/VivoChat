@@ -1,5 +1,4 @@
-package com.example.vivochat.presentation.ui.screens.Story.component
-
+package com.example.vivochat.presentation.ui.screens.story.component
 import CircleAvatar
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

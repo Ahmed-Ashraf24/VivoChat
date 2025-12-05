@@ -16,9 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.vivochat.presentation.ui.screens.Story.StoryScreen
 import com.example.vivochat.presentation.ui.screens.nav.component.BottomNavBar
 import com.example.vivochat.presentation.ui.screens.setting.SettingsScreen
+import com.example.vivochat.presentation.ui.screens.story.StoryScreen
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.view.home.Home
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryState
@@ -28,7 +28,7 @@ import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewM
 import com.example.vivochat.presentation.viewModel.user_view_model.UserState
 import kotlinx.coroutines.launch
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "SuspiciousIndentation")
 @Composable
 fun NavScreen(
     navController: NavController,
@@ -42,7 +42,7 @@ fun NavScreen(
     var bottomBarEnabledState by remember { mutableStateOf(false) }
     val state = rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
-        if (userDataState.value==UserState.UserDataSuccess&&userStoriesState.value == StoryState.StorySuccess){
+        if (userDataState.value==UserState.AllSuccess&&userStoriesState.value == StoryState.StorySuccess){
           bottomBarEnabledState=true
         }
 

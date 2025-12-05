@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.ui.screens.Story
+package com.example.vivochat.presentation.ui.screens.story
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,8 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.vivochat.presentation.ui.screens.Story.component.CreateStoryItem
-import com.example.vivochat.presentation.ui.screens.Story.component.StoryItem
+import com.example.vivochat.presentation.ui.screens.story.component.CreateStoryItem
+import com.example.vivochat.presentation.ui.screens.story.component.StoryItem
 import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadingIndicator
 import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
@@ -23,7 +23,6 @@ import com.example.vivochat.presentation.viewModel.StoryViewModel.UploadingStory
 import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 
-@Preview
 @Composable
 fun StoryScreen(
     sharedViewModel: SharedViewModel,

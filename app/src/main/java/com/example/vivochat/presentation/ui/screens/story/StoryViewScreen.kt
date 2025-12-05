@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.ui.screens.Story
+package com.example.vivochat.presentation.ui.screens.story
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*

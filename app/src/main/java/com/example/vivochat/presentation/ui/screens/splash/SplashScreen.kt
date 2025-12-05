@@ -1,20 +1,15 @@
-package com.example.vivochat.presentation.ui.screens.Splash
+package com.example.vivochat.presentation.ui.screens.splash
 
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -23,13 +18,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.vivochat.R
 import com.example.vivochat.presentation.viewModel.splash_view_model.SplashState
 import com.example.vivochat.presentation.viewModel.splash_view_model.SplashViewModel
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 import android.Manifest
-import android.app.Activity
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable

@@ -73,8 +73,8 @@ class UserViewModel @Inject constructor(
 
 
 
-    fun resetState(){
-        _userDataState.value = UserState.Idle
+    fun changeStateToAllSuccess(){
+        _userDataState.value = UserState.AllSuccess
     }
 
 
