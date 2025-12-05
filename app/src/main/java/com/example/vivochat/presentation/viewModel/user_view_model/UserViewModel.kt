@@ -6,19 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.domain.entity.User
 import com.example.vivochat.domain.repository.IAuthRepo
-import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
 import com.example.vivochat.presentation.utility.ContactUtility
-import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val mediaRepo: IMediaRepository,
     private val userRepo: IUserRepository,
     private val authRpp: IAuthRepo,
     private val contactUtility: ContactUtility
