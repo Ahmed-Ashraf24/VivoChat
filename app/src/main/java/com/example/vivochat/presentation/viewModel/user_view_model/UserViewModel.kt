@@ -78,35 +78,4 @@ class UserViewModel @Inject constructor(
     }
 
 
-
-    private var _storyState = MutableStateFlow<StoryState>(StoryState.Idle)
-    val storyState: StateFlow<StoryState>
-        get() = _storyState
-
-
-    fun uploadStory(file: File){
-        var imageUrl : String
-        viewModelScope.launch {
-
-
-            mediaRepo.uploadImage(file)
-                .onSuccess { url ->
-                    imageUrl = url
-
-                    val res = userRepo.uploadStory(user.userId,imageUrl)
-
-                    if(res.isSuccess){
-
-                        _storyState.value = StoryState.StorySuccess
-                    }else{
-
-                        _storyState.value = StoryState.StoryFailed(res.isFailure.toString())
-                    }
-                }
-                .onFailure { exception ->
-
-                    _storyState.value = StoryState.StoryFailed(exception.toString())
-                }
-        }
-    }
 }
