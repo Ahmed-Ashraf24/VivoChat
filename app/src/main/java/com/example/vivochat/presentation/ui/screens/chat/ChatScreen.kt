@@ -1,6 +1,5 @@
 package com.example.vivochat.presentation.ui.screens.chat
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -16,8 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.vivochat.domain.entity.Message
-import com.example.vivochat.domain.entity.MessageType
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatBottomBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatTopBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ConversationMessagesComponent
