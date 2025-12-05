@@ -14,8 +14,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.presentation.ui.screens.Contacts.Contacts
-import com.example.vivochat.presentation.ui.screens.Splash.SplashScreen
-import com.example.vivochat.presentation.ui.screens.Story.StoryView
+import com.example.vivochat.presentation.ui.screens.splash.SplashScreen
+import com.example.vivochat.presentation.ui.screens.story.StoryView
 import com.example.vivochat.presentation.ui.screens.chat.ChatScreen
 import com.example.vivochat.presentation.ui.screens.login.Login
 import com.example.vivochat.presentation.ui.screens.nav.NavScreen
