@@ -56,7 +56,7 @@ fun ChatScreen(messageViewModel: MessageViewModel = hiltViewModel(), navControll
 
         LazyColumn (Modifier.padding(innerPadding)) {
             item {
-                ConversationMessagesComponent(Modifier.fillMaxWidth().padding(horizontal = 10.dp),messageList.value)
+                ConversationMessagesComponent(Modifier.fillMaxWidth().padding(horizontal = 10.dp),messageList.value, profileImage = reciverImageUrl)
 
             }
         }

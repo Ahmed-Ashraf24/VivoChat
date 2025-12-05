@@ -15,12 +15,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.vivochat.R
 import com.example.vivochat.domain.entity.Message
 import com.example.vivochat.domain.entity.MessageType
 
 @Composable
-fun ConversationMessagesComponent(modifier: Modifier = Modifier,messageList:List<Message>) {
+fun ConversationMessagesComponent(modifier: Modifier = Modifier,messageList:List<Message>,profileImage:String?) {
 
     Column(modifier.fillMaxWidth()) {
         messageList.forEach {message ->
@@ -36,10 +37,16 @@ fun ConversationMessagesComponent(modifier: Modifier = Modifier,messageList:List
             MessageType.OthersMessage-> {
                 Row(modifier=Modifier.align(Alignment.Start)) {
                     Surface(Modifier.padding(top = 15.dp), shape = RoundedCornerShape(50.dp)) {
-                    Image(painter = painterResource(R.drawable.image), contentDescription = "profile", modifier = Modifier
-                        .size(35.dp),
-                        contentScale = ContentScale.FillBounds
-                    )
+                        if (profileImage!=null){
+                        AsyncImage(model = profileImage, contentDescription = "profile", modifier = Modifier
+                            .size(35.dp),
+                            contentScale = ContentScale.FillBounds
+                        )}
+                        else
+                            Image(painter = painterResource(R.drawable.anonymoususer), contentDescription = "profile", modifier = Modifier
+                                .size(35.dp),
+                                contentScale = ContentScale.FillBounds
+                            )
                     }
                     OthersMessageComponent(modifier = Modifier.padding(horizontal = 5.dp),message = message.message, date = message.message)
                 }

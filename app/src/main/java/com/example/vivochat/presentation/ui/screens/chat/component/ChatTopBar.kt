@@ -32,9 +32,12 @@ fun ChatTopBar(modifier: Modifier = Modifier,userImageUrl:String,userName:String
         Icon(
             painter = painterResource(R.drawable.outline_arrow_back_ios_24),
             contentDescription = "back",
-            modifier = Modifier.size(24.dp).clickable{onBackClicked()},
+            modifier = Modifier
+                .size(24.dp)
+                .clickable { onBackClicked() },
             tint = Color.Gray
         )
+        if (userImageUrl.isNotEmpty()){
         AsyncImage(
             model = userImageUrl,
             contentDescription = "profile",
@@ -43,7 +46,17 @@ fun ChatTopBar(modifier: Modifier = Modifier,userImageUrl:String,userName:String
                 .size(35.dp)
                 .clip(RoundedCornerShape(50.dp)),
             contentScale = ContentScale.FillBounds
-        )
+        )}
+        else {
+            Image(
+                painter = painterResource(R.drawable.anonymoususer),
+                contentDescription = "profile",
+                modifier = Modifier
+                    .size(35.dp)
+                    .clip(RoundedCornerShape(50.dp)),
+                contentScale = ContentScale.FillBounds
+            )
+        }
         Column(
             modifier = Modifier
                 .align(Alignment.Top)
