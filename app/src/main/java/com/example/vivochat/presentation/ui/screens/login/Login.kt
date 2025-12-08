@@ -1,4 +1,4 @@
-    package com.example.vivochat.presentation.ui.screens.login
+package com.example.vivochat.presentation.ui.screens.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -20,12 +20,17 @@ import com.example.vivochat.presentation.ui.screens.login.components.CreateAccRo
 import com.example.vivochat.presentation.ui.screens.login.components.LoginForm
 import com.example.vivochat.presentation.ui.screens.login.components.LoginHeader
 import com.example.vivochat.presentation.ui.screens.login.components.OrDivider
+import com.example.vivochat.presentation.ui.screens.signup.SignupRoute
 import com.example.vivochat.presentation.viewModel.login_view_model.LoginViewModel
+import kotlinx.serialization.Serializable
 
-    @Composable
+@Serializable
+data object LoginRoute
+
+@Composable
 fun Login(
-        viewModel: LoginViewModel= hiltViewModel(),
-        navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel(),
+    navController: NavController,
 ) {
 
     val scrollState = rememberScrollState()
@@ -51,7 +56,7 @@ fun Login(
         OrDivider()
         Spacer(Modifier.height(30.dp))
         CreateAccRow(Modifier.align(Alignment.CenterHorizontally), {
-            navController.navigate("signup")
+            navController.navigate(SignupRoute)
         })
     }
 }

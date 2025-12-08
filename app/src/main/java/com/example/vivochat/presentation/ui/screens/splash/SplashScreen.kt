@@ -21,6 +21,12 @@ import com.example.vivochat.presentation.viewModel.splash_view_model.SplashViewM
 import kotlinx.coroutines.delay
 import android.Manifest
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.vivochat.presentation.ui.screens.login.LoginRoute
+import com.example.vivochat.presentation.ui.screens.main.MainRoute
+import kotlinx.serialization.Serializable
+
+@Serializable
+data object SplashRoute
 
 @Composable
 fun SplashScreen(
@@ -57,11 +63,11 @@ fun SplashScreen(
             if (state.value is SplashState.AutoLoginFailed) {
                 delay(1000)
 
-                navController.navigate("login")
+                navController.navigate(LoginRoute)
             } else if (state.value is SplashState.AutoLoginSuccess) {
                 delay(1000)
 
-                navController.navigate("navScreen")
+                navController.navigate(MainRoute)
 
             }
         }catch (e : Exception){

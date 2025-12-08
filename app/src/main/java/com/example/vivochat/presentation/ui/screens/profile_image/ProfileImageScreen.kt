@@ -48,11 +48,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.vivochat.R
+import com.example.vivochat.presentation.ui.screens.login.LoginRoute
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
 import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaState
 import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaViewModel
+import kotlinx.serialization.Serializable
 
+@Serializable
+data object ProfileImageRoute
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -73,7 +77,7 @@ val context = LocalContext.current
 
     LaunchedEffect(state.value) {
         if (state.value is MediaState.Success) {
-            navController.navigate("login")
+            navController.navigate(LoginRoute)
         }
     }
 

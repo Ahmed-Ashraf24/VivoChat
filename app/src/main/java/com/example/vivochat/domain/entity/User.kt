@@ -2,7 +2,6 @@ package com.example.vivochat.domain.entity
 
 import kotlinx.serialization.Serializable
 
-@Serializable
 data class User (
     val userId: String,
     var fullName:String,

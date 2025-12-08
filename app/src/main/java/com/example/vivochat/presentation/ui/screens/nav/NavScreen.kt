@@ -70,7 +70,8 @@ fun NavScreen(
                     navController = navController,
                     sharedViewModel = sharedViewModel,
                     viewModel = userViewModel,
-                    storyViewModel = storyViewModel
+                    storyViewModel = storyViewModel,
+                    navigateToReel = { }
                 )
 
                 1 -> StoryScreen(sharedViewModel, userViewModel, navController, storyViewModel)

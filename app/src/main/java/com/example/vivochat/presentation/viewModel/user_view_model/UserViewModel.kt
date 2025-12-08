@@ -20,7 +20,14 @@ class UserViewModel @Inject constructor(
     private val contactUtility: ContactUtility
 ) : ViewModel() {
 
-    lateinit var user: User
+    var user = User(
+        userId = "",
+        fullName = "",
+        email = "",
+        phoneNum = "",
+        imageUrl = "",
+        stories = emptyList()
+    )
     lateinit var availableContacts: List<User>
     lateinit var unAvailableContacts: List<Contact>
 

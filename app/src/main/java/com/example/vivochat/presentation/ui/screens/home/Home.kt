@@ -1,5 +1,6 @@
 package com.example.vivochat.presentation.ui.screens.home
 
+import android.widget.Button
 import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -47,13 +49,15 @@ fun NavGraphBuilder.homeScreen(
     viewModel: UserViewModel,
     storyViewModel: StoryViewModel,
     sharedViewModel: SharedViewModel,
+    navigateToReel: () -> Unit
 ) {
     composable<HomeRoute> {
         Home(
             navController = navController,
             viewModel = viewModel,
             storyViewModel = storyViewModel,
-            sharedViewModel = sharedViewModel
+            sharedViewModel = sharedViewModel,
+            navigateToReel = navigateToReel
         )
     }
 }
@@ -63,7 +67,8 @@ fun Home(
     storyViewModel: StoryViewModel,
     viewModel: UserViewModel,
     messageViewModel: MessageViewModel = hiltViewModel(),
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    navigateToReel: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -150,7 +155,13 @@ fun Home(
                 }
             }
 
-
+            item {
+                androidx.compose.material3.Button(
+                    onClick = navigateToReel
+                ) {
+                    Text("Navigate to reel")
+                }
+            }
         }
 
     }

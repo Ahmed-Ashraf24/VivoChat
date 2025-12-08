@@ -30,6 +30,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.vivochat.R
 import com.example.vivochat.domain.entity.User
+import com.example.vivochat.presentation.ui.screens.login.LoginRoute
 import com.example.vivochat.presentation.ui.screens.setting.components.ProfileSection
 import com.example.vivochat.presentation.ui.screens.setting.components.SettingsItem
 import com.example.vivochat.presentation.ui.theme.kumbuhFont
@@ -135,7 +136,8 @@ fun SettingsScreen(
             icon = R.drawable.logout,
             onClick = {
                 settingViewModel.signOut()
-                navController.navigate("login")
+                navController.popBackStack()
+                navController.navigate(LoginRoute)
 
             }
         )

@@ -7,25 +7,24 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.vivochat.domain.entity.Contact
-import com.example.vivochat.presentation.ui.screens.Contacts.Contacts
 import com.example.vivochat.presentation.ui.screens.splash.SplashScreen
-import com.example.vivochat.presentation.ui.screens.story.StoryView
-import com.example.vivochat.presentation.ui.screens.chat.ChatScreen
 import com.example.vivochat.presentation.ui.screens.login.Login
+import com.example.vivochat.presentation.ui.screens.login.LoginRoute
 import com.example.vivochat.presentation.ui.screens.main.mainScreen
-import com.example.vivochat.presentation.ui.screens.nav.NavScreen
+import com.example.vivochat.presentation.ui.screens.profile_image.ProfileImageRoute
 import com.example.vivochat.presentation.ui.screens.profile_image.ProfileImageScreen
+import com.example.vivochat.presentation.ui.screens.reel.ReelRoute
+import com.example.vivochat.presentation.ui.screens.reel.reelScreen
+import com.example.vivochat.presentation.ui.screens.signup.SignupRoute
+import com.example.vivochat.presentation.ui.screens.signup.SignupScreen
+import com.example.vivochat.presentation.ui.screens.splash.SplashRoute
 import com.example.vivochat.presentation.ui.theme.VivoChatTheme
 import com.example.vivochat.presentation.utility.ThemeManager
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.net.URLDecoder
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -42,26 +41,37 @@ class MainActivity : ComponentActivity() {
             val isDark by themeManager.isDarkMode.collectAsState()
             VivoChatTheme(userPreferenceDarkTheme = isDark) {
 
-                NavHost(navController, "splash") {
-                    composable("splash") {
+                NavHost(
+                    navController = navController,
+                    startDestination = SplashRoute
+                ) {
+                    composable<SplashRoute> {
                         SplashScreen(
                             navController,
                         )
                     }
 
-                    composable("profileImageScreen") {
+                    composable<ProfileImageRoute> {
                         ProfileImageScreen(
                             navController = navController
                         )
                     }
-                    composable("login") { Login(navController = navController) }
-                    composable("signup") {
+                    composable<LoginRoute> {
+                        Login(navController = navController)
+                    }
+                    composable<SignupRoute> {
                         SignupScreen(
                             navController = navController
                         )
                     }
                     mainScreen(
-                        sharedViewModel = sharedViewModel
+                        sharedViewModel = sharedViewModel,
+                        navigateToReel = {
+                            navController.navigate(ReelRoute)
+                        }
+                    )
+                    reelScreen(
+                        navigateBack = navController::navigateUp
                     )
                 }
             }

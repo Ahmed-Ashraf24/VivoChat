@@ -25,12 +25,13 @@ import kotlinx.serialization.Serializable
 import java.net.URLDecoder
 
 @Serializable
-data object MainScreen
+data object MainRoute
 
 fun NavGraphBuilder.mainScreen(
     sharedViewModel: SharedViewModel,
+    navigateToReel: () -> Unit
 ) {
-    composable<MainScreen> {
+    composable<MainRoute> {
         val mainController = rememberMainNavController()
         val currentBottomNav = mainController.currentBottomNav
         val userViewModel: UserViewModel = hiltViewModel()
@@ -52,7 +53,8 @@ fun NavGraphBuilder.mainScreen(
                     navController = mainController.navController,
                     viewModel = userViewModel,
                     storyViewModel = storyViewModel,
-                    sharedViewModel = sharedViewModel
+                    sharedViewModel = sharedViewModel,
+                    navigateToReel = navigateToReel
                 )
                 storyScreen(
                     mainController.navController,
