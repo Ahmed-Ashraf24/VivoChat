@@ -14,6 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import com.example.vivochat.presentation.ui.screens.home.Home
 import com.example.vivochat.presentation.ui.screens.story.component.CreateStoryItem
 import com.example.vivochat.presentation.ui.screens.story.component.StoryItem
 import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadingIndicator
@@ -22,6 +25,26 @@ import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.StoryViewModel.UploadingStoryState
 import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
+import kotlinx.serialization.Serializable
+
+@Serializable
+data object StoryRoute
+
+fun NavGraphBuilder.storyScreen(
+    navController: NavController,
+    userViewModel: UserViewModel,
+    storyViewModel: StoryViewModel,
+    sharedViewModel: SharedViewModel,
+) {
+    composable<StoryRoute> {
+        StoryScreen(
+            navController = navController,
+            storyViewModel = storyViewModel,
+            userViewModel = userViewModel,
+            sharedViewModel = sharedViewModel
+        )
+    }
+}
 
 @Composable
 fun StoryScreen(

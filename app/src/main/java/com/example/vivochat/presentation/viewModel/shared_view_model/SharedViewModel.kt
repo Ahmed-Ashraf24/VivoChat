@@ -30,5 +30,4 @@ class SharedViewModel : ViewModel(){
         }
     }
 
-
 }

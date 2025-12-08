@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.view.home
+package com.example.vivochat.presentation.ui.screens.home
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +17,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItemShimmer
@@ -34,15 +36,33 @@ import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewM
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.serialization.Serializable
 import java.net.URLEncoder
 
+@Serializable
+data object HomeRoute
+
+fun NavGraphBuilder.homeScreen(
+    navController: NavController,
+    viewModel: UserViewModel,
+    storyViewModel: StoryViewModel,
+    sharedViewModel: SharedViewModel,
+) {
+    composable<HomeRoute> {
+        Home(
+            navController = navController,
+            viewModel = viewModel,
+            storyViewModel = storyViewModel,
+            sharedViewModel = sharedViewModel
+        )
+    }
+}
 @Composable
 fun Home(
     navController: NavController,
     storyViewModel: StoryViewModel,
     viewModel: UserViewModel,
-    storyVM: StoryViewModel=hiltViewModel(),
-    messageViewModel: MessageViewModel =hiltViewModel(),
+    messageViewModel: MessageViewModel = hiltViewModel(),
     sharedViewModel: SharedViewModel
 ) {
 

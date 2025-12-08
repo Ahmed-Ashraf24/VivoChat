@@ -20,7 +20,7 @@ import com.example.vivochat.presentation.ui.screens.nav.component.BottomNavBar
 import com.example.vivochat.presentation.ui.screens.setting.SettingsScreen
 import com.example.vivochat.presentation.ui.screens.story.StoryScreen
 import com.example.vivochat.presentation.ui.theme.Primary
-import com.example.vivochat.presentation.view.home.Home
+import com.example.vivochat.presentation.ui.screens.home.Home
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryState
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
@@ -51,12 +51,12 @@ fun NavScreen(
             .fillMaxSize()
             .background(color = Primary),
         bottomBar = {
-            BottomNavBar(isEnabled = bottomBarEnabledState,
-                onTabSelected = { tabIndex ->
-                    coroutineScope.launch {
-                        state.animateScrollToPage(tabIndex)
-                    }
-                })
+//            BottomNavBar(isEnabled = bottomBarEnabledState,
+//                onTabSelected = { tabIndex ->
+//                    coroutineScope.launch {
+//                        state.animateScrollToPage(tabIndex)
+//                    }
+//                })
         }
     ) {
         HorizontalPager(
