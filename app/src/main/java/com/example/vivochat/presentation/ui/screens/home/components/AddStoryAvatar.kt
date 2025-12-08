@@ -25,17 +25,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.vivochat.R
+import com.example.vivochat.presentation.ui.screens.story.StoryViewRoute
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
-import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
+import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 
 @Composable
 fun AddStoryAvatar(
     viewModel: UserViewModel,
     storyViewModel: StoryViewModel,
     navController: NavController,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
 ) {
 
     val context = LocalContext.current
@@ -57,9 +58,9 @@ fun AddStoryAvatar(
         Box(modifier = Modifier.clickable {
             sharedViewModel.sendUser(viewModel.user)
             if (storyViewModel.stories.isNotEmpty()) {
-                navController.navigate("storyViewScreen")
+                navController.navigate(route = StoryViewRoute(viewModel.user))
             }
-            }) {
+        }) {
             CircleAvatar(viewModel.user.imageUrl)
             IconButton(
                 modifier = Modifier

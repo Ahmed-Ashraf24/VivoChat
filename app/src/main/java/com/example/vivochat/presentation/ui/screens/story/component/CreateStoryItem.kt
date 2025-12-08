@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.vivochat.R
+import com.example.vivochat.presentation.ui.screens.story.StoryViewRoute
 import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
@@ -56,7 +57,7 @@ fun CreateStoryItem(
                 //open current user story
                 sharedViewModel.sendUser(viewModel.user)
                 if (storyViewModel.stories.isNotEmpty()) {
-                    navController.navigate("storyViewScreen")
+                    navController.navigate(route = StoryViewRoute(viewModel.user))
                 }
             }) {
 

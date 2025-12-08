@@ -11,13 +11,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.presentation.ui.screens.Contacts.Contacts
+import com.example.vivochat.presentation.ui.screens.Contacts.ContactsRoute
 import com.example.vivochat.presentation.ui.screens.chat.ChatScreen
 import com.example.vivochat.presentation.ui.screens.home.HomeRoute
 import com.example.vivochat.presentation.ui.screens.home.homeScreen
 import com.example.vivochat.presentation.ui.screens.nav.component.BottomNavBar
 import com.example.vivochat.presentation.ui.screens.setting.settingsScreen
-import com.example.vivochat.presentation.ui.screens.story.StoryView
 import com.example.vivochat.presentation.ui.screens.story.storyScreen
+import com.example.vivochat.presentation.ui.screens.story.storyViewScreen
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
@@ -66,7 +67,8 @@ fun NavGraphBuilder.mainScreen(
                     mainController.navController,
                     loggedUser = userViewModel.user
                 )
-                composable("contacts") { navBackStackEntry ->
+                storyViewScreen()
+                composable<ContactsRoute> { navBackStackEntry ->
                     val unAvailableContacts =
                         navBackStackEntry.savedStateHandle.get<List<Contact>>("unAvailableContacts")
 
@@ -93,11 +95,6 @@ fun NavGraphBuilder.mainScreen(
                         reciverId = userId
                     )
 
-                }
-                composable("storyViewScreen") {
-                    StoryView(
-                        sharedViewModel
-                    )
                 }
             }
         }

@@ -10,13 +10,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.vivochat.presentation.ui.screens.home.Home
 import com.example.vivochat.presentation.ui.screens.story.component.CreateStoryItem
 import com.example.vivochat.presentation.ui.screens.story.component.StoryItem
 import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadingIndicator
@@ -91,7 +89,7 @@ fun StoryScreen(
                     userViewModel.availableContacts[it],
                     {
                         sharedViewModel.sendUser(userViewModel.availableContacts[it])
-                        navController.navigate("storyViewScreen")
+                        navController.navigate(StoryViewRoute(userViewModel.availableContacts[it]))
                     }
                 )
             }

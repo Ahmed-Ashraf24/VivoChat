@@ -6,9 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.vivochat.presentation.ui.screens.story.StoryViewRoute
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
-import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
+import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 
 @Composable
 fun StoryItem(
@@ -31,7 +32,7 @@ fun StoryItem(
                     {
 
                         sharedViewModel.sendUser(  viewModel.availableContacts[it])
-                        navController.navigate("storyViewScreen")
+                        navController.navigate(StoryViewRoute(user = viewModel.availableContacts[it]))
                     }
                 )
             }
