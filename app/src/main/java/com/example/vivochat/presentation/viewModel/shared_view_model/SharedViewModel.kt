@@ -12,22 +12,6 @@ class SharedViewModel : ViewModel(){
     fun sendUser(user:User){
         selectedUser.value = user
     }
-    fun getRelativeTime(timestamp: Timestamp): String {
-        val now = System.currentTimeMillis()
-        val storyTime = timestamp.toDate().time
-        val diff = now - storyTime
 
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
-        val hours = TimeUnit.MILLISECONDS.toHours(diff)
-        val days = TimeUnit.MILLISECONDS.toDays(diff)
-
-        return when {
-            minutes < 1 -> "just now"
-            minutes < 60 -> "${minutes}m"
-            hours < 24 -> "${hours}h"
-            days < 7 -> "${days}d"
-            else -> java.text.SimpleDateFormat("dd/MM/yyyy").format(timestamp.toDate())
-        }
-    }
 
 }

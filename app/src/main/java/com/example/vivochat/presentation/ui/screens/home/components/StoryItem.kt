@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
@@ -15,23 +16,21 @@ fun StoryItem(
     viewModel: UserViewModel,
     storyViewModel: StoryViewModel,
     navController: NavController,
-    sharedViewModel: SharedViewModel
+    onStoryClicked: (User)->Unit
 ) {
 
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        item { AddStoryAvatar(viewModel, storyViewModel, navController = navController, sharedViewModel =  sharedViewModel) }
+        item { AddStoryAvatar(viewModel, storyViewModel, navController = navController, onStoryClicked =  onStoryClicked) }
         items(viewModel.availableContacts.size) {
             if (viewModel.availableContacts[it].stories!!.size > 0 && viewModel.user.userId != viewModel.availableContacts[it].userId) {
                 UserStory(
                     viewModel.availableContacts[it].fullName,
                     viewModel.availableContacts[it].imageUrl,
                     {
-
-                        sharedViewModel.sendUser(  viewModel.availableContacts[it])
-                        navController.navigate("storyViewScreen")
+                        onStoryClicked(viewModel.availableContacts[it])
                     }
                 )
             }

@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.vivochat.R
+import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
@@ -35,8 +36,7 @@ fun CreateStoryItem(
     modifier: Modifier = Modifier,
     storyViewModel: StoryViewModel,
     viewModel: UserViewModel,
-    sharedViewModel: SharedViewModel,
-    navController: NavController
+    onStoryClicked: (User) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -53,10 +53,9 @@ fun CreateStoryItem(
     Row(modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Box {
             Surface(shape = RoundedCornerShape(50.dp), modifier = Modifier.clickable {
-                //open current user story
-                sharedViewModel.sendUser(viewModel.user)
+
                 if (storyViewModel.stories.isNotEmpty()) {
-                    navController.navigate("storyViewScreen")
+                    onStoryClicked(viewModel.user)
                 }
             }) {
 

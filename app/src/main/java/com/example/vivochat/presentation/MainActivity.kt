@@ -21,6 +21,8 @@ import com.example.vivochat.presentation.ui.screens.reel.reelScreen
 import com.example.vivochat.presentation.ui.screens.signup.SignupRoute
 import com.example.vivochat.presentation.ui.screens.signup.SignupScreen
 import com.example.vivochat.presentation.ui.screens.splash.SplashRoute
+import com.example.vivochat.presentation.ui.screens.story.StoryViewRoute
+import com.example.vivochat.presentation.ui.screens.story.storyView
 import com.example.vivochat.presentation.ui.theme.VivoChatTheme
 import com.example.vivochat.presentation.utility.ThemeManager
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
@@ -68,11 +70,13 @@ class MainActivity : ComponentActivity() {
                         sharedViewModel = sharedViewModel,
                         navigateToReel = {
                             navController.navigate(ReelRoute)
-                        }
+                        },
+                        navigateToStory = {navController.navigate(StoryViewRoute(it))}
                     )
                     reelScreen(
                         navigateBack = navController::navigateUp
                     )
+                    storyView()
                 }
             }
         }

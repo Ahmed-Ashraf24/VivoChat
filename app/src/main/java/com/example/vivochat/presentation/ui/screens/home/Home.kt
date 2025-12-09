@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItemShimmer
@@ -49,7 +50,9 @@ fun NavGraphBuilder.homeScreen(
     viewModel: UserViewModel,
     storyViewModel: StoryViewModel,
     sharedViewModel: SharedViewModel,
-    navigateToReel: () -> Unit
+    navigateToReel: () -> Unit,
+    onStoryClicked:(User)->Unit
+
 ) {
     composable<HomeRoute> {
         Home(
@@ -57,7 +60,9 @@ fun NavGraphBuilder.homeScreen(
             viewModel = viewModel,
             storyViewModel = storyViewModel,
             sharedViewModel = sharedViewModel,
-            navigateToReel = navigateToReel
+            navigateToReel = navigateToReel,
+            onStoryClicked = onStoryClicked
+
         )
     }
 }
@@ -68,7 +73,8 @@ fun Home(
     viewModel: UserViewModel,
     messageViewModel: MessageViewModel = hiltViewModel(),
     sharedViewModel: SharedViewModel,
-    navigateToReel: () -> Unit
+    navigateToReel: () -> Unit,
+    onStoryClicked:(User)->Unit
 ) {
 
     val context = LocalContext.current
@@ -118,7 +124,7 @@ fun Home(
             ) {
             if (state.value is UserState.AllSuccess && storyState.value is StoryState.StorySuccess) {
 
-                item { HomeHeader(viewModel, navController, storyViewModel, sharedViewModel) }
+                item { HomeHeader(viewModel, navController, storyViewModel, onStoryClicked = onStoryClicked) }
                 item { Spacer(Modifier.height(10.dp)) }
 
                 item { ChatHeader() }

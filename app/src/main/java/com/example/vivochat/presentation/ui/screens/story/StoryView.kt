@@ -20,19 +20,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
+import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.theme.Primary
+import com.example.vivochat.presentation.utility.TimeFormateUtility.getRelativeTime
+import com.example.vivochat.presentation.utility.UserNavType
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
+import kotlinx.serialization.Serializable
+import kotlin.reflect.typeOf
 
+@Serializable
+data class StoryViewRoute(val user: User)
+
+fun NavGraphBuilder.storyView() {
+    composable<StoryViewRoute>(typeMap = mapOf(typeOf<User>() to UserNavType)) { backStackEntry ->
+        val route = backStackEntry.toRoute<StoryViewRoute>()
+        StoryView(user = route.user)
+    }
+}
 
 @Composable
 fun StoryView(
-    sharedViewModel: SharedViewModel
+    user: User
 ) {
     var index by remember { mutableStateOf(0) }
     var isLoading by remember { mutableStateOf(true) }
-    val story = sharedViewModel.selectedUser.value?.stories
+    val story = user.stories
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -68,10 +85,10 @@ fun StoryView(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    CircleAvatar(sharedViewModel.selectedUser.value!!.imageUrl.toString())
-                    Text(sharedViewModel.selectedUser.value!!.fullName)
+                    CircleAvatar(user.imageUrl.toString())
+                    Text(user.fullName)
                 }
-                Text(sharedViewModel.getRelativeTime(story?.get(index)!!.date))
+                Text(story?.get(index)!!.date)
             }
         }
 
@@ -95,7 +112,7 @@ fun StoryView(
                     .weight(0.1f)
                     .fillMaxSize()
                     .clickable {
-                        if (index + 1 < sharedViewModel.selectedUser.value!!.stories!!.size) {
+                        if (index + 1 < user.stories!!.size) {
                             index += 1
                         }
                     }

@@ -16,7 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.vivochat.presentation.ui.screens.nav.component.BottomNavBar
 import com.example.vivochat.presentation.ui.screens.setting.SettingsScreen
 import com.example.vivochat.presentation.ui.screens.story.StoryScreen
 import com.example.vivochat.presentation.ui.theme.Primary
@@ -26,7 +25,6 @@ import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 import com.example.vivochat.presentation.viewModel.user_view_model.UserState
-import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "SuspiciousIndentation")
 @Composable
@@ -71,10 +69,11 @@ fun NavScreen(
                     sharedViewModel = sharedViewModel,
                     viewModel = userViewModel,
                     storyViewModel = storyViewModel,
-                    navigateToReel = { }
+                    navigateToReel = { },
+                    onStoryClicked = {}
                 )
 
-                1 -> StoryScreen(sharedViewModel, userViewModel, navController, storyViewModel)
+                1 -> StoryScreen(sharedViewModel, userViewModel, navController, storyViewModel,{})
                 2 -> SettingsScreen(navController, loggedUser = userViewModel.user)
             }
 

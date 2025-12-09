@@ -10,13 +10,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.vivochat.presentation.ui.screens.home.Home
+import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.screens.story.component.CreateStoryItem
 import com.example.vivochat.presentation.ui.screens.story.component.StoryItem
 import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadingIndicator
@@ -35,13 +34,15 @@ fun NavGraphBuilder.storyScreen(
     userViewModel: UserViewModel,
     storyViewModel: StoryViewModel,
     sharedViewModel: SharedViewModel,
+    onStoryClicked:(User)->Unit
 ) {
     composable<StoryRoute> {
         StoryScreen(
             navController = navController,
             storyViewModel = storyViewModel,
             userViewModel = userViewModel,
-            sharedViewModel = sharedViewModel
+            sharedViewModel = sharedViewModel,
+            onStoryClicked=onStoryClicked
         )
     }
 }
@@ -51,7 +52,8 @@ fun StoryScreen(
     sharedViewModel: SharedViewModel,
     userViewModel: UserViewModel,
     navController: NavController,
-    storyViewModel: StoryViewModel
+    storyViewModel: StoryViewModel,
+    onStoryClicked: (User) -> Unit
 ) {
     val context = LocalContext.current
     val state = storyViewModel.uploadingStoryState.collectAsState()
@@ -79,8 +81,7 @@ fun StoryScreen(
                 Modifier.padding(vertical = 10.dp),
                 storyViewModel,
                 userViewModel,
-                sharedViewModel,
-                navController
+                onStoryClicked
             )
         }
         items(userViewModel.availableContacts.size) {
@@ -90,8 +91,7 @@ fun StoryScreen(
                     hasStory = true,
                     userViewModel.availableContacts[it],
                     {
-                        sharedViewModel.sendUser(userViewModel.availableContacts[it])
-                        navController.navigate("storyViewScreen")
+                        onStoryClicked(userViewModel.availableContacts[it])
                     }
                 )
             }

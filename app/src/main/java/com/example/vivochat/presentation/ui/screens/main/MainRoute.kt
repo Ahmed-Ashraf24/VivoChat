@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.vivochat.domain.entity.Contact
+import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.screens.Contacts.Contacts
 import com.example.vivochat.presentation.ui.screens.chat.ChatScreen
 import com.example.vivochat.presentation.ui.screens.home.HomeRoute
@@ -17,6 +18,7 @@ import com.example.vivochat.presentation.ui.screens.home.homeScreen
 import com.example.vivochat.presentation.ui.screens.nav.component.BottomNavBar
 import com.example.vivochat.presentation.ui.screens.setting.settingsScreen
 import com.example.vivochat.presentation.ui.screens.story.StoryView
+import com.example.vivochat.presentation.ui.screens.story.StoryViewRoute
 import com.example.vivochat.presentation.ui.screens.story.storyScreen
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
@@ -29,7 +31,8 @@ data object MainRoute
 
 fun NavGraphBuilder.mainScreen(
     sharedViewModel: SharedViewModel,
-    navigateToReel: () -> Unit
+    navigateToReel: () -> Unit,
+    navigateToStory:(User)->Unit
 ) {
     composable<MainRoute> {
         val mainController = rememberMainNavController()
@@ -54,13 +57,15 @@ fun NavGraphBuilder.mainScreen(
                     viewModel = userViewModel,
                     storyViewModel = storyViewModel,
                     sharedViewModel = sharedViewModel,
-                    navigateToReel = navigateToReel
+                    navigateToReel = navigateToReel,
+                    onStoryClicked = navigateToStory
                 )
                 storyScreen(
                     mainController.navController,
                     userViewModel = userViewModel,
                     storyViewModel = storyViewModel,
-                    sharedViewModel = sharedViewModel
+                    sharedViewModel = sharedViewModel,
+                    onStoryClicked = navigateToStory
                 )
                 settingsScreen(
                     mainController.navController,
@@ -94,11 +99,7 @@ fun NavGraphBuilder.mainScreen(
                     )
 
                 }
-                composable("storyViewScreen") {
-                    StoryView(
-                        sharedViewModel
-                    )
-                }
+
             }
         }
     }
