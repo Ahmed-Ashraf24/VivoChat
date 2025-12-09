@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.screens.Contacts.Contacts
+import com.example.vivochat.presentation.ui.screens.Contacts.ContactsRoute
 import com.example.vivochat.presentation.ui.screens.chat.ChatScreen
 import com.example.vivochat.presentation.ui.screens.home.HomeRoute
 import com.example.vivochat.presentation.ui.screens.home.homeScreen

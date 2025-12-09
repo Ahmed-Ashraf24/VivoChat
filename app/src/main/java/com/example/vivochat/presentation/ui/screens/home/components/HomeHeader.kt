@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.vivochat.R
 import com.example.vivochat.domain.entity.User
+import com.example.vivochat.presentation.ui.screens.Contacts.ContactsRoute
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
@@ -35,7 +36,7 @@ fun HomeHeader(
     viewModel: UserViewModel,
     navController: NavController,
     storyViewModel: StoryViewModel,
-    onStoryClicked:(User)->Unit
+    onStoryClicked:(User)->Unit,
 ) {
 
 
@@ -56,7 +57,7 @@ fun HomeHeader(
                 .height(40.dp)
                 .clickable {
 
-                    navController.navigate("contacts")
+                    navController.navigate(ContactsRoute)
                     navController.currentBackStackEntry
                         ?.savedStateHandle
                         ?.set("unAvailableContacts", viewModel.unAvailableContacts)
