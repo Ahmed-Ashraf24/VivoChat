@@ -18,7 +18,6 @@ import com.example.vivochat.presentation.ui.screens.home.homeScreen
 import com.example.vivochat.presentation.ui.screens.nav.component.BottomNavBar
 import com.example.vivochat.presentation.ui.screens.setting.settingsScreen
 import com.example.vivochat.presentation.ui.screens.story.StoryView
-import com.example.vivochat.presentation.ui.screens.story.StoryViewRoute
 import com.example.vivochat.presentation.ui.screens.story.storyScreen
 import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
 import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
@@ -71,7 +70,7 @@ fun NavGraphBuilder.mainScreen(
                     mainController.navController,
                     loggedUser = userViewModel.user
                 )
-                composable("contacts") { navBackStackEntry ->
+                composable<ContactsRoute> { navBackStackEntry ->
                     val unAvailableContacts =
                         navBackStackEntry.savedStateHandle.get<List<Contact>>("unAvailableContacts")
 

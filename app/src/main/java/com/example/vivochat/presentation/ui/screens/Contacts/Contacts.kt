@@ -16,7 +16,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.presentation.ui.screens.Contacts.components.ContactItem
+import kotlinx.serialization.Serializable
 
+@Serializable
+data object ContactsRoute
 @Composable
 fun Contacts(
     unAvailableContacts: List<Contact>

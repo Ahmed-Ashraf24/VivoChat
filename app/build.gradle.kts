@@ -76,6 +76,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
 
+    implementation(libs.kotlin.serialization.json)
+
     implementation("com.cloudinary:cloudinary-android:2.5.0")
     implementation("com.google.dagger:hilt-android:2.57.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
