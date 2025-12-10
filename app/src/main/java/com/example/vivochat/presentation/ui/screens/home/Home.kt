@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.vivochat.domain.entity.User
+import com.example.vivochat.presentation.ui.screens.Contacts.ContactsRoute
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItemShimmer
@@ -116,7 +117,13 @@ fun Home(
             ) {
             if (state.value is UserState.AllSuccess && storyState.value is StoryState.StorySuccess) {
 
-                item { HomeHeader(viewModel, navController, onStoryClicked = onStoryClicked) }
+                item { HomeHeader(viewModel, onContactClicked = {
+                    navController.navigate(ContactsRoute)
+                    navController.currentBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("unAvailableContacts", viewModel.unAvailableContacts)
+
+                }, onStoryClicked = onStoryClicked) }
                 item { Spacer(Modifier.height(10.dp)) }
 
                 item { ChatHeader() }

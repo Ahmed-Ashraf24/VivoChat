@@ -32,7 +32,7 @@ import com.example.vivochat.presentation.ui.screens.home.viewmodel.HomeViewModel
 @Composable
 fun HomeHeader(
     viewModel: HomeViewModel,
-    navController: NavController,
+    onContactClicked:()->Unit,
     onStoryClicked:(User)->Unit,
 ) {
 
@@ -53,12 +53,8 @@ fun HomeHeader(
                 .width(40.dp)
                 .height(40.dp)
                 .clickable {
-
-                    navController.navigate(ContactsRoute)
-                    navController.currentBackStackEntry
-                        ?.savedStateHandle
-                        ?.set("unAvailableContacts", viewModel.unAvailableContacts)
-                }
+                    onContactClicked()
+             }
                 .background(color = Color(0xFFEEEEEE), shape = RoundedCornerShape(12.dp))
         ) {
             Image(

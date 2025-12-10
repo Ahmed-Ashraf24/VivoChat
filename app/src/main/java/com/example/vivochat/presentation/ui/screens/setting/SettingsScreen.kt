@@ -42,7 +42,6 @@ import kotlinx.serialization.Serializable
 data object SettingsRoute
 
 fun NavGraphBuilder.settingsScreen(
-
     navigateToLogin:()->Unit
 ) {
     composable<SettingsRoute> {
