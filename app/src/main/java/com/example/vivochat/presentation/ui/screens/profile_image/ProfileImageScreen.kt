@@ -2,11 +2,8 @@ package com.example.vivochat.presentation.ui.screens.profile_image
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.provider.MediaStore
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,22 +33,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.vivochat.R
 import com.example.vivochat.presentation.ui.screens.login.LoginRoute
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
-import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaState
-import com.example.vivochat.presentation.viewModel.media_viewmodel.MediaViewModel
+import com.example.vivochat.presentation.ui.screens.profile_image.viewmodel.MediaState
+import com.example.vivochat.presentation.ui.screens.profile_image.viewmodel.MediaViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable

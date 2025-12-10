@@ -27,15 +27,12 @@ import androidx.navigation.NavController
 import com.example.vivochat.R
 import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.screens.Contacts.ContactsRoute
-import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
-import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
-import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
+import com.example.vivochat.presentation.ui.screens.home.viewmodel.HomeViewModel
 
 @Composable
 fun HomeHeader(
-    viewModel: UserViewModel,
+    viewModel: HomeViewModel,
     navController: NavController,
-    storyViewModel: StoryViewModel,
     onStoryClicked:(User)->Unit,
 ) {
 
@@ -73,5 +70,5 @@ fun HomeHeader(
         }
     }
     Spacer(Modifier.height(10.dp))
-     StoryItem(viewModel, storyViewModel,navController,onStoryClicked)
+     StoryItem(viewModel,onStoryClicked)
 }

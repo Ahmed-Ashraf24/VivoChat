@@ -1,6 +1,5 @@
 package com.example.vivochat.presentation.ui.screens.home
 
-import android.widget.Button
 import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,15 +26,12 @@ import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItemShimmer
 import com.example.vivochat.presentation.ui.screens.home.components.HomeHeaderShimmer
 import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadingIndicator
+import com.example.vivochat.presentation.ui.screens.home.viewmodel.HomeViewModel
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.view.home.components.HomeHeader
-import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
-import com.example.vivochat.presentation.viewModel.user_view_model.UserState
-import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
-import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryState
-import com.example.vivochat.presentation.viewModel.StoryViewModel.UploadingStoryState
-import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageViewModel
-import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
+import com.example.vivochat.presentation.ui.screens.home.viewmodel.UserState
+import com.example.vivochat.presentation.ui.screens.story.viewmodel.StoryState
+import com.example.vivochat.presentation.ui.screens.story.viewmodel.UploadingStoryState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -47,21 +43,17 @@ data object HomeRoute
 
 fun NavGraphBuilder.homeScreen(
     navController: NavController,
-    viewModel: UserViewModel,
-    storyViewModel: StoryViewModel,
-    sharedViewModel: SharedViewModel,
     navigateToReel: () -> Unit,
-    onStoryClicked:(User)->Unit
+    onStoryClicked: (User) -> Unit,
+    onChatClicked: (String, String, String) -> Unit
 
 ) {
     composable<HomeRoute> {
         Home(
             navController = navController,
-            viewModel = viewModel,
-            storyViewModel = storyViewModel,
-            sharedViewModel = sharedViewModel,
             navigateToReel = navigateToReel,
-            onStoryClicked = onStoryClicked
+            onStoryClicked = onStoryClicked,
+            onChatClicked = onChatClicked
 
         )
     }
@@ -69,12 +61,10 @@ fun NavGraphBuilder.homeScreen(
 @Composable
 fun Home(
     navController: NavController,
-    storyViewModel: StoryViewModel,
-    viewModel: UserViewModel,
-    messageViewModel: MessageViewModel = hiltViewModel(),
-    sharedViewModel: SharedViewModel,
+    viewModel: HomeViewModel = hiltViewModel(),
     navigateToReel: () -> Unit,
-    onStoryClicked:(User)->Unit
+    onStoryClicked:(User)->Unit,
+    onChatClicked: (String, String, String) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -83,22 +73,24 @@ fun Home(
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing.value)
 
 
-    val storyState = storyViewModel.storyState.collectAsState()
-    val uploadingStoryState = storyViewModel.uploadingStoryState.collectAsState()
+    val storyState = viewModel.storyState.collectAsState()
+    val uploadingStoryState = viewModel.uploadingStoryState.collectAsState()
     LaunchedEffect(state.value) {
         if (state.value is UserState.UserDataSuccess) {
-            storyViewModel.getAvaUsersStories(viewModel.availableContacts,viewModel.user)
-            viewModel.changeStateToAllSuccess()
+            viewModel.run {
+                getAvaUsersStories(availableContacts,viewModel.user)
+                changeStateToAllSuccess()
+            }
         }
     }
 
     LaunchedEffect(uploadingStoryState.value) {
         if (uploadingStoryState.value is UploadingStoryState.UploadingStorySuccess) {
             Toast.makeText(context, "Story uploaded", Toast.LENGTH_SHORT).show()
-            storyViewModel.resetUploadedStoryState()
+            viewModel.resetUploadedStoryState()
         } else if (uploadingStoryState.value is UploadingStoryState.UploadingStoryFailed) {
             Toast.makeText(context, "Failed to upload story", Toast.LENGTH_SHORT).show()
-            storyViewModel.resetUploadedStoryState()
+            viewModel.resetUploadedStoryState()
         }
 
     }
@@ -124,7 +116,7 @@ fun Home(
             ) {
             if (state.value is UserState.AllSuccess && storyState.value is StoryState.StorySuccess) {
 
-                item { HomeHeader(viewModel, navController, storyViewModel, onStoryClicked = onStoryClicked) }
+                item { HomeHeader(viewModel, navController, onStoryClicked = onStoryClicked) }
                 item { Spacer(Modifier.height(10.dp)) }
 
                 item { ChatHeader() }
@@ -133,18 +125,18 @@ fun Home(
                 items(viewModel.availableContacts.size) {
                     val reciverId = viewModel.availableContacts[it].userId
                     LaunchedEffect(reciverId) {
-                        messageViewModel.getLastMessage(reciverId)
+                        viewModel.getLastMessage(reciverId)
                     }
-                    val lastMessageMap = messageViewModel.lastMessages.collectAsState()
+                    val lastMessageMap = viewModel.lastMessages.collectAsState()
                     val lastMessage = lastMessageMap.value[reciverId]
-                    val encodedUrl =
-                        URLEncoder.encode(viewModel.availableContacts[it].imageUrl ?: "", "UTF-8")
-                    ChatItem(
+                   ChatItem(
                         lastMessage?.message ?: "",
                         timeOfMessage = lastMessage?.date,
                         viewModel.availableContacts[it].fullName,
                         imageUrl = viewModel.availableContacts[it].imageUrl,
-                        { navController.navigate("chat/${viewModel.availableContacts[it].fullName}/${reciverId}/${encodedUrl}") },
+                        {
+                            onChatClicked(viewModel.availableContacts[it].fullName,reciverId,viewModel.availableContacts[it].imageUrl?:"")
+                        },
                         viewModel
                     )
                     Spacer(Modifier.height(10.dp))

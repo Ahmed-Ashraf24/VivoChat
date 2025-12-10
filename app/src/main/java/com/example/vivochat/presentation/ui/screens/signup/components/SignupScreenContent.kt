@@ -1,7 +1,6 @@
 package com.example.vivochat.presentation.ui.screens.signup.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,11 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vivochat.presentation.ui.theme.interFont
-import com.example.vivochat.presentation.viewModel.signup_view_model.SignupState
+import com.example.vivochat.presentation.ui.screens.signup.viewmodel.SignupState
 
 @Composable
 fun SignupScreenContent(

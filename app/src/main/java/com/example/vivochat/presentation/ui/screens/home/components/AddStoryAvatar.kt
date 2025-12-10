@@ -2,6 +2,7 @@ package com.example.vivochat.presentation.view.home.components
 
 import CircleAvatar
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -23,19 +24,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.vivochat.R
 import com.example.vivochat.domain.entity.User
+import com.example.vivochat.presentation.ui.screens.home.viewmodel.HomeViewModel
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
-import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
-import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
-import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 
 @Composable
 fun AddStoryAvatar(
-    viewModel: UserViewModel,
-    storyViewModel: StoryViewModel,
-    navController: NavController,
+    viewModel: HomeViewModel,
     onStoryClicked: (User)->Unit
 ) {
 
@@ -45,7 +41,7 @@ fun AddStoryAvatar(
     ) { uri: Uri? ->
         uri?.let {
             val file = uriToFile(context, it)
-            storyViewModel.uploadStory(file, viewModel.user)
+            viewModel.uploadStory(file, viewModel.user)
         }
     }
 
@@ -57,7 +53,8 @@ fun AddStoryAvatar(
     ) {
         Box(modifier = Modifier.clickable {
 
-            if (storyViewModel.stories.isNotEmpty()) {
+            if (viewModel.stories.isNotEmpty()) {
+                Log.d("user story",viewModel.stories.toString())
                 onStoryClicked(viewModel.user)
             }
             }) {

@@ -13,15 +13,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.vivochat.presentation.ui.screens.profile_image.ProfileImageRoute
 import com.example.vivochat.presentation.ui.screens.signup.components.SignupScreenContent
-import com.example.vivochat.presentation.viewModel.signup_view_model.SignupState
-import com.example.vivochat.presentation.viewModel.signup_view_model.SignupViewModel
+import com.example.vivochat.presentation.ui.screens.signup.viewmodel.SignupState
+import com.example.vivochat.presentation.ui.screens.signup.viewmodel.SignupViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
 data object SignupRoute
 @Composable
 fun SignupScreen(
-
     navController: NavController,
     viewModel: SignupViewModel = hiltViewModel(),
 ) {

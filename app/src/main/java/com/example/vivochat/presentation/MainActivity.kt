@@ -1,15 +1,17 @@
 package com.example.vivochat.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.vivochat.presentation.ui.screens.chat.chatScreen
+import com.example.vivochat.presentation.ui.screens.chat.ChatRoute
 import com.example.vivochat.presentation.ui.screens.splash.SplashScreen
 import com.example.vivochat.presentation.ui.screens.login.Login
 import com.example.vivochat.presentation.ui.screens.login.LoginRoute
@@ -25,7 +27,6 @@ import com.example.vivochat.presentation.ui.screens.story.StoryViewRoute
 import com.example.vivochat.presentation.ui.screens.story.storyView
 import com.example.vivochat.presentation.ui.theme.VivoChatTheme
 import com.example.vivochat.presentation.utility.ThemeManager
-import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -33,7 +34,6 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var themeManager: ThemeManager
-    val sharedViewModel: SharedViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -66,13 +66,26 @@ class MainActivity : ComponentActivity() {
                             navController = navController
                         )
                     }
+
                     mainScreen(
-                        sharedViewModel = sharedViewModel,
                         navigateToReel = {
                             navController.navigate(ReelRoute)
                         },
-                        navigateToStory = {navController.navigate(StoryViewRoute(it))}
+                        navigateToStory = { navController.navigate(StoryViewRoute(it)) },
+                        navigateToLogin = {
+                            navController.navigate(LoginRoute) {
+                                popUpTo(0) { inclusive = true }
+                            }
+                        },
+                        navigateToChat = {userName, userId, userImageUrl ->
+                        navController.navigate(ChatRoute(
+                            fullName = userName,
+                            reciverId = userId,
+                            imageUrl = userImageUrl
+                        ))
+                        },
                     )
+                  chatScreen(navController = navController)
                     reelScreen(
                         navigateBack = navController::navigateUp
                     )

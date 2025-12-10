@@ -1,6 +1,5 @@
 package com.example.vivochat.presentation.ui.screens.login.components
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -22,9 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.vivochat.presentation.ui.screens.main.MainRoute
 import com.example.vivochat.presentation.ui.theme.Primary
-import com.example.vivochat.presentation.viewModel.login_view_model.LoginState
-import com.example.vivochat.presentation.viewModel.login_view_model.LoginViewModel
-import kotlin.math.log
+import com.example.vivochat.presentation.ui.screens.login.viewmodel.LoginState
+import com.example.vivochat.presentation.ui.screens.login.viewmodel.LoginViewModel
 
 @Composable
 fun LoginForm(modifier: Modifier = Modifier,viewModel: LoginViewModel,navController: NavController) {

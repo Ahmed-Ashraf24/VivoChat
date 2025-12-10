@@ -16,8 +16,8 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.vivochat.R
-import com.example.vivochat.presentation.viewModel.splash_view_model.SplashState
-import com.example.vivochat.presentation.viewModel.splash_view_model.SplashViewModel
+import com.example.vivochat.presentation.ui.screens.splash.viewmodel.SplashState
+import com.example.vivochat.presentation.ui.screens.splash.viewmodel.SplashViewModel
 import kotlinx.coroutines.delay
 import android.Manifest
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -67,7 +67,9 @@ fun SplashScreen(
             } else if (state.value is SplashState.AutoLoginSuccess) {
                 delay(1000)
 
-                navController.navigate(MainRoute)
+                navController.navigate(MainRoute){
+                    popUpTo (0){ inclusive=true }
+                }
 
             }
         }catch (e : Exception){

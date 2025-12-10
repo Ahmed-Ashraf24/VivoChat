@@ -27,9 +27,7 @@ import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.theme.Primary
-import com.example.vivochat.presentation.utility.TimeFormateUtility.getRelativeTime
 import com.example.vivochat.presentation.utility.UserNavType
-import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
 import kotlinx.serialization.Serializable
 import kotlin.reflect.typeOf
 

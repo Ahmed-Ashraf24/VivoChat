@@ -15,15 +15,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatBottomBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ChatTopBar
 import com.example.vivochat.presentation.ui.screens.chat.component.ConversationMessagesComponent
-import com.example.vivochat.presentation.viewModel.message_viewmodel.MessageViewModel
+import com.example.vivochat.presentation.ui.screens.chat.viewmodel.ChatViewModel
+import com.example.vivochat.presentation.utility.UserNavType
+import kotlinx.serialization.Serializable
+import kotlin.reflect.typeOf
+
+@Serializable
+data class ChatRoute(val fullName:String,val reciverId: String,val imageUrl:String)
+
+fun NavGraphBuilder.chatScreen(navController: NavController){
+    composable<ChatRoute>(typeMap = mapOf(typeOf<User>() to UserNavType)) { backStackEntry ->
+        val route = backStackEntry.toRoute<ChatRoute>()
+        ChatScreen(
+            navController = navController,
+            reciverName = route.fullName,
+            reciverId = route.reciverId,
+            reciverImageUrl = route.imageUrl,
+        )
+    }
+}
 
 
 @Composable
 fun ChatScreen(
-    messageViewModel: MessageViewModel = hiltViewModel(),
+    messageViewModel: ChatViewModel = hiltViewModel(),
     navController: NavController,
     reciverName: String,
     reciverId: String,
@@ -41,7 +63,7 @@ fun ChatScreen(
                     .padding(horizontal = 10.dp),
                 userImageUrl = reciverImageUrl,
                 userName = reciverName,
-                onBackClicked = { navController.navigate("navscreen") }
+                onBackClicked = { navController.popBackStack() }
             )
         },
         bottomBar = {
@@ -54,7 +76,7 @@ fun ChatScreen(
                 onSendClicked = {
                     messageViewModel.sendMessage(
                         message = message,
-                        reciverId = reciverId
+                        receiver = reciverId
                     )
                     message = ""
                 }

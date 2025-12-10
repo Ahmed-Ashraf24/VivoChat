@@ -17,10 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
+import com.example.vivochat.presentation.ui.screens.home.viewmodel.HomeViewModel
 
 @Composable
-fun ChatItem(lastMessagePreview: String="",timeOfMessage:String?,name:String,imageUrl:String?,onChatClicked:()->Unit,viewModel: UserViewModel) {
+fun ChatItem(lastMessagePreview: String="",timeOfMessage:String?,name:String,imageUrl:String?,onChatClicked:()->Unit,viewModel: HomeViewModel) {
 
     Row(
 

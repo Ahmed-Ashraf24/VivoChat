@@ -21,7 +21,7 @@ import com.example.vivochat.presentation.ui.screens.login.components.LoginForm
 import com.example.vivochat.presentation.ui.screens.login.components.LoginHeader
 import com.example.vivochat.presentation.ui.screens.login.components.OrDivider
 import com.example.vivochat.presentation.ui.screens.signup.SignupRoute
-import com.example.vivochat.presentation.viewModel.login_view_model.LoginViewModel
+import com.example.vivochat.presentation.ui.screens.login.viewmodel.LoginViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable

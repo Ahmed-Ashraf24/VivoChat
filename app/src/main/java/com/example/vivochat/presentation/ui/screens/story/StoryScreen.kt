@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.vivochat.domain.entity.User
@@ -20,28 +20,19 @@ import com.example.vivochat.presentation.ui.screens.story.component.CreateStoryI
 import com.example.vivochat.presentation.ui.screens.story.component.StoryItem
 import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadingIndicator
 import com.example.vivochat.presentation.ui.theme.Poppins
-import com.example.vivochat.presentation.viewModel.StoryViewModel.StoryViewModel
-import com.example.vivochat.presentation.viewModel.StoryViewModel.UploadingStoryState
-import com.example.vivochat.presentation.viewModel.user_view_model.UserViewModel
-import com.example.vivochat.presentation.viewModel.shared_view_model.SharedViewModel
+import com.example.vivochat.presentation.ui.screens.story.viewmodel.StoryState
+import com.example.vivochat.presentation.ui.screens.story.viewmodel.StoryViewModel
+import com.example.vivochat.presentation.ui.screens.story.viewmodel.UploadingStoryState
 import kotlinx.serialization.Serializable
 
 @Serializable
 data object StoryRoute
 
 fun NavGraphBuilder.storyScreen(
-    navController: NavController,
-    userViewModel: UserViewModel,
-    storyViewModel: StoryViewModel,
-    sharedViewModel: SharedViewModel,
     onStoryClicked:(User)->Unit
 ) {
     composable<StoryRoute> {
         StoryScreen(
-            navController = navController,
-            storyViewModel = storyViewModel,
-            userViewModel = userViewModel,
-            sharedViewModel = sharedViewModel,
             onStoryClicked=onStoryClicked
         )
     }
@@ -49,27 +40,29 @@ fun NavGraphBuilder.storyScreen(
 
 @Composable
 fun StoryScreen(
-    sharedViewModel: SharedViewModel,
-    userViewModel: UserViewModel,
-    navController: NavController,
-    storyViewModel: StoryViewModel,
+    storyViewModel: StoryViewModel= hiltViewModel(),
     onStoryClicked: (User) -> Unit
 ) {
     val context = LocalContext.current
-    val state = storyViewModel.uploadingStoryState.collectAsState()
-    LaunchedEffect(state.value) {
-        if (state.value is UploadingStoryState.UploadingStorySuccess) {
+    val uploadState = storyViewModel.uploadingStoryState.collectAsState()
+    val storyState = storyViewModel.storyState.collectAsState()
+
+    val availableContacts = storyViewModel.availableContacts.collectAsState()
+    val currentUser=storyViewModel.userData.collectAsState()
+    LaunchedEffect(uploadState.value) {
+        if (uploadState.value is UploadingStoryState.UploadingStorySuccess) {
             Toast.makeText(context, "Story uploaded", Toast.LENGTH_SHORT).show()
             storyViewModel.resetUploadedStoryState()
-        } else if (state.value is UploadingStoryState.UploadingStoryFailed) {
+        } else if (uploadState.value is UploadingStoryState.UploadingStoryFailed) {
             Toast.makeText(context, "Failed to upload story", Toast.LENGTH_SHORT).show()
             storyViewModel.resetUploadedStoryState()
         }
 
     }
-    if (state.value is UploadingStoryState.UploadingStoryLoading) {
+    if (uploadState.value is UploadingStoryState.UploadingStoryLoading) {
         StoryUploadingIndicator()
     }
+    if (storyState.value is StoryState.StorySuccess){
     LazyColumn(
         Modifier
             .fillMaxSize()
@@ -80,21 +73,21 @@ fun StoryScreen(
             CreateStoryItem(
                 Modifier.padding(vertical = 10.dp),
                 storyViewModel,
-                userViewModel,
                 onStoryClicked
             )
         }
-        items(userViewModel.availableContacts.size) {
-            if (userViewModel.availableContacts[it].stories!!.size > 0 && userViewModel.user.userId != userViewModel.availableContacts[it].userId) {
+        items(availableContacts.value.size) {
+            if (availableContacts.value[it].stories?.isNotEmpty()==true && currentUser.value.userId != availableContacts.value[it].userId) {
                 StoryItem(
                     modifier = Modifier.padding(vertical = 10.dp),
                     hasStory = true,
-                    userViewModel.availableContacts[it],
+                    availableContacts.value[it],
                     {
-                        onStoryClicked(userViewModel.availableContacts[it])
+                        onStoryClicked(availableContacts.value[it])
                     }
                 )
             }
         }
+    }
     }
 }

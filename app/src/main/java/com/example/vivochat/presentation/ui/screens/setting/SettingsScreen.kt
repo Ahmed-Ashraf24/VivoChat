@@ -35,20 +35,19 @@ import com.example.vivochat.presentation.ui.screens.setting.components.ProfileSe
 import com.example.vivochat.presentation.ui.screens.setting.components.SettingsItem
 import com.example.vivochat.presentation.ui.theme.kumbuhFont
 import com.example.vivochat.presentation.ui.theme.montserratFont
-import com.example.vivochat.presentation.viewModel.setting_viewmodel.SettingsViewModel
+import com.example.vivochat.presentation.ui.screens.setting.viewmodel.SettingsViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
 data object SettingsRoute
 
 fun NavGraphBuilder.settingsScreen(
-    navController: NavController,
-    loggedUser: User
+
+    navigateToLogin:()->Unit
 ) {
     composable<SettingsRoute> {
         SettingsScreen(
-            navController = navController,
-            loggedUser = loggedUser
+            navigateToLogin = navigateToLogin
         )
     }
 }
@@ -56,11 +55,10 @@ fun NavGraphBuilder.settingsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    navController: NavController,
-    settingViewModel: SettingsViewModel = hiltViewModel(),
-    loggedUser: User
+    navigateToLogin: () -> Unit,
+    settingViewModel: SettingsViewModel = hiltViewModel()
 ) {
-
+    val loggedUser=settingViewModel.userData.collectAsState()
     val darkMode by settingViewModel.isDarkMode.collectAsState()
     var selectedLanguage by remember { mutableStateOf("English") }
     var showLanguageSheet by remember { mutableStateOf(false) }
@@ -76,7 +74,7 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        ProfileSection(userName = loggedUser.fullName, userImageUrl = loggedUser.imageUrl, userEmail = loggedUser.email)
+        ProfileSection(userName = loggedUser.value.fullName, userImageUrl = loggedUser.value.imageUrl, userEmail = loggedUser.value.email)
 
         Spacer(modifier = Modifier.height(26.dp))
 
@@ -136,8 +134,7 @@ fun SettingsScreen(
             icon = R.drawable.logout,
             onClick = {
                 settingViewModel.signOut()
-                navController.popBackStack()
-                navController.navigate(LoginRoute)
+                    navigateToLogin()
 
             }
         )

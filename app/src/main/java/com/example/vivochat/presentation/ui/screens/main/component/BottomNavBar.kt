@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.ui.screens.nav.component
+package com.example.vivochat.presentation.ui.screens.main.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
