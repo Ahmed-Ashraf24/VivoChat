@@ -3,7 +3,9 @@ package com.example.vivochat.data.repository
 import com.example.vivochat.data.dataSource.RemoteDataSource
 import com.example.vivochat.domain.repository.IAuthRepo
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AuthRepository@Inject constructor(
     private val remoteDataSource: RemoteDataSource
 ) : IAuthRepo {

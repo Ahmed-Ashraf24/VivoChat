@@ -1,5 +1,6 @@
 package com.example.vivochat.data.repository
 
+import android.util.Log
 import com.example.vivochat.data.dataSource.RemoteDataSource
 import com.example.vivochat.data.dto.StoryDto
 import com.example.vivochat.data.mapper.StoryMapper
@@ -9,12 +10,20 @@ import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.domain.entity.Story
 import com.example.vivochat.domain.entity.User
 import com.example.vivochat.domain.repository.IUserRepository
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UserRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource
 ) : IUserRepository {
-
+    private var cachedUsers: List<User>? = null
+    private val cachedUserData = mutableMapOf<String, User>()
+    private val cachedStories = mutableMapOf<String, List<Story>>()
+    private var cachedFilterResult: Pair<List<User>, List<Contact>>? = null
+    private var cachedContacts: List<Contact>? = null
     override suspend fun uploadUserData(
         userId: String,
         fullName: String,
@@ -30,11 +39,16 @@ class UserRepository @Inject constructor(
     }
 
     override suspend fun getUserData(userId: String): Result<User> {
+        cachedUserData[userId]?.let {
+            Log.d("cached user from repo",cachedUserData[userId].toString())
+            return Result.success(it) }
         val response = remoteDataSource.getUserData(userId)
 
         if (response.isSuccess) {
             val userDto = response.getOrNull()!!
+            cachedUserData[userId]=userDto.toUser()
             return Result.success(userDto.toUser())
+
         }
 
         return Result.failure(Exception("failed to get user data"))
@@ -43,14 +57,22 @@ class UserRepository @Inject constructor(
 
 
     override suspend fun getAllUsers(): Result<List<User>> {
+        cachedUsers?.let { return Result.success(it) }
+
         return try {
-            Result.success(remoteDataSource.getUsersList().map (UserMapper::toUser))
-        } catch (e:Exception){
-            Result.failure(Exception("somthing happened when trying to get the users "))
+            val users = remoteDataSource.getUsersList().map(UserMapper::toUser)
+            cachedUsers = users
+            Result.success(users)
+        } catch (e: Exception) {
+            Result.failure(Exception("Something happened when trying to get users"))
         }
     }
 
     override suspend fun filterContacts(contactList: List<Contact>): Pair<List<User>, List<Contact>> {
+
+        if (cachedContacts == contactList && cachedFilterResult != null) {
+            return cachedFilterResult!!
+        }
         val availableContacts: MutableList<User> = mutableListOf()
         val unAvailableContacts: MutableList<Contact> = mutableListOf()
         val allUsers: MutableList<User> = mutableListOf()
@@ -76,8 +98,9 @@ class UserRepository @Inject constructor(
                 unAvailableContacts.add(i)
             }
         }
-
-        return Pair(availableContacts, unAvailableContacts)
+        cachedContacts = contactList
+        cachedFilterResult = Pair(availableContacts, unAvailableContacts)
+        return cachedFilterResult!!
     }
 
     override suspend fun uploadUserImage(
@@ -101,11 +124,13 @@ class UserRepository @Inject constructor(
         }
     }
     override suspend fun getUserStories(userId: String): Result<List<Story>> {
+        cachedStories[userId]?.let { return Result.success(it) }
          try{
              val response = remoteDataSource.getUserStories(userId)
              val storiesDto  : List<StoryDto> = response.getOrNull()?:emptyList()
-             //map
+
              val stories = StoryMapper.mapDtoListToDomainList(storiesDto)
+             cachedStories[userId] = stories
 
              return Result.success(stories)
          }catch (e : Exception){
@@ -114,7 +139,12 @@ class UserRepository @Inject constructor(
     }
 
 
-
+    fun clearCache() {
+        cachedUsers = null
+        cachedUserData.clear()
+        cachedStories.clear()
+        cachedFilterResult=null
+    }
 
 
 
