@@ -1,9 +1,7 @@
-package com.example.vivochat.presentation.viewModel.media_viewmodel
+package com.example.vivochat.presentation.ui.screens.profile_image.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseInstance
-import com.example.vivochat.data.repository.AuthRepository
 import com.example.vivochat.domain.repository.IAuthRepo
 import com.example.vivochat.domain.repository.IMediaRepository
 import com.example.vivochat.domain.repository.IUserRepository
@@ -73,22 +71,7 @@ class MediaViewModel @Inject constructor(
         }
     }
 
-    fun uploadVideo(file: File) {
-        viewModelScope.launch {
-//            _isLoading.value = true
-//            _error.value = null
-//
-//            mediaRepo.uploadVideo(file)
-//                .onSuccess { result ->
-//                    _videoUrl.value = result.streamUrl
-//                    _isLoading.value = false
-//                }
-//                .onFailure { exception ->
-//                    _error.value = exception.message
-//                    _isLoading.value = false
-//                }
-        }
-    }
+
 
 
 }

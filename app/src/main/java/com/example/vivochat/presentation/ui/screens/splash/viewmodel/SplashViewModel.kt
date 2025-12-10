@@ -1,15 +1,10 @@
-package com.example.vivochat.presentation.viewModel.splash_view_model
+package com.example.vivochat.presentation.ui.screens.splash.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import android.content.Context
-import android.provider.ContactsContract
 import android.util.Log
-import com.example.vivochat.domain.entity.Contact
 import com.example.vivochat.domain.repository.IAuthRepo
-import com.example.vivochat.domain.repository.IUserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

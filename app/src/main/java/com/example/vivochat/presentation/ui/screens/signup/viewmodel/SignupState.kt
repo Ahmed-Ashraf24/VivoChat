@@ -1,6 +1,4 @@
-package com.example.vivochat.presentation.viewModel.signup_view_model
-
-import com.example.vivochat.presentation.viewModel.login_view_model.LoginState
+package com.example.vivochat.presentation.ui.screens.signup.viewmodel
 
 
 sealed class SignupState{

@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.viewModel.StoryViewModel
+package com.example.vivochat.presentation.ui.screens.story.viewmodel
 
 sealed class UploadingStoryState {
     object  Idle: UploadingStoryState()

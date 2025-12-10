@@ -1,11 +1,9 @@
-package com.example.vivochat.presentation.viewModel.signup_view_model
+package com.example.vivochat.presentation.ui.screens.signup.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.vivochat.domain.repository.IAuthRepo
 import com.example.vivochat.domain.repository.IUserRepository
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

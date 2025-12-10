@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.viewModel.login_view_model
+package com.example.vivochat.presentation.ui.screens.login.viewmodel
 
 sealed class LoginState{
     object Idle : LoginState()

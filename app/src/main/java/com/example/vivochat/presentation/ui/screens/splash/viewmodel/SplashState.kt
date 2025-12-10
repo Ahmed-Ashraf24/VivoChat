@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.viewModel.splash_view_model
+package com.example.vivochat.presentation.ui.screens.splash.viewmodel
 
 sealed class SplashState{
     object Idle : SplashState()

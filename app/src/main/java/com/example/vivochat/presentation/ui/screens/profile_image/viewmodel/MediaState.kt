@@ -1,4 +1,4 @@
-package com.example.vivochat.presentation.viewModel.media_viewmodel
+package com.example.vivochat.presentation.ui.screens.profile_image.viewmodel
 
 sealed class MediaState{
     object Idle : MediaState()
