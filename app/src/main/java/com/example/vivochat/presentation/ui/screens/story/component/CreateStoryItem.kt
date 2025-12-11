@@ -24,17 +24,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.vivochat.R
-import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.ui.theme.Primary
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
 import com.example.vivochat.presentation.ui.screens.story.viewmodel.StoryViewModel
+import com.example.vivochat.presentation.utility.NavigationAction
 
 @Composable
 fun CreateStoryItem(
     modifier: Modifier = Modifier,
     storyViewModel: StoryViewModel,
-    onStoryClicked: (User) -> Unit
+    onNavigation: (NavigationAction) -> Unit
 ) {
     val stories= storyViewModel.stories
     val context = LocalContext.current
@@ -54,7 +54,7 @@ fun CreateStoryItem(
             Surface(shape = RoundedCornerShape(50.dp), modifier = Modifier.clickable {
                 Log.d("user story array",user.toString())
                 if (stories.isNotEmpty()) {
-                    onStoryClicked(user.value)
+                    onNavigation(NavigationAction.StoryNavigation(user.value))
                 }
             }) {
 

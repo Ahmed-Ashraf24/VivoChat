@@ -25,28 +25,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.vivochat.R
-import com.example.vivochat.domain.entity.User
-import com.example.vivochat.presentation.ui.screens.login.LoginRoute
 import com.example.vivochat.presentation.ui.screens.setting.components.ProfileSection
 import com.example.vivochat.presentation.ui.screens.setting.components.SettingsItem
 import com.example.vivochat.presentation.ui.theme.kumbuhFont
 import com.example.vivochat.presentation.ui.theme.montserratFont
 import com.example.vivochat.presentation.ui.screens.setting.viewmodel.SettingsViewModel
+import com.example.vivochat.presentation.utility.NavigationAction
 import kotlinx.serialization.Serializable
 
 @Serializable
 data object SettingsRoute
 
 fun NavGraphBuilder.settingsScreen(
-    navigateToLogin:()->Unit
+    onNavigation:(NavigationAction)-> Unit
 ) {
     composable<SettingsRoute> {
         SettingsScreen(
-            navigateToLogin = navigateToLogin
+            onNavigation = onNavigation
         )
     }
 }
@@ -54,9 +52,10 @@ fun NavGraphBuilder.settingsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    navigateToLogin: () -> Unit,
-    settingViewModel: SettingsViewModel = hiltViewModel()
-) {
+    onNavigation:(NavigationAction)-> Unit,
+    settingViewModel: SettingsViewModel = hiltViewModel(),
+
+    ) {
     val loggedUser=settingViewModel.userData.collectAsState()
     val darkMode by settingViewModel.isDarkMode.collectAsState()
     var selectedLanguage by remember { mutableStateOf("English") }
@@ -133,7 +132,7 @@ fun SettingsScreen(
             icon = R.drawable.logout,
             onClick = {
                 settingViewModel.signOut()
-                    navigateToLogin()
+                    onNavigation(NavigationAction.LoginNavigation)
 
             }
         )

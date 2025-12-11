@@ -23,17 +23,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.vivochat.R
-import com.example.vivochat.domain.entity.User
-import com.example.vivochat.presentation.ui.screens.Contacts.ContactsRoute
 import com.example.vivochat.presentation.ui.screens.home.viewmodel.HomeViewModel
+import com.example.vivochat.presentation.utility.NavigationAction
 
 @Composable
 fun HomeHeader(
     viewModel: HomeViewModel,
-    onContactClicked:()->Unit,
-    onStoryClicked:(User)->Unit,
+    onContactClicked: () -> Unit,
+    onNavigation: (navigationAction: NavigationAction) -> Unit,
 ) {
 
 
@@ -66,5 +64,5 @@ fun HomeHeader(
         }
     }
     Spacer(Modifier.height(10.dp))
-     StoryItem(viewModel,onStoryClicked)
+     StoryItem(viewModel,onNavigation)
 }

@@ -1,7 +1,6 @@
 package com.example.vivochat.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -26,6 +25,7 @@ import com.example.vivochat.presentation.ui.screens.splash.SplashRoute
 import com.example.vivochat.presentation.ui.screens.story.StoryViewRoute
 import com.example.vivochat.presentation.ui.screens.story.storyView
 import com.example.vivochat.presentation.ui.theme.VivoChatTheme
+import com.example.vivochat.presentation.utility.NavigationAction
 import com.example.vivochat.presentation.utility.ThemeManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -68,24 +68,36 @@ class MainActivity : ComponentActivity() {
                     }
 
                     mainScreen(
-                        navigateToReel = {
-                            navController.navigate(ReelRoute)
-                        },
-                        navigateToStory = { navController.navigate(StoryViewRoute(it)) },
-                        navigateToLogin = {
-                            navController.navigate(LoginRoute) {
-                                popUpTo(0) { inclusive = true }
+                        onNavigation = { navigation ->
+                            when (navigation) {
+                                is NavigationAction.StoryNavigation -> {
+                                    navController.navigate(StoryViewRoute(navigation.user))
+                                }
+
+                                is NavigationAction.ChatNavigation -> {
+                                    navController.navigate(
+                                        ChatRoute(
+                                            fullName = navigation.userName,
+                                            reciverId = navigation.userId,
+                                            imageUrl = navigation.userImageUrl
+                                        )
+                                    )
+                                }
+
+                                NavigationAction.LoginNavigation -> {
+                                    navController.navigate(LoginRoute) {
+                                        popUpTo(0) { inclusive = true }
+                                    }
+                                }
+
+                                NavigationAction.RealNavigation -> {
+                                    navController.navigate(ReelRoute)
+                                }
                             }
-                        },
-                        navigateToChat = {userName, userId, userImageUrl ->
-                        navController.navigate(ChatRoute(
-                            fullName = userName,
-                            reciverId = userId,
-                            imageUrl = userImageUrl
-                        ))
+
                         },
                     )
-                  chatScreen(navController = navController)
+                    chatScreen(navController = navController)
                     reelScreen(
                         navigateBack = navController::navigateUp
                     )

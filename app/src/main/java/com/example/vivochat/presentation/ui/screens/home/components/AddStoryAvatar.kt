@@ -25,14 +25,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vivochat.R
-import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.screens.home.viewmodel.HomeViewModel
 import com.example.vivochat.presentation.utility.MediaPickerUtility.uriToFile
+import com.example.vivochat.presentation.utility.NavigationAction
 
 @Composable
 fun AddStoryAvatar(
     viewModel: HomeViewModel,
-    onStoryClicked: (User)->Unit
+    onNavigation: (navigationAction: NavigationAction) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -55,7 +55,7 @@ fun AddStoryAvatar(
 
             if (viewModel.stories.isNotEmpty()) {
                 Log.d("user story",viewModel.stories.toString())
-                onStoryClicked(viewModel.user)
+                onNavigation(NavigationAction.StoryNavigation(viewModel.user))
             }
             }) {
             CircleAvatar(viewModel.user.imageUrl)

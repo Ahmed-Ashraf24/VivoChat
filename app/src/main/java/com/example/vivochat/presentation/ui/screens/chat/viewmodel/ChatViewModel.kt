@@ -13,27 +13,32 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatViewModel @Inject constructor(private val messageRepo: IMessageRep,
-                                        private val authRepo: IAuthRepo
-): ViewModel() {
+class ChatViewModel @Inject constructor(
+    private val messageRepo: IMessageRep,
+    private val authRepo: IAuthRepo
+) : ViewModel() {
     private var _messageData = MutableStateFlow<List<Message>>(emptyList())
-    val messageData : StateFlow<List<Message>> =_messageData
-fun sendMessage(message: String, receiver:String){
+    val messageData: StateFlow<List<Message>> = _messageData
+    fun sendMessage(message: String, receiver: String) {
         viewModelScope.launch {
-        messageRepo.sendMessage(message = Message(
-            senderId = authRepo.getLoggedUserIdOrNull()!!,
-            senderName = "ahmed",
-            message = message,
-            messageType = MessageType.MyMessage,
-            messageDate = ""
-        ),receiver)
+            messageRepo.sendMessage(
+                message = Message(
+                    senderId = authRepo.getLoggedUserIdOrNull()!!,
+                    senderName = "ahmed",
+                    message = message,
+                    messageType = MessageType.MyMessage,
+                    messageDate = ""
+                ), receiver
+            )
+        }
     }
-    }
-    fun getMessages(receiverId:String){
+
+    fun getMessages(receiverId: String) {
         viewModelScope.launch {
-            messageRepo.getMessages(authRepo.getLoggedUserIdOrNull()!!,receiverId).collect { messageList->
-                _messageData.value=messageList
-            }
+            messageRepo.getMessages(authRepo.getLoggedUserIdOrNull()!!, receiverId)
+                .collect { messageList ->
+                    _messageData.value = messageList
+                }
         }
     }
 

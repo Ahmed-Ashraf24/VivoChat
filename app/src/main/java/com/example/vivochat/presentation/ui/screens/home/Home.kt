@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,7 +21,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.screens.Contacts.ContactsRoute
 import com.example.vivochat.presentation.ui.screens.home.components.ChatHeader
 import com.example.vivochat.presentation.ui.screens.home.components.ChatItem
@@ -33,39 +33,34 @@ import com.example.vivochat.presentation.view.home.components.HomeHeader
 import com.example.vivochat.presentation.ui.screens.home.viewmodel.UserState
 import com.example.vivochat.presentation.ui.screens.story.viewmodel.StoryState
 import com.example.vivochat.presentation.ui.screens.story.viewmodel.UploadingStoryState
+import com.example.vivochat.presentation.utility.NavigationAction
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.serialization.Serializable
-import java.net.URLEncoder
 
 @Serializable
 data object HomeRoute
 
 fun NavGraphBuilder.homeScreen(
     navController: NavController,
-    navigateToReel: () -> Unit,
-    onStoryClicked: (User) -> Unit,
-    onChatClicked: (String, String, String) -> Unit
+    onNavigation: (navigationAction: NavigationAction) -> Unit
 
 ) {
     composable<HomeRoute> {
         Home(
             navController = navController,
-            navigateToReel = navigateToReel,
-            onStoryClicked = onStoryClicked,
-            onChatClicked = onChatClicked
+            onNavigation = onNavigation
 
         )
     }
 }
+
 @Composable
 fun Home(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel(),
-    navigateToReel: () -> Unit,
-    onStoryClicked:(User)->Unit,
-    onChatClicked: (String, String, String) -> Unit
+    onNavigation: (navigationAction: NavigationAction) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -79,7 +74,7 @@ fun Home(
     LaunchedEffect(state.value) {
         if (state.value is UserState.UserDataSuccess) {
             viewModel.run {
-                getAvaUsersStories(availableContacts,viewModel.user)
+                getAvaUsersStories(availableContacts, viewModel.user)
                 changeStateToAllSuccess()
             }
         }
@@ -96,7 +91,7 @@ fun Home(
 
     }
 
-    if(uploadingStoryState.value == UploadingStoryState.UploadingStoryLoading){
+    if (uploadingStoryState.value == UploadingStoryState.UploadingStoryLoading) {
         StoryUploadingIndicator()
     }
 
@@ -106,24 +101,29 @@ fun Home(
             viewModel.getUserData()
         },
         indicator = { s, trigger ->
-        SwipeRefreshIndicator(s, trigger, contentColor = Primary)
-    }
+            SwipeRefreshIndicator(s, trigger, contentColor = Primary)
+        }
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .imePadding()
                 .padding(top = 40.dp),
-            ) {
+        ) {
             if (state.value is UserState.AllSuccess && storyState.value is StoryState.StorySuccess) {
 
-                item { HomeHeader(viewModel, onContactClicked = {
-                    navController.navigate(ContactsRoute)
-                    navController.currentBackStackEntry
-                        ?.savedStateHandle
-                        ?.set("unAvailableContacts", viewModel.unAvailableContacts)
+                item {
+                    HomeHeader(
+                        viewModel = viewModel, onContactClicked = {
+                            navController.navigate(ContactsRoute)
+                            navController.currentBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("unAvailableContacts", viewModel.unAvailableContacts)
 
-                }, onStoryClicked = onStoryClicked) }
+                        },
+                        onNavigation = onNavigation
+                    )
+                }
                 item { Spacer(Modifier.height(10.dp)) }
 
                 item { ChatHeader() }
@@ -136,13 +136,19 @@ fun Home(
                     }
                     val lastMessageMap = viewModel.lastMessages.collectAsState()
                     val lastMessage = lastMessageMap.value[reciverId]
-                   ChatItem(
+                    ChatItem(
                         lastMessage?.message ?: "",
                         timeOfMessage = lastMessage?.date,
                         viewModel.availableContacts[it].fullName,
                         imageUrl = viewModel.availableContacts[it].imageUrl,
                         {
-                            onChatClicked(viewModel.availableContacts[it].fullName,reciverId,viewModel.availableContacts[it].imageUrl?:"")
+                            onNavigation(
+                                NavigationAction.ChatNavigation(
+                                    viewModel.availableContacts[it].fullName,
+                                    reciverId,
+                                    viewModel.availableContacts[it].imageUrl ?: ""
+                                )
+                            )
                         },
                         viewModel
                     )
@@ -161,8 +167,8 @@ fun Home(
             }
 
             item {
-                androidx.compose.material3.Button(
-                    onClick = navigateToReel
+                Button(
+                    onClick = { onNavigation(NavigationAction.RealNavigation) }
                 ) {
                     Text("Navigate to reel")
                 }

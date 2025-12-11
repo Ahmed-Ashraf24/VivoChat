@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.vivochat.domain.entity.User
 import com.example.vivochat.presentation.ui.screens.story.component.CreateStoryItem
 import com.example.vivochat.presentation.ui.screens.story.component.StoryItem
 import com.example.vivochat.presentation.ui.screens.home.components.StoryUploadingIndicator
@@ -23,17 +22,18 @@ import com.example.vivochat.presentation.ui.theme.Poppins
 import com.example.vivochat.presentation.ui.screens.story.viewmodel.StoryState
 import com.example.vivochat.presentation.ui.screens.story.viewmodel.StoryViewModel
 import com.example.vivochat.presentation.ui.screens.story.viewmodel.UploadingStoryState
+import com.example.vivochat.presentation.utility.NavigationAction
 import kotlinx.serialization.Serializable
 
 @Serializable
 data object StoryRoute
 
 fun NavGraphBuilder.storyScreen(
-    onStoryClicked:(User)->Unit
+    onNavigation:(NavigationAction)->Unit
 ) {
     composable<StoryRoute> {
         StoryScreen(
-            onStoryClicked=onStoryClicked
+            onNavigation = onNavigation
         )
     }
 }
@@ -41,7 +41,7 @@ fun NavGraphBuilder.storyScreen(
 @Composable
 fun StoryScreen(
     storyViewModel: StoryViewModel= hiltViewModel(),
-    onStoryClicked: (User) -> Unit
+    onNavigation:(NavigationAction)->Unit
 ) {
     val context = LocalContext.current
     val uploadState = storyViewModel.uploadingStoryState.collectAsState()
@@ -73,7 +73,7 @@ fun StoryScreen(
             CreateStoryItem(
                 Modifier.padding(vertical = 10.dp),
                 storyViewModel,
-                onStoryClicked
+                onNavigation
             )
         }
         items(availableContacts.value.size) {
@@ -83,7 +83,7 @@ fun StoryScreen(
                     hasStory = true,
                     availableContacts.value[it],
                     {
-                        onStoryClicked(availableContacts.value[it])
+                        onNavigation(NavigationAction.StoryNavigation(availableContacts.value[it]))
                     }
                 )
             }
