@@ -68,18 +68,18 @@ class MainActivity : ComponentActivity() {
                     }
 
                     mainScreen(
-                        onNavigation = { navigation ->
-                            when (navigation) {
+                        onNavigation = { navigationAction ->
+                            when (navigationAction) {
                                 is NavigationAction.StoryNavigation -> {
-                                    navController.navigate(StoryViewRoute(navigation.user))
+                                    navController.navigate(StoryViewRoute(navigationAction.user))
                                 }
 
                                 is NavigationAction.ChatNavigation -> {
                                     navController.navigate(
                                         ChatRoute(
-                                            fullName = navigation.userName,
-                                            reciverId = navigation.userId,
-                                            imageUrl = navigation.userImageUrl
+                                            fullName = navigationAction.userName,
+                                            reciverId = navigationAction.userId,
+                                            imageUrl = navigationAction.userImageUrl
                                         )
                                     )
                                 }
