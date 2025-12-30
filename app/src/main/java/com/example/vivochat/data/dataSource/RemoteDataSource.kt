@@ -11,6 +11,8 @@ interface RemoteDataSource {
                      receiverId: String,message: FirebaseMessage)
     fun getConversation(userId:String,otherUserId:String): Flow<List<FirebaseMessage>>
     suspend fun getUsersList():List<UserDto>
+    fun setUserState(userId:String)
+    fun observePresence(userId: String): Flow<UserPresence>
     suspend fun uploadUserData(userId:String,fullName : String,email : String,phoneNumber: String): Result<Any>
     suspend fun getUserData(userId : String): Result<UserDto>
     suspend fun uploadUserImage(userId:String,imageUrl:String): Result<Any>

@@ -1,6 +1,8 @@
 package com.example.vivochat.data.dataSource.firebase_remote_datasource
 
+import android.util.Log
 import com.example.vivochat.data.dataSource.RemoteDataSource
+import com.example.vivochat.data.dataSource.UserPresence
 import com.example.vivochat.data.dataSource.firebase_remote_datasource.firebase_utility.FirebaseInstance
 import com.example.vivochat.data.dto.FirebaseMessage
 import com.example.vivochat.data.dto.LastMessageData
@@ -9,6 +11,7 @@ import com.example.vivochat.data.dto.UserDto
 import com.google.firebase.Timestamp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
@@ -37,12 +40,10 @@ class FirebaseRemoteDataSource @Inject constructor() : RemoteDataSource {
 
         userNode.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
                 if (snapshot.exists()) {
                     val conversationId = snapshot.child("conversationId").value.toString()
                     onReady(conversationId)
                 } else {
-
                     createConversation(senderId, receiverId, onReady)
                 }
             }
@@ -208,6 +209,60 @@ class FirebaseRemoteDataSource @Inject constructor() : RemoteDataSource {
                 email = doc.getString("email") ?: "",
                 imageUrl = doc.getString("imageUrl")?:""
             )
+        }
+    }
+
+    override fun setUserState(userId: String) {
+        val database=FirebaseInstance.firebaseDatabase
+      val userStateRef=  database.getReference("status/$userId")
+        val connectivityState=database.getReference(".info/connected")
+        connectivityState.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val connected = snapshot.getValue(Boolean::class.java) ?: false
+                Log.d("connectivity",connected.toString())
+                if (!connected) return
+
+                val online = mapOf("state" to "online", "lastSeen" to ServerValue.TIMESTAMP)
+                val offline = mapOf("state" to "offline", "lastSeen" to ServerValue.TIMESTAMP)
+
+                userStateRef.setValue(online)
+
+                userStateRef.onDisconnect().setValue(offline)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+    override fun observePresence(userId: String): Flow<UserPresence> = callbackFlow {
+
+        val ref = FirebaseInstance.firebaseDatabase
+            .getReference("status/$userId")
+
+        val listener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                val state = snapshot.child("state").getValue(String::class.java)
+                val lastSeen = snapshot.child("lastSeen").getValue(Long::class.java)
+
+                val presence = UserPresence(
+                    online = state == "online",
+                    lastSeen = lastSeen
+                )
+
+                trySend(presence)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                close(error.toException())
+            }
+        }
+
+        ref.addValueEventListener(listener)
+
+        awaitClose {
+            ref.removeEventListener(listener)
         }
     }
 

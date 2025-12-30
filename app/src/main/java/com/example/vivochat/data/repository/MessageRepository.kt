@@ -1,6 +1,7 @@
 package com.example.vivochat.data.repository
 
 import com.example.vivochat.data.dataSource.RemoteDataSource
+import com.example.vivochat.data.dataSource.UserPresence
 import com.example.vivochat.data.mapper.MessageMapper
 import com.example.vivochat.domain.entity.LastMessagePreview
 import com.example.vivochat.domain.entity.Message
@@ -31,5 +32,15 @@ class MessageRepository @Inject constructor(private val remoteDataSource: Remote
            lastMessageData?.let { emit(MessageMapper.toLastMessagePreview(it)) }
 
         }
+    }
+
+    override fun observeUser(userId: String): Flow<UserPresence> = flow{
+        remoteDataSource.observePresence(userId = userId).collect {
+            emit(it)
+        }
+    }
+
+    override fun setStateI(userId: String) {
+        remoteDataSource.setUserState(userId)
     }
 }

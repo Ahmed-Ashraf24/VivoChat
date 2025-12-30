@@ -54,6 +54,8 @@ fun ChatScreen(
     var message by remember { mutableStateOf("") }
     messageViewModel.getMessages(reciverId)
     val messageList = messageViewModel.messageData.collectAsState()
+    messageViewModel.getState(reciverId)
+    val isOnline=messageViewModel.isOnline.collectAsState()
     Scaffold(
         modifier = Modifier.imePadding(),
         topBar = {
@@ -63,6 +65,7 @@ fun ChatScreen(
                     .padding(horizontal = 10.dp),
                 userImageUrl = reciverImageUrl,
                 userName = reciverName,
+                isOnline=isOnline.value,
                 onBackClicked = { navController.popBackStack() }
             )
         },

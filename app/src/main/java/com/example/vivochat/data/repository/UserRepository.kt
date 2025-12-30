@@ -140,6 +140,7 @@ class UserRepository @Inject constructor(
 
 
     fun clearCache() {
+
         cachedUsers = null
         cachedUserData.clear()
         cachedStories.clear()

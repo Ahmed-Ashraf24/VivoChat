@@ -14,7 +14,7 @@ object MessageMapper {
             senderId = firebaseMessage.senderId,
             senderName = "",
             message = firebaseMessage.message,
-            messageType = if (firebaseMessage.senderId == FirebaseInstance.firebaseAuth.currentUser!!.uid!!) MessageType.MyMessage else MessageType.OthersMessage,
+            messageType = if (firebaseMessage.senderId == FirebaseInstance.firebaseAuth.currentUser!!.uid) MessageType.MyMessage else MessageType.OthersMessage,
             messageDate = TimeFormateUtility.formateTampToDayAndHour(firebaseMessage.timestamp)
         )
     }
