@@ -107,8 +107,7 @@ fun Home(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .imePadding()
-                .padding(top = 40.dp),
+                .imePadding(),
         ) {
             if (state.value is UserState.AllSuccess && storyState.value is StoryState.StorySuccess) {
 

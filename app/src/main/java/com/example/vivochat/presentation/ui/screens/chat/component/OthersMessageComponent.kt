@@ -32,7 +32,7 @@ fun OthersMessageComponent(modifier: Modifier = Modifier,message: String,date:St
             isVisible=!isVisible
         },shape = RoundedCornerShape(topStart = 15.dp, bottomEnd = 15.dp, topEnd = 15.dp), color = Color.Gray.copy(.2f)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-                Text(message, fontFamily = Poppins, color = Color.Black, modifier = Modifier.padding(10.dp))
+                Text(message, fontFamily = Poppins, modifier = Modifier.padding(10.dp))
             }
         }
 

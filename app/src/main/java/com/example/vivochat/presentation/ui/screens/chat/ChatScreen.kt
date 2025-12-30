@@ -2,7 +2,9 @@ package com.example.vivochat.presentation.ui.screens.chat
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -61,7 +63,7 @@ fun ChatScreen(
         topBar = {
             ChatTopBar(
                 Modifier
-                    .padding(top = 30.dp)
+                    .statusBarsPadding()
                     .padding(horizontal = 10.dp),
                 userImageUrl = reciverImageUrl,
                 userName = reciverName,
@@ -71,8 +73,9 @@ fun ChatScreen(
         },
         bottomBar = {
             ChatBottomBar(
-                modifier = Modifier.padding(
-                    vertical = 20.dp,
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .padding(
                     horizontal = 10.dp
                 ), message = message,
                 onMessageChange = { message = it },

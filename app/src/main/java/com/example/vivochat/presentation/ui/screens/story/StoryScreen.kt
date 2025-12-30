@@ -66,7 +66,7 @@ fun StoryScreen(
     LazyColumn(
         Modifier
             .fillMaxSize()
-            .padding(vertical = 30.dp, horizontal = 10.dp)
+            .padding( horizontal = 10.dp)
     ) {
         item {
             Text("Story", fontSize = 25.sp, fontFamily = Poppins)
